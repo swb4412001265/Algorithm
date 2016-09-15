@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+        // write your code here
+        TreeNode *successor = NULL;
+        //return root which is equal 
+        while((root != NULL) && (root->val != p->val)){
+            if(root->val > p->val){
+                successor = root;
+                root = root->left;
+            } else {
+                root = root -> right;
+            }
+        }
+        //case 1, no p
+        if(root == NULL){
+            return root;
+        }
+        //case 2, root does not have right subtree
+        if(root->right == NULL){
+            return successor;
+        }
+        //case3, root has right subtree and return the most left node of subtree
+        root = root->right;
+        while( root->left!=NULL ){
+            root = root->left;
+        }
+        return root;
+    }
+};
