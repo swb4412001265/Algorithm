@@ -1,0 +1,40 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution{
+public:
+    /**
+     * @param head: the head of linked list.
+     * @return: a middle node of the linked list
+     */
+    ListNode *middleNode(ListNode *head) {
+        // Write your code here
+        map <int,ListNode *> mymap;
+        //ListNode *dummy = new ListNode(0);
+        //dummy->next = head;
+        int i = 0;
+        if(head == NULL){
+            return head;
+        }
+        
+        while(head != NULL){
+            i++;
+            mymap[i] = head;
+            head = head->next;
+        }
+        if(i % 2 == 0){
+            return mymap[i/2];
+        }else {
+            return mymap[i/2 + 1];
+        }    
+    }
+};
