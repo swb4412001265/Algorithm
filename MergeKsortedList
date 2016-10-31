@@ -1,0 +1,62 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param lists: a list of ListNode
+     * @return: The head of one sorted list.
+     */
+     
+     ListNode *DC(vector<ListNode *>&lists ,int start, int end){
+         if(start == end){
+             return lists.at(start);
+         }
+         //start = 0;
+         //end = size(lists) - 1;
+         int mid = (end - start)/2 + start;
+         ListNode *left = DC(lists, start, mid);
+         ListNode *right = DC(lists, mid+1, end);
+         merge(left, right);
+     }
+     
+     ListNode *merge(ListNode *left, ListNode *right){
+         ListNode *dummy = new ListNode(0);
+         ListNode *tmp = dummy;
+         while(left != NULL && right != NULL){
+            if(left->val < right->val){
+                tmp->next = left;
+                left = left->next; 
+            } else {
+                tmp->next = right;
+                right = right->next;
+            }
+            tmp = tmp->next;
+         }
+         if(left != NULL){
+            tmp->next = left;
+         } else {
+            tmp->next = right;     
+         }
+         return dummy->next;
+     }
+     
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        // write your code here
+        if(lists.size() == 0){
+            return NULL;
+        }
+        return DC(lists, 0, lists.size()-1);
+    }
+};
+
+
