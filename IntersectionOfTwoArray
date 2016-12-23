@@ -1,0 +1,35 @@
+class Solution {
+public:
+    /**
+     * @param nums1 an integer array
+     * @param nums2 an integer array
+     * @return an integer array
+     */
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // Write your code here
+        vector <int> result;
+        vector <int> FinalResult;
+        int length1 = nums1.size();
+        int length2 = nums2.size();
+        //int mid = lnegth1 / 2;
+        
+        for(int i = 0; i < length1; i++){
+            for(int j = 0; j < length2; j++){
+                if(nums1[i] == nums2[j])
+                    result.push_back(nums1[i]);
+            }
+        }
+        int i = 0;
+        while(i < result.size()){
+            int j = i + 1;
+            while(j < result.size()){
+                if(result[i] == result[j])
+                    result.erase(result.begin() + j);
+                else
+                    j++;
+            }
+            i++;
+        }
+        return result;
+    }
+};
