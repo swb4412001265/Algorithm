@@ -1,0 +1,32 @@
+class Solution {
+public:
+    /**
+     * @param nums an integer array
+     * @param target an integer
+     * @return the difference between the sum and the target
+     */
+     
+     //Binary Search
+    int twoSumCloset(vector<int>& nums, int target) {
+        // Write your code here
+        sort(nums.begin(), nums.end());
+        int i = 0;
+        int j = nums.size() - 1;
+        int diff = INT_MAX;
+        while(i<j){
+            if(nums[i] + nums[j] > target){
+                if(nums[i] + nums[j] - target < diff){
+                    diff = nums[i] + nums[j] - target;
+                }
+                j--;
+            }
+            else {
+                if(target - nums[i] - nums[j] < diff){
+                    diff = target - nums[i] - nums[j];
+                }
+                i++;
+            }
+        }
+        return diff;
+    }
+};
