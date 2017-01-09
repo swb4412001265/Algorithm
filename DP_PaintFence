@@ -1,0 +1,30 @@
+class Solution {
+public:
+    /**
+     * @param n non-negative integer, n posts
+     * @param k non-negative integer, k colors
+     * @return an integer, the total number of ways
+     */
+    int numWays(int n, int k) {
+        // Write your code here
+        //define that there are p[n] ways to paint when there are n posts and k colors.
+        //vector<int> p;
+        int *p = new int[n+1];
+        if(k == 1)
+            return n;
+        if(n == 1)
+            return k;
+        if(n == 0)
+            return 0;
+        if(n == 2)
+            return k*k;
+        p[0] = 0;
+        p[1] = k; 
+        p[2] = k*k;
+        //p[n] only starts to apply no more than 3 posts the same color rule when there are more than 2 posts.
+        for(int i = 3;i <= n; i++){
+            p[i] = (k-1)*(p[i-1] + p[i-2]);
+        }
+        return p[n];
+    }
+};
