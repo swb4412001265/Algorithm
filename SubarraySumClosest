@@ -1,0 +1,35 @@
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: A list of integers includes the index of the first number 
+     *          and the index of the last number
+     */
+    vector<int> subarraySumClosest(vector<int> nums){
+        // write your code here
+        vector<pair<int, int> > hash;
+        vector<int> result;
+        hash.push_back(make_pair(0,-1));
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
+            hash.push_back(make_pair(sum,i));
+        }
+        sort(hash.begin(),hash.end());
+        int tmpIndex1;
+        int tmpIndex2;
+        int MIN = INT_MAX;
+        for(int i = 1; i<hash.size(); i++){
+            int tmp;
+            tmp = abs(hash[i].first - hash[i-1].first);
+            if(tmp <= MIN){
+                MIN = tmp;
+                tmpIndex1 = hash[i-1].second;
+                tmpIndex2 = hash[i].second;
+            }
+        }
+        result.push_back(min(tmpIndex1, tmpIndex2) + 1);
+        result.push_back(max(tmpIndex1, tmpIndex2));
+        return result;   
+    }
+};
