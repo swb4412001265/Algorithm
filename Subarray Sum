@@ -25,3 +25,39 @@ public:
         //return result;
     }
 };
+
+
+//Better solution
+
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: A list of integers includes the index of the first number 
+     *          and the index of the last number
+     */
+    vector<int> subarraySum(vector<int> nums){
+        // write your code here
+        //pair<int, int> node;
+        vector<pair<int, int> > hash;
+        vector<int> result;
+        hash.push_back(make_pair(0,-1));
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
+            hash.push_back(make_pair(sum,i));
+        }
+        sort(hash.begin(),hash.end());
+        int tmpIndex1;
+        int tmpIndex2;
+        for(int i = 1; i<hash.size() ; i++){
+            if(hash[i].first == hash[i-1].first){
+                tmpIndex1 = min(hash[i].second,hash[i-1].second) + 1;
+                tmpIndex2 = max(hash[i].second,hash[i-1].second);
+            }
+        }
+        result.push_back(tmpIndex1);
+        result.push_back(tmpIndex2);
+        return result;
+    }
+};
