@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of binary tree
+     * @return the length of the longest consecutive sequence path
+     */
+    void help (TreeNode* root, int preVal, int curVal, int &res){
+        if(root == NULL){
+            return;
+        }
+        if(root->val == preVal + 1 ){
+            curVal++;
+        }else {
+            curVal = 1;
+        }
+        res = max(res, curVal);
+        help(root->left, root->val, curVal, res);
+        help(root->right, root->val, curVal, res);
+        
+    }
+    int longestConsecutive(TreeNode* root) {
+        // Write your code here
+        if(root == NULL){
+            return 0;
+        }
+        int result = INT_MIN;
+        help(root, root->val - 1, 0, result);
+        return result;
+    }
+};
