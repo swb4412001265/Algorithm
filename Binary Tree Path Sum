@@ -1,0 +1,46 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of binary tree
+     * @param target an integer
+     * @return all valid paths
+     */
+    vector<int> resultPart;
+    vector<vector<int> > result;
+    int sum = 0;
+    void help(TreeNode* root, int target){
+        //vector<int> res;
+        if(root == NULL){
+            return;
+        }
+        resultPart.push_back(root->val);
+        sum += root->val;
+        if(root->left == NULL && root->right == NULL && sum == target)
+            result.push_back(resultPart);
+        help(root->left, target);
+        help(root->right, target);
+        sum-=root->val;     //节点的值和节点 vector 里边的值 要清空 及 回到上一个节点 继续往下走
+        resultPart.pop_back();
+    }
+    vector<vector<int>> binaryTreePathSum(TreeNode *root, int target) {
+        // Write your code here
+        //vector<vector<int> > result;
+        if(root == NULL){
+            return result;
+        }
+        help(root,target);
+        return result;
+    }
+};
