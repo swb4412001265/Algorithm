@@ -44,3 +44,55 @@ public:
         return result;
     }
 };
+
+//////////////////////////////////////
+//version 2 put resultPart and sum into parameter and there is no need to remove int and minus val in sum
+/////////////////////////////////////
+
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of binary tree
+     * @param target an integer
+     * @return all valid paths
+     */
+    //vector<int> resultPart;
+    vector<vector<int> > result;
+    //int sum = 0;
+    void help(TreeNode* root, int target, vector<int> resultPart, int sum){
+        //vector<int> res;
+        if(root == NULL){
+            return;
+        }
+        resultPart.push_back(root->val);
+        sum += root->val;
+        if(root->left == NULL && root->right == NULL && sum == target)
+            result.push_back(resultPart);
+        help(root->left, target, resultPart, sum);
+        help(root->right, target,resultPart, sum);
+        //sum-=root->val;
+        //resultPart.pop_back();
+    }
+    vector<vector<int>> binaryTreePathSum(TreeNode *root, int target) {
+        // Write your code here
+        //vector<vector<int> > result;
+        if(root == NULL){
+            return result;
+        }
+        vector<int> resultPart;
+        help(root, target, resultPart, 0);
+        return result;
+    }
+};
