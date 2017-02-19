@@ -1,0 +1,60 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary tree.
+     * @param A and B: two nodes
+     * @return: Return the LCA of the two nodes.
+     */
+     bool A_exist = false;
+     bool B_exist = false;
+     TreeNode* node_A = NULL;
+     TreeNode* node_B = NULL;
+     int first;
+    TreeNode *lowestCommonAncestor3(TreeNode* root, TreeNode* A, TreeNode* B) {
+        // write your code here
+        if(root == NULL){
+            return NULL;
+        }
+        
+        if(root == A){
+            A_exist = true;
+            first = 1;
+            node_A = root;
+        }
+        if(root == B){
+            B_exist = true;
+            first = 2;
+            node_B = root;
+        }
+        if((A_exist == true && B_exist == true) && (root == A || root == B) && first == 2){
+            return node_A;
+        }
+        if((A_exist == true && B_exist == true) && (root == A || root == B) && first == 1){
+            return node_B;
+        }
+        TreeNode* left = lowestCommonAncestor3(root->left, A, B);
+        TreeNode* right = lowestCommonAncestor3(root->right, A, B);
+        if(left != NULL && right != NULL){
+            return root;
+        }
+        if((A_exist == true && B_exist == true) && (left != NULL)) {
+            return left;
+        }
+        if((A_exist == true && B_exist == true) && (right != NULL)) {
+            return right;
+        }
+        return NULL;
+    }
+};
