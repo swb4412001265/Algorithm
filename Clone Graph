@@ -60,3 +60,73 @@ public:
         }
     }
 };
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//After Change
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        // write your code here
+        if(node == NULL){
+            return NULL;
+        }
+        set<UndirectedGraphNode *> nodes = findNode(node);
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> map = copyNode(nodes);
+        connectNeighbors(map, nodes);
+        return map[node];
+    }
+    
+    set<UndirectedGraphNode *> findNode(UndirectedGraphNode *node){
+        queue<UndirectedGraphNode *> Q;
+        set<UndirectedGraphNode *> S;
+//        vector<UndirectedGraphNode *> V;
+        
+        Q.push(node);
+        S.insert(node);
+//        V.push_back(node);
+        while(!Q.empty()){
+            UndirectedGraphNode *tmp = Q.front();
+            Q.pop();
+            for(auto n : tmp->neighbors){
+                if(S.find(n) == S.end()){
+                    Q.push(n);
+                    S.insert(n);
+//                    V.push_back(n);
+                }
+            }    
+        }
+
+        return S;
+    }
+    unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> copyNode(set<UndirectedGraphNode *> node){
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> tmp;
+        for(auto n : node){
+            UndirectedGraphNode *newnode = new UndirectedGraphNode(n->label);
+            tmp[n] = newnode;
+        }
+        return tmp;
+    }
+    
+    void connectNeighbors(unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> &hash, set<UndirectedGraphNode *> &nodes){
+        for(auto n : nodes){
+            UndirectedGraphNode *newNode = hash[n];
+            for(auto m : n->neighbors){
+                UndirectedGraphNode *newNeighbor = hash[m];
+                newNode->neighbors.push_back(newNeighbor);
+            }
+        }
+    }
+};
