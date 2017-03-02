@@ -1,0 +1,62 @@
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        // write your code here
+        if(node == NULL){
+            return NULL;
+        }
+        vector<UndirectedGraphNode *> nodes = findNode(node);
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> map = copyNode(nodes);
+        connectNeighbors(map, nodes);
+        return map[node];
+    }
+    
+    vector<UndirectedGraphNode *> findNode(UndirectedGraphNode *node){
+        queue<UndirectedGraphNode *> Q;
+        set<UndirectedGraphNode *> S;
+        vector<UndirectedGraphNode *> V;
+        
+        Q.push(node);
+        S.insert(node);
+        while(!Q.empty()){
+            UndirectedGraphNode *tmp = Q.front();
+            Q.pop();
+            if(S.find(tmp) == S.end()){
+                Q.push(tmp);
+                S.insert(tmp);
+                V.push_back(tmp);
+            }
+        }
+        return V;
+    }
+    unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> copyNode(vector<UndirectedGraphNode *> node){
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> tmp;
+        for(auto n : node){
+            UndirectedGraphNode *newnode = new UndirectedGraphNode(n->label);
+            tmp[n] = newnode;
+        }
+        return tmp;
+    }
+    
+    void connectNeighbors(unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> &hash, vector<UndirectedGraphNode *> nodes){
+        for(auto n : nodes){
+            UndirectedGraphNode *newNode = hash[n];
+            for(auto m : n->neighbors){
+                UndirectedGraphNode *newNeighbor = hash[m];
+                newNode->neighbors.push_back(newNeighbor);
+            }
+        }
+    }
+};
