@@ -1,0 +1,40 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    int tmp = INT_MAX;
+    int minDepth(TreeNode *root) {
+        // write your code here
+        if (root == NULL) {
+            return 0;
+        }
+    //    start from 1 since if only root is also 1 depth
+        helper(root, 1);
+        return tmp;
+    }
+    void helper(TreeNode *root, int depth) {
+        if (root == NULL) {
+            return;
+        }
+        if (root->left == NULL && root->right == NULL) {
+            tmp = min(depth, tmp);
+            depth = 0;
+        }
+        helper(root->left, depth + 1);
+        helper(root->right, depth + 1);
+    }
+};
