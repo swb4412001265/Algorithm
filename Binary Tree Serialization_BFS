@@ -82,3 +82,63 @@ public:
         
     }
 };
+
+
+////////////////////////////////////////////////////////DFS//////////////////////////////////////////////////////////////////
+
+[Interview] Serialize and De-serialize a tree
+A very frequent interview question. Suppose you have a tree, how could you serialize it to file and revert it back?
+
+
+for example,
+
+                                               1
+                                         /               \
+                                        2                 3
+                                             \          /     
+                                             4        5     
+                                          /       \
+                                         6        7
+
+[Thoughts]
+一个比较简单直接的做法是，通过前序遍历来做，把所有空节点当做“#”来标示。那么这棵树可以表示为
+
+                                               1
+                                         /               \
+                                        2                 3
+                                     /       \          /      \
+                                  #         4        5       #
+                                          /       \
+                                         6        7
+                                     /      \     /    \
+                                    #      #    #     #
+
+那么前序遍历的结果就是： {'1','2','#','4','6','#','#','7','#','#','3','5','#','#','#'}; 代码如下：
+
+
+void Serialize(TreeNode * node, vector<char> &output)
+{
+       if(node == NULL)
+       {
+             output.push_back('#');
+             return;
+       }
+
+       output.push_back(node->val + '0');
+       Serialize(node->left, output);
+       Serialize(node->right, output);
+}
+
+而反序列化的代码也就是：
+
+TreeNode *Deserialize(vector<char> output, int &index)
+{
+       if(index > output.size() || output[index] == '#') return NULL;
+
+       TreeNode *node = new TreeNode(output[index] -'0');
+       index ++;
+       node->left = Deserialize(output, index);
+       index++;
+       node->right = Deserialize(output, index);
+       return node;
+}
