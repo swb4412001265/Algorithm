@@ -1,0 +1,43 @@
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    bool validTree(int n, vector<vector<int>>& edges) {
+        // Write your code here
+        unordered_map<int, unordered_set<int>> M;
+        queue<int> Q;
+        unordered_set<int> S;
+        int row = edges.size();
+        if (row != n-1) {
+            return false;
+        }
+        
+        for (int i = 0; i < n; ++i) {
+            M[i] = S;
+        }
+        
+        for (int i = 0; i < row; ++i) {
+            int x = edges[i][0];
+            int y = edges[i][1];
+            M[x].insert(y);
+            M[y].insert(x);
+        }
+        Q.push(0);
+        S.insert(0);
+        while (!Q.empty()) {
+            int tmp = Q.front();
+            Q.pop();
+            for (auto n : M[tmp]) {
+                if (S.find(n) != S.end()) {
+                    continue;
+                }
+                Q.push(n);
+                S.insert(n);
+            }
+        }
+        return (S.size() == n);
+    }
+};
