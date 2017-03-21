@@ -45,3 +45,46 @@ public:
         }
     }
 };
+/////////////////////////////////////////////follow up /////////////////////////////////////////////////////////
+class Solution {
+public:
+	/**
+	 * @param num: Given the candidate numbers
+	 * @param target: Given the target number
+	 * @return: All the combinations that sum to target
+	 */
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        // write your code here
+        vector<vector<int> > result;
+        vector<int> tmp;
+        if(num.size() == 0) {
+            return result; 
+        }
+        sort(num.begin(), num.end());
+        helper(result, num, tmp, 0, target);
+        return result;
+    } 
+    
+    void helper(vector<vector<int> > &result, 
+                vector<int> candidates,
+                vector<int> &tmp,
+                int startIndex,
+                int restTarget) {
+        if(restTarget == 0) {
+            result.push_back(tmp);    
+        }
+
+        for(int i = startIndex; i < candidates.size(); ++i) {
+            if(candidates[i] > restTarget) {
+                break;
+            }
+            //没有循环到 i,而是跳到了下一个i， 并且前后相等
+            if(i != startIndex && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            tmp.push_back(candidates[i]);
+            helper(result, candidates, tmp, i + 1, restTarget - candidates[i]);
+            tmp.pop_back();
+        }
+    }
+};
