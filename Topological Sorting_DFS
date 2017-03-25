@@ -1,0 +1,60 @@
+/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector<DirectedGraphNode *> neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */
+    vector<DirectedGraphNode*> topSort(vector<DirectedGraphNode*> graph) {
+        // write your code here
+        queue <DirectedGraphNode *> Q;
+        vector <DirectedGraphNode *> V;
+        unordered_map<DirectedGraphNode *, int> inCount = inDegree(graph);
+        //unordered_set<DirectedGraphNode *> S;
+        for(auto& n : graph) {
+            if(inCount[n] == 0) {
+                Q.push(n);        
+            }
+        }    
+            while (!Q.empty()) {
+                DirectedGraphNode * head = Q.front();
+                Q.pop();
+                V.push_back(head);
+                //S.insert(head);
+                for (auto& n : head->neighbors) {
+                    inCount[n] = inCount[n] - 1;
+                    if(inCount[n] == 0) {
+                        Q.push(n);
+                    }
+                }
+            }
+        if(V.size() == graph.size()) {    
+            return V;
+        }
+
+        vector <DirectedGraphNode *> NullV;
+        return NullV; 
+    }
+    
+    unordered_map<DirectedGraphNode*, int> inDegree(vector<DirectedGraphNode*> graph) {
+        unordered_map<DirectedGraphNode*, int> result;
+        for(auto& n : graph) {
+            result.insert({n, 0});
+        }
+        for(auto& n : graph) {
+            for(auto& m : n->neighbors){
+                result[m] = result[m] + 1;
+            }
+        }
+        return result;
+        
+    }
+    
+};
