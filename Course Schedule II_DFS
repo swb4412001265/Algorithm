@@ -1,0 +1,52 @@
+class Solution {
+public:
+    /**
+     * @param numCourses a total of n courses
+     * @param prerequisites a list of prerequisite pairs
+     * @return the course order
+     */
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        // Write your code here
+        vector<int> result;
+        if(numCourses == 0) {
+            return result;
+        }
+        unordered_map<int, int> inCount = inDegree(numCourses, prerequisites);
+        queue<int> Q;
+        for(auto& n : inCount) {
+            if(n.second == 0) {
+                Q.push(n.first);
+            }
+        }
+        while(!Q.empty()) {
+            int head = Q.front();
+            Q.pop();
+            result.push_back(head);
+            for(auto& n : prerequisites) {
+                if(n.second == head) {
+                    inCount[n.first] = inCount[n.first] - 1;
+                }
+                if(inCount[n.first] == 0) {
+                    Q.push(n.first);
+                }
+            }        
+        }
+        if(result.size() == numCourses) {
+            return result;
+        } else {
+            vector<int> emptyArray;
+            return emptyArray;
+        }
+        
+    }    
+    unordered_map<int, int> inDegree(int numCourses, vector<pair<int, int>> prerequisites) {
+        unordered_map<int, int> result;
+        for(int i = 0; i < numCourses; ++i) {
+            result[i] = 0;
+        }
+        for(auto& n : prerequisites) {
+            result[n.first] = result[n.first] + 1;
+        }
+        return result;
+    }    
+};
