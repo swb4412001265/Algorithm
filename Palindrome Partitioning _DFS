@@ -10,15 +10,17 @@ public:
         if(s.size() == 0) {
             return result;
         }
-        
-        DFS();
+        vector<string> tmp;
+        DFS(result, tmp, s, 0);
         return result;
     }
     
     void DFS(vector<vector<string>> &result, vector<string> tmp, string input, int startIndex) {
-        result.push_back(tmp);
+        if(startIndex == input.size()) {
+            result.push_back(tmp);
+        }
         for(int i = startIndex; i < input.size(); ++i) {
-            string subString = input.substr(startIndex, )
+            string subString = input.substr(startIndex, i + 1 - startIndex);
             if(isPalindrome(subString) == false) {
                 continue;
             }
@@ -43,5 +45,3 @@ public:
         return flag;
     }
 };
-
-/////////////////////////////To Be Continued////////////////////////////////////
