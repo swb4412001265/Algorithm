@@ -1,0 +1,52 @@
+class Solution {
+public:
+    /**
+     * @param grid a boolean 2D matrix
+     * @return an integer
+     */
+    int numIslands(vector<vector<bool>>& grid) {
+        // Write your code here
+        int result = 0;
+        int row = grid.size();
+        int colomn = grid[0].size();
+        
+        if(row == 0) {
+            return result;
+        }
+        for(int i = 0; i < row; ++i) {
+            for (int j = 0; j < colomn; ++j) {
+                if(grid[i][j] == true) {
+                    BFS(grid, i, j);
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+    
+    void BFS(vector<vector<bool> >& grid, int i, int j) {
+        grid[i][j] == false;
+        int x[4] = {0, -1, 0, 1};
+        int y[4] = {-1, 0, 1, 0};
+        queue<pair<int, int> > Q;
+        Q.push(make_pair(i, j));
+        while(!Q.empty()) {
+            pair<int,int> head = Q.front();
+            Q.pop();
+            for(int z = 0; z < 4; ++z) {
+                pair<int,int> tmp;
+                tmp.first = head.first + x[z];
+                tmp.second = head.second + y[z];
+                if(tmp.first < 0 || tmp.first > grid.size() || tmp.second < 0 || tmp.second > grid[0].size()) {
+                    continue;
+                }
+                if(grid[tmp.first][tmp.second] == true) {
+                    grid[tmp.first][tmp.second] = false;
+                    Q.push(tmp);
+                }
+            }
+        }
+    }
+};
+
+//////////////////////////////Runtime Error/////////////////////////////
