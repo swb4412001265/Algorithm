@@ -6,13 +6,14 @@ public:
      */
     int numIslands(vector<vector<bool>>& grid) {
         // Write your code here
+         if(grid.empty() || grid[0].empty()) {
+            return 0;
+        }
+        
         int result = 0;
         int row = grid.size();
         int colomn = grid[0].size();
-        
-        if(row == 0) {
-            return result;
-        }
+       
         for(int i = 0; i < row; ++i) {
             for (int j = 0; j < colomn; ++j) {
                 if(grid[i][j] == true) {
@@ -37,7 +38,8 @@ public:
                 pair<int,int> tmp;
                 tmp.first = head.first + x[z];
                 tmp.second = head.second + y[z];
-                if(tmp.first < 0 || tmp.first > grid.size() || tmp.second < 0 || tmp.second > grid[0].size()) {
+                //坐标的边界是 size() - 1 不是 size()
+                if(tmp.first < 0 || tmp.first > grid.size() - 1 || tmp.second < 0 || tmp.second > grid[0].size() - 1) {
                     continue;
                 }
                 if(grid[tmp.first][tmp.second] == true) {
@@ -48,5 +50,3 @@ public:
         }
     }
 };
-
-//////////////////////////////Runtime Error/////////////////////////////
