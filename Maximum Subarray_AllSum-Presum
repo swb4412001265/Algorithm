@@ -1,0 +1,25 @@
+class Solution {
+public:    
+    /**
+     * @param nums: A list of integers
+     * @return: A integer indicate the sum of max subarray
+     */
+    int maxSubArray(vector<int> nums) {
+        // write your code here
+        if(nums.size() == 0) {
+            return 0;
+        }
+        int sum = 0;
+        int result = INT_MIN;
+        int tmpSum = 0;//do not give MIN_MAX since we do not pick positive tmpSum
+        for(int i = 0; i < nums.size(); ++i) {
+            sum += nums[i];
+            //consider there is only one item in array
+            result = max(result, sum - tmpSum);
+            //max subarry means sum - minium presum array
+            //if put his line above, sum - tmpSum will cause result = 0 when sum is negative
+            tmpSum = min(tmpSum, sum);
+        }
+        return result;
+    }
+};
