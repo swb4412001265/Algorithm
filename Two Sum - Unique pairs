@@ -1,5 +1,3 @@
-//////////////////////////////////////////////////exceed time limit////////////////////////////////////////////
-
 class Solution {
 public:
     /**
@@ -16,15 +14,15 @@ public:
         unordered_set<int> S;
         for(int i = 0; i < nums.size(); ++i) {
             if(hash.find(target - nums[i]) == hash.end()) {
-                hash.insert({nums[i], i});
+                hash.insert({nums[i], i}); //can not change it to hash[nums[i]] = i, since this means replace the old value with new value
+                //But insert means do not put new item into hash if key value exists
             } else {
-                unordered_map<int, int>::iterator it = hash.find(target - nums[i]);
-                S.insert(it->second);
+                //unordered_map<int, int>::iterator it = hash.find(target - nums[i]);
+                //if not commend it out, it will time out
+                S.insert(hash.find(target - nums[i])->second);
             }
         }
         return S.size();
     }
 };
 
-
-////////////////////////////////////////
