@@ -1,0 +1,41 @@
+////////////////////////////////////////O(nlogn)////////////////////////////////////////////////////////////////
+
+class TwoSum {
+public:
+
+    // Add the number to an internal data structure.
+    vector<int> array;
+    void add(int number) {
+        // Write your code here
+        array.push_back(number);
+        return;
+    }
+
+    // Find if there exists any pair of numbers which sum is equal to the value.
+    bool find(int value) {
+        // Write your code here
+        sort(array.begin(), array.end());
+        int start = 0;
+        int end = array.size() - 1;
+        int flag = false;
+        while(start < end) {
+            if(array[start] + array[end] > value) {
+                end--;
+            } 
+            if(array[start] + array[end] < value) {
+                start++;
+            }
+            if(array[start] + array[end] == value) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+};
+
+// Your TwoSum object will be instantiated and called as such:
+// TwoSum twoSum;
+// twoSum.add(number);
+// twoSum.find(value);
+
