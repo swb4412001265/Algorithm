@@ -1,0 +1,30 @@
+//////////////////////////////////////////////////exceed time limit////////////////////////////////////////////
+
+class Solution {
+public:
+    /**
+     * @param nums an array of integer
+     * @param target an integer
+     * @return an integer
+     */
+    int twoSum6(vector<int> &nums, int target) {
+        // Write your code here
+        if(nums.size() == 0) {
+            return 0;
+        }
+        unordered_map<int, int> hash;
+        unordered_set<int> S;
+        for(int i = 0; i < nums.size(); ++i) {
+            if(hash.find(target - nums[i]) == hash.end()) {
+                hash.insert({nums[i], i});
+            } else {
+                unordered_map<int, int>::iterator it = hash.find(target - nums[i]);
+                S.insert(it->second);
+            }
+        }
+        return S.size();
+    }
+};
+
+
+////////////////////////////////////////
