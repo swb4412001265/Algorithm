@@ -1,0 +1,41 @@
+/////////////////////////////////////////////////////Memory Limit Exceeded////////////////////////////////////////////////
+class Solution {
+public:    
+    /**
+     * @param numbers : Give an array numbers of n integer
+     * @return : Find all unique triplets in the array which gives the sum of zero.
+     */
+    vector<vector<int> > threeSum(vector<int> &nums) {
+        // write your code here
+        vector<vector<int> > result;
+        vector<int> V;
+        if(nums.size() == 0) {
+            result.push_back(V);
+            return result;
+        }
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i < nums.size() - 2; ++i) {
+            vector<int> tmp(nums);
+            int target = -tmp[i];
+            tmp.erase(tmp.begin(), tmp.begin() + i);
+            int start = 0;
+            int end = tmp.size() - 1;
+            while(start < end) {
+                if(tmp[start] + tmp[end] > target) {
+                    end--;
+                }
+                if(tmp[start] + tmp[end] < target) {
+                    start--;
+                }
+                if(tmp[start] + tmp[end] == target) {
+                    V.push_back(-target);
+                    V.push_back(start);
+                    V.push_back(end);
+                    result.push_back(V);
+                    V.clear();
+                }
+            }
+        }
+        return result;
+    }
+};
