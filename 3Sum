@@ -29,10 +29,11 @@ public:
                 }
                 if(tmp[start] + tmp[end] == target) {
                     V.push_back(-target);
-                    V.push_back(start);
-                    V.push_back(end);
+                    V.push_back(nums[start]);
+                    V.push_back(nums[end]);
                     result.push_back(V);
                     V.clear();
+                    start++;
                 }
             }
         }
