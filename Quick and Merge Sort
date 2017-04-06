@@ -1,0 +1,96 @@
+//////////////////////////////////////////////////Quick Sort////////////////////////////////////////////
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+        if(A.size() == 0) {
+            return;
+        }
+        quickSort(A, 0, A.size() - 1);
+    }
+    
+    void quickSort(vector<int> &A, int start, int end) {
+        if(start >= end) {
+            return;
+        }
+        int left = start;
+        int right = end;
+        int pivot = A[(start + end) / 2];
+        while(left <= right) {
+            while(left <= right && A[left] < pivot) {
+                left++;
+            }
+            while(left <= right && A[right] > pivot) {
+                right--;
+            }
+            if(left <= right) {
+                int tmp = A[left];
+                A[left] = A[right];
+                A[right] = tmp;
+                left++;
+                right--;
+            }
+        }
+        quickSort(A, start, right);
+        quickSort(A, left, end);
+    }
+};
+
+
+
+////////////////////////////////////////merge sort/////////////////////////////////////////////////////////////////////
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+        if(A.size() == 0) {
+            return;
+        }
+        //has to assign tmp'size since not using push_back()
+        vector<int> tmp(A.size());
+        mergeSort(A, 0, A.size() - 1, tmp);
+    }
+    
+    void mergeSort(vector<int> &A, int start, int end, vector<int> tmp) {
+        if(start >= end) {
+            return;
+        }
+        int mid = (start + end) / 2;
+        mergeSort(A, start, mid, tmp);
+        mergeSort(A, mid + 1, end, tmp);
+        merge(A, start, mid, end, tmp);
+    }
+    
+    void merge(vector<int> &A, int start, int mid, int end, vector<int> tmp) {
+        int leftIndex = start;
+        int midIndex = mid + 1;
+        int endIndex = end;
+        int index = start;
+        
+        while(leftIndex <= mid && midIndex <= endIndex) {
+            if(A[leftIndex] < A[midIndex]) {
+                tmp[index++] = A[leftIndex++];
+            } else {
+                tmp[index++] = A[midIndex++];
+            }
+        }
+        while(leftIndex <= mid) {
+            tmp[index++] = A[leftIndex++];
+        }
+        while(midIndex <= endIndex) {
+            tmp[index++] = A[midIndex++];
+        }
+        for(int i = start; i <= end; ++i) {
+            A[i] = tmp[i];
+        }
+    }
+};
+
