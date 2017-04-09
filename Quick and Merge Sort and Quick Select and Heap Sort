@@ -142,3 +142,33 @@ public:
         return nums[right + 1];
     }
 };
+
+
+////////////////////////////////////////////////////////Heap Sort///////////////////////////////////////////////////////////////////
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    void sortIntegers2(vector<int>& A) {
+        // Write your code here
+        if(A.size() == 0) {
+            return;
+        }
+        //priority_queue<int> heap;
+        //sort(A.begin(), A.end(), greater<int>())
+        priority_queue<int, vector<int>, greater<int>> heap;
+        for(int i = 0; i < A.size(); ++i) {
+            heap.push(A[i]);
+        }
+        
+        int index = 0;
+        while(!heap.empty()) {
+            int tmp = heap.top();
+            heap.pop();
+            A[index++] = tmp;
+        }
+    }
+    
+};
