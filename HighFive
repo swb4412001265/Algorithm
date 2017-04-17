@@ -1,0 +1,53 @@
+/**
+ * Definition for a Record
+ * class Record {
+ * public:
+ *   int id, score;
+ *   Record(int id, int score) {
+ *     this->id = id;
+ *     this->score = score;
+ *   }
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param results a list of <student_id, score>
+     * @return find the average of 5 highest scores for each person
+     * map<int, double> (student_id, average_score)
+     */
+    map<int, double> highFive(vector<Record>& results) {
+        // Write your code here
+        map<int, double> resultMap;
+        map<int, vector<int>> hash;
+        if(results.size() == 0) {
+            return resultMap;
+        }
+        for(int i = 0; i < results.size(); ++i) {
+            if(hash.find(results[i].id) == hash.end()) {
+                hash[results[i].id] = vector<int>();
+            }
+            if(hash[results[i].id].size() < 5) {
+                hash[results[i].id].push_back(results[i].score);
+            } else {
+                int index = 0;
+                for(int j = 1; j < 5; ++j) {
+                    if(hash[results[i].id][j] < hash[results[i].id][index]) {
+                        index = j;
+                    }
+                }
+                if(hash[results[i].id][index] < results[i].score) {
+                    hash[results[i].id][index] = results[i].score;
+                }
+            }
+        }
+        for(auto& n : hash) {
+            int sum = 0;
+            for(auto& m : n.second){
+                sum += m;
+            }
+            resultMap[n.first] = sum / 5.0;
+        }
+        return resultMap;
+    }
+};
