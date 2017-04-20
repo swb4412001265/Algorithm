@@ -1,0 +1,53 @@
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param points a list of points
+     * @param origin a point
+     * @param k an integer
+     * @return the k closest points
+     */
+    vector<Point> kClosest(vector<Point>& points, Point& origin, int k) {
+        // Write your code here
+        vector<Point> result;
+        if(points.size() == 0) {
+            return result;
+        }
+        BFS(result, points, origin, k);
+        return result;
+    }
+    
+    void BFS(vector<Point>& result, vector<Point> points, Point origin, int k) {
+        multimap<int, Point> tmp = distance(points, origin);
+        multimap<int, Point>::iterator it = tmp.begin();
+        int i = 0;
+        while(i < k) {
+            result.push_back(it->second);
+            ++it;
+            ++i;
+        }
+        return;
+    }
+    
+    multimap<int, Point> distance(vector<Point> points, Point origin) {
+        multimap<int, Point> disMap;
+        for(auto& n : points) {
+            int tmp;
+            tmp = abs(n.x - origin.x) + abs(n.y - origin.y);
+            disMap.insert({tmp, n});
+        }
+        return disMap;
+    }
+};
+
+
+
+
