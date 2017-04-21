@@ -41,7 +41,7 @@ public:
         multimap<int, Point> disMap;
         for(auto& n : points) {
             int tmp;
-            tmp = abs(n.x - origin.x) + abs(n.y - origin.y);
+            tmp = pow(abs(n.x - origin.x), 2) + pow(abs(n.y - origin.y), 2);
             disMap.insert({tmp, n});
         }
         return disMap;
