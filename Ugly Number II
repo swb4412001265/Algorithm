@@ -35,3 +35,45 @@ public:
         return minNum;
     }
 };
+
+
+
+///////////////////////////////////////////////////nlogn solution/////////////////////////////////////////////////////////////////////
+class Solution {
+public:
+    /*
+     * @param n an integer
+     * @return the nth prime number as description.
+     */
+    int nthUglyNumber(int n) {
+        // write your code here
+        set<int> uglyArray;
+        priority_queue<int, vector<int>, greater<int>> queue;
+        if(n <= 0) {
+            return -1;
+        }
+        uglyArray.insert(1);
+        queue.push(1);
+        int result = 1;
+        while(uglyArray.size() < n) {
+            int tmp = queue.top();
+            queue.pop();
+            uglyArray.insert(tmp);
+            result = tmp;
+            queue.push(2*tmp);
+            queue.push(3*tmp);
+            queue.push(5*tmp);
+        }
+        /*
+        int i = 0;
+        set<int>::iterator it = uglyArray.begin();
+        int result = 1;
+        while(i < n) {
+            result = *it;
+            ++i;
+            ++it;
+        }
+        */
+        return result;
+    }
+};
