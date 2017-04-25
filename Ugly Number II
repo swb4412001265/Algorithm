@@ -1,0 +1,37 @@
+class Solution {
+public:
+    /*
+     * @param n an integer
+     * @return the nth prime number as description.
+     */
+    int nthUglyNumber(int n) {
+        // write your code here
+        vector<int> uglyArray;
+        if(n <= 0) {
+            return -1;
+        }
+        uglyArray.push_back(1);
+        int i = 0;
+        int j = 0;
+        int z = 0;
+        int minNum = 1;
+        while(uglyArray.size() < n) {
+            int m2 = uglyArray[i]*2;
+            int m3 = uglyArray[j]*3;
+            int m5 = uglyArray[z]*5;
+            //everytime find the smallest num and put into vector, pick num from vector and calculate again
+            minNum = min(min(m2, m3), m5);
+            uglyArray.push_back(minNum);
+            if(minNum == m2) {
+                i++;
+            }
+            if(minNum == m3) {
+                j++;
+            }
+            if(minNum == m5) {
+                z++;
+            }
+        }
+        return minNum;
+    }
+};
