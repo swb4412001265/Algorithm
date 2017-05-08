@@ -1,0 +1,28 @@
+class Solution {
+public:
+    /**
+     * @param A: A list of integers
+     * @return: The boolean answer
+     */
+    bool canJump(vector<int> A) {
+        // write you code here
+        // define f[i] as if you are able to reach the index i from index 0
+        int m = A.size();
+        if (m == 0) {
+            return false;
+        }
+        vector<bool> f(m);
+        // the first step is true
+        f[0] = true;
+        for (int i = 1; i < m; ++i) {
+            for (int j = 0; j < i; ++j) {
+            // before f[i] which is f[j]:f[j] has to be true and A[j] has to be equal or greater than distance between i and j which is j -1
+                if (f[j] == true && A[j] >= i - j) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+        return f[m-1];
+    }
+};
