@@ -1,0 +1,23 @@
+class Solution {
+public:
+    /**
+     * @param n a positive integer
+     * @return an integer
+     */
+    int numSquares(int n) {
+        // Write your code here
+        //define f[i] as there are how many least number and the sum of these number will be i
+        vector<int> f(n+1, INT_MAX);
+        f[0] = 0;
+        f[1] = 1;
+        f[2] = 2;
+        f[3] = 3;
+        f[4] = 1;
+        for(int i = 5; i <= n ; ++i) {
+            for(int j = 1; j*j <= i; ++j) {
+                f[i] = min(f[i - j*j] + 1, f[i]);
+            }
+        }
+        return f[n];
+    }
+};
