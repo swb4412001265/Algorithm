@@ -50,3 +50,60 @@ public:
         return result;
     }    
 };
+
+
+////////////////////////////////////////////solution 2/////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    /**
+     * @param numCourses a total of n courses
+     * @param prerequisites a list of prerequisite pairs
+     * @return the course order
+     */
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        // Write your code here
+        vector<int> result;
+        vector<vector<int> > graph(numCourses, vector<int>(0));
+        vector<int> inDegree(numCourses, 0);
+        int m = prerequisites.size();
+        if( numCourses <= 0) {
+            return result;
+        }
+        /*
+        if(m == 0) {
+            for(int i = 0; i < numCourses; ++i) {
+                result.push_back(i);
+            }
+            return result;
+        }
+        */
+        for(int i = 0; i < m; ++i) {
+            graph[prerequisites[i].second].push_back(prerequisites[i].first);
+            ++inDegree[prerequisites[i].first];
+        }
+        queue<int> q;
+        for(int i = 0; i < numCourses; ++i) {
+            if(inDegree[i] == 0) {
+                q.push(i);
+            }
+        }
+        while(!q.empty()) {
+            int tmp = q.front();
+            q.pop();
+            result.push_back(tmp);
+            for(auto &x : graph[tmp]) {
+                --inDegree[x];
+                if(inDegree[x] == 0) {
+                    q.push(x);
+                }
+            }
+        }    
+        for(int i = 0; i < numCourses; ++i) {
+            if(inDegree[i] != 0) {
+                return {};
+            }
+        }
+        return result;
+    }
+};
