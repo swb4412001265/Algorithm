@@ -21,6 +21,8 @@ public:
                                     int target) {
         // Write your code here
         queue<UndirectedGraphNode*> Q;
+        //This is mandantory in case there is a loop since this is a undirectional graph.
+        //explain loop scenario: node A points to one of the neighbors node B, then node B points to 
         set<UndirectedGraphNode*> hash;
 
         Q.push(node);
