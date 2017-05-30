@@ -41,3 +41,48 @@ public:
         return (S.size() == n);
     }
 };
+
+
+///////////////////////////////////////////////version 2///////////////////////////////////////////////////////////////////////
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    bool validTree(int n, vector<vector<int>>& edges) {
+        // Write your code here
+        if(n <= 0) {
+            return false;
+        }
+        int m = edges.size();
+        vector<unordered_set<int>> graph(n);
+        queue<int> q;
+        unordered_set<int> s;
+        if( m != n - 1) {
+            return false;
+        }
+        for(int i = 0; i < m; ++i) {
+            graph[edges[i][0]].insert(edges[i][1]);
+            graph[edges[i][1]].insert(edges[i][0]);
+        }
+        q.push(0);
+        s.insert(0);
+        while(!q.empty()) {
+            int head = q.front();
+            q.pop();
+            for(auto &x : graph[head]) {
+                if(s.find(x) == s.end()) {
+                    s.insert(x);
+                    q.push(x);
+                }
+            }
+        }
+        if(s.size() == n) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+};
