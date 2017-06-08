@@ -21,7 +21,7 @@ public:
         sort(candidates.begin(),candidates.end());
         for(int i = 0; i < candidates.size() - 1; ++i) {
             if(candidates[i] == candidates[i + 1]) {
-                candidates.erase(candidates.begin() + 1);
+                candidates.erase(candidates.begin() + i);
                 i--;
             }
         }
