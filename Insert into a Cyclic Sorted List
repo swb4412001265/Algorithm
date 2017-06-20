@@ -1,0 +1,64 @@
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param node a list node in the list
+     * @param x an integer
+     * @return the inserted new list node
+     */
+    ListNode* insert(ListNode* node, int x) {
+        // Write your code here
+        if(node == NULL) {
+            ListNode * newNode = new ListNode(x);
+            newNode->next = newNode;
+            return newNode;
+        }
+        ListNode *curt = node;
+        ListNode *prev = NULL;
+        bool flag = false;
+        do {
+            prev = curt;
+            curt = curt->next;
+            if(prev->val < curt->val) {
+                if(x >= prev->val && x <= curt->val) {
+                    insertNode(prev, x);
+                    flag = true;
+                    break;
+                }
+            }else if(prev->val > curt->val) {
+                if(x >= prev->val || x <= curt->val) {
+                    insertNode(prev, x);
+                    flag = true;
+                    break;
+                }
+            }else {
+                if(prev->val == x) {
+                    insertNode(prev, x);
+                    flag = true;
+                    break;
+                }
+            }
+        }while(curt != node);
+        if(flag == false) {
+            insertNode(node, x);
+        }
+        return node;
+            
+    }
+    void insertNode(ListNode *node, int x) {
+        ListNode *newNode = new ListNode(x);
+        newNode->next = node->next;
+        node->next = newNode;
+    }
+};
