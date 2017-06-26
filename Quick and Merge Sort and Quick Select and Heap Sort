@@ -12,7 +12,10 @@ public:
         }
         quickSort(A, 0, A.size() - 1);
     }
-    
+    //General in order then subarry in order
+    //nlogn average worst situation is n2
+    //space complext is O(1)
+    //not stable
     void quickSort(vector<int> &A, int start, int end) {
         if(start >= end) {
             return;
@@ -20,6 +23,8 @@ public:
         int left = start;
         int right = end;
         int pivot = A[(start + end) / 2];
+        //left <= right not < since we do not want to any overlap after partition
+        //should use A[left] < pivot but <= since we want split number equally
         while(left <= right) {
             while(left <= right && A[left] < pivot) {
                 left++;
@@ -49,6 +54,9 @@ public:
      * @param A an integer array
      * @return void
      */
+     //Split the array first and sorted the subarray
+     //time:nlogn   space:O(n)
+     //stable
     void sortIntegers(vector<int>& A) {
         // Write your code here
         if(A.size() == 0) {
