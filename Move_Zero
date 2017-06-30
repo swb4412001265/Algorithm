@@ -31,3 +31,32 @@ public:
         }
     }
 };
+
+//Move zeros to the end but swap which means keeping the original order
+class Solution {
+public:
+    /**
+     * @param nums an integer array
+     * @return nothing, do this in-place
+     */
+    void moveZeroes(vector<int>& nums) {
+        // Write your code here
+        int sizeNum = nums.size();
+        if(sizeNum == 0) {
+            return;
+        }
+        int start = 0; 
+        int end = sizeNum - 1;
+        int count = 0;
+        int i = 0;
+        while(count <= sizeNum) {
+            if(nums[i] == 0) {
+                nums.push_back(nums[i]);
+                nums.erase(nums.begin() + i);
+            }else {
+                i++;
+            }
+            count++;
+        }
+    }
+};
