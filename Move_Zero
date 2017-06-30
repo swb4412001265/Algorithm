@@ -1,0 +1,33 @@
+//Using two pointers and do swap of non-zero and zero num.
+
+class Solution {
+public:
+    /**
+     * @param nums an integer array
+     * @return nothing, do this in-place
+     */
+    void moveZeroes(vector<int>& nums) {
+        // Write your code here
+        int sizeNum = nums.size();
+        if(sizeNum == 0) {
+            return;
+        }
+        int start = 0; 
+        int end = sizeNum - 1;
+        while(start <= end) {
+            while(start <= end && nums[start] != 0) {
+                start++;
+            }
+            while(start <= end && nums[end] == 0) {
+                end--;
+            }
+            if(start <= end) {
+                int tmp = nums[start];
+                nums[start] = nums[end];
+                nums[end] = tmp;
+                start++;
+                end--;
+            }
+        }
+    }
+};
