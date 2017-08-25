@@ -18,6 +18,9 @@ public:
      */
      
     void help(TreeNode* root, string tmp, vector<string> &result){
+        //use &result will be the same as put result as a globle varible
+        //put tmp as parameter can store all value path until meet return.
+        //if define tmp as local variable, tmp will only pick up the last value before meet return.
         if(root == NULL){
             return;
         }
