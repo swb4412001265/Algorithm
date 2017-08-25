@@ -42,3 +42,54 @@ public:
         return result;
     }
 };
+
+
+
+
+
+
+
+//////////////////////////////////////////////////continue//////////////////////////////////////////////////////////////////////////////
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of the binary tree
+     * @return all root-to-leaf paths
+     */
+    vector<string> tmp;
+    void helper(TreeNode* root) {
+        if(root == NULL) {
+            return;
+        }
+        string tmpV;
+        if(root->left == NULL && root->right == NULL) {
+            tmpV += to_string(root->val);
+            tmp.push_back(tmpV);
+        }else {
+        tmpV += to_string(root->val) + "->";
+        }
+        helper(root->left);
+        helper(root->right);
+    }
+    vector<string> binaryTreePaths(TreeNode* root) {
+        // Write your code here
+        vector<string> result;
+        if(root == NULL) {
+            return result;
+        }
+        helper(root);
+        return tmp;
+        }
+};
