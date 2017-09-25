@@ -62,3 +62,63 @@ public:
         node->next = newNode;
     }
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+
+
+class Solution {
+public:
+    /*
+     * @param node: a list node in the list
+     * @param x: An integer
+     * @return: the inserted new list node
+     */
+    ListNode * insert(ListNode * node, int x) {
+        // write your code here
+        ListNode *tmp = new ListNode(x);
+        ListNode *dummy = node;
+        ListNode *prev = NULL;
+        ListNode *later = NULL;
+        if (node == NULL) {
+            tmp->next = tmp;
+            return tmp;
+        }
+        if (node->next == node) {
+            node->next = tmp;
+            tmp->next = node;
+            return node;
+        }
+        
+        do {
+            if (node->val <= x && x <= node->next->val) {
+                prev = node;
+                later = node->next;
+                break;
+            } 
+            else {
+                node = node -> next;
+            }
+        } while (dummy != node);
+        if(dummy == node) {
+            tmp->next = node->next;
+            node->next = tmp;
+        } else {
+            prev->next = tmp;
+            tmp->next = later;
+        }
+        return dummy;
+    }
+};
