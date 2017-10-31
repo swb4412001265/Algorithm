@@ -16,10 +16,9 @@ class Solution:
     """
     def insertNode(self, head, val):
         # write your code here
-        
-        if head is None:
-            return head
         tmp = ListNode(val)
+        if head is None:
+            return tmp
         if head.next is None:
             if head.val > val:
                 tmp.next = head
@@ -27,17 +26,17 @@ class Solution:
             else:
                 head.next = tmp
                 return head
-        dummyNode.next = head
+        dummyNode = head
         while head.next != None:
             if head.val <= val and head.next.val >=val:
                 dummy = head.next
                 head.next = tmp
                 tmp.next = dummy
-                return head
-            if head.val > val:
+                return dummyNode
+            elif head.val > val:
                 tmp.next = head
                 return tmp
-            if head.next.val < val:
+            else:
                 head = head.next
         head.next = tmp
-        return dummyNode.next
+        return dummyNode
