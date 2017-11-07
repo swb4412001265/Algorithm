@@ -96,3 +96,38 @@ public:
         return tmp;
         }
 };
+
+
+
+/////////////////////////////////////Python Version///////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+class Solution:
+    # @param {TreeNode} root the root of the binary tree
+    # @return {List[str]} all root-to-leaf paths
+    
+    def __init__(self):
+        self.tmpList = []
+        #self.str = ""
+    
+    def binaryTreePaths(self, root):
+        # Write your code here
+        self.help(root, "")
+        return self.tmpList
+    
+    def help(self, root, string):
+        if root == None:
+            return
+        string = string + str(root.val)
+        
+        if root.left == None and root.right == None:
+            self.tmpList.append(string)
+            
+        self.help(root.left, string + "->")
+        self.help(root.right, string + "->")
+
