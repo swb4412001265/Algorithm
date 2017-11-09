@@ -1,0 +1,31 @@
+http://www.lintcode.com/en/problem/substring-anagrams/
+
+////////////////////////////////////////Time Limit Exceeded///////////////////////////////////////////
+
+class Solution:
+    """
+    @param: s: a string
+    @param: p: a string
+    @return: a list of index
+    """
+    def findAnagrams(self, s, p):
+        # write your code here
+        lenP = len(p)
+        result = []
+        for i in range(len(s) - lenP + 1):
+            if s[i] in p:
+                if self.equals(s[i:i + lenP], p) == 1:
+                    result.append(i)
+        return result            
+    
+    def equals(self, a, b):
+        tmpA = list(a)
+        tmpB = list(b)
+        for i in range(len(tmpA) - 1, -1, -1):
+            if tmpA[i] in tmpB:
+                tmp = tmpA.pop(i)
+                tmpB.remove(tmp)
+        if tmpA == [] and tmpB == []:
+            return 1
+        else:
+            return -1
