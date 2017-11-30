@@ -19,21 +19,22 @@ class Solution:
     """
     def plusOne(self, digits):
         tmp = []
-        helper(digits, tmp)
+        self.helper(digits, tmp)
         return tmp
     
     
-    def helper(self, digits, tmp):
+    def helper(self, digits, result):
         # write your code here
-        result = []
-        if digits == []:
-            return result
+        # result = []
+        # if digits == []:
+        #     return result
         
-        for i in digits:
-            result.append(i)
+        
         if digits[-1] + 1 < 10:
+            for i in digits:
+                result.append(i)
             result[-1]  = result[-1] + 1   
-            # return result
+            return result
         else:
             result[-1] = 0
             if len(digits) - 1 > 0:
