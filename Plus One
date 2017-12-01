@@ -41,3 +41,25 @@ class Solution:
                 self.helper(result[0:len(digits) - 1])
             else:
                 self.helper([0])
+
+
+############################################Answer######################################################
+class Solution:
+    """
+    @param: digits: a number represented as an array of digits
+    @return: the result
+    """
+    def plusOne(self, digits):
+        if digits == []:
+            return [1]
+        # result = digits
+        for i in range(len(digits) - 1, -1, -1):
+            if digits[i] + 1 < 10:
+                digits[i]  = digits[i] + 1   
+                return digits
+            else:
+                digits[i] = 0
+        # if digits[0] == 0:
+        digits[0] = 1
+        digits.append(0)
+        return digits
