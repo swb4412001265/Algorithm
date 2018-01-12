@@ -1,0 +1,66 @@
+class Solution:
+    """
+    @param: A: an integer array sorted in ascending order
+    @param: target: An integer
+    @return: an integer
+    """
+    def closestNumber(self, A, target):
+        # write your code here
+        start = 0
+        end = len(A) - 1
+        
+        if len(A) == 0:
+            return -1
+            
+        while start + 1 < end:
+            mid = start + (end - start) / 2
+            if A[mid] > target:
+                end = mid
+            if A[mid] < target:
+                start = mid
+            if A[mid] == target:
+                return mid
+        if target - A[start] <= A[end] - target:
+            return start
+        else:
+            return end
+            
+      
+      
+      
+      
+ /////////////////////////////////C++//////////////////////////////////////////////////////////
+ class Solution {
+public:
+    /**
+     * @param A an integer array sorted in ascending order
+     * @param target an integer
+     * @return an integer
+     */
+    int closestNumber(vector<int>& A, int target) {
+        // Write your code here
+        int m = A.size();
+        if ( m == 0 ) {
+            return -1;
+        }
+        int start = 0;
+        int end = m-1;
+        while ( start + 1 < end ) {
+            int mid = (end - start)/2 + start;
+            if (A[mid] > target) {
+                end = mid;
+            } else if (A[mid] < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        int a = abs(A[start] - target);
+        int b = abs(A[end] - target);
+        if (a > b) {
+            return end;
+        } else {
+            return start;
+        }
+    }
+};
