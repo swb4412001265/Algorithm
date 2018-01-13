@@ -105,13 +105,53 @@ class Solution:
         b = [0, 1, -1, 0]
         q.put(x, y)
         while q.empty() is False:
-            tmp_row, tmp_column = q.get()
+            new_row, new_column = q.get()
             for i in range(4):
-                tmp_row = x + a[i]
-                tmp_column = y + b[i]
+                tmp_row = new_row + a[i]
+                tmp_column = new_column + b[i]
                 if tmp_row < 0 or tmp_row > len(grid) - 1 or tmp_column < 0 \
                 or tmp_column > len(grid[0]) - 1:
                     continue
                 if grid[tmp_row][tmp_column] is 1:
                     grid[tmp_row][tmp_column] = 0
                     q.put(tmp_row, tmp_column)
+                    
+                    
+                    
+///////////////////////////////////////////////Python with list + tuple/////////////////////////////////////////////////////////////
+
+class Solution:
+    # @param {boolean[][]} grid a boolean 2D matrix
+    # @return {int} an integer
+    def numIslands(self, grid):
+        # Write your code here
+        result = 0
+        if len(grid) is 0:
+            return result
+        if grid is None:
+            return result
+        row = len(grid)
+        column = len(grid[0])
+        for i in range(row):
+            for j in range(column):
+                if grid[i][j] is True:
+                    self.DFS(grid, i, j)
+                    result += 1
+        return result
+        
+    def DFS(self, grid, x, y):
+        grid[x][y] = False
+        q= [(x,y)]
+        a = [-1, 0, 0, 1]
+        b = [0, 1, -1, 0]
+        while len(q) > 0:
+            (new_row, new_column) = q.pop(0)
+            for i in range(4):
+                tmp_row = new_row + a[i]
+                tmp_column = new_column + b[i]
+                if tmp_row < 0 or tmp_row > len(grid) - 1 or tmp_column < 0 \
+                or tmp_column > len(grid[0]) - 1:
+                    continue
+                if grid[tmp_row][tmp_column] is True:
+                    grid[tmp_row][tmp_column] = False
+                    q.append((tmp_row, tmp_column))
