@@ -75,3 +75,43 @@ public:
     }
     
 };
+
+
+///////////////////////////////////////////////////////////Python//////////////////////////////////////////////////////////////////
+
+class Solution:
+    # @param {boolean[][]} grid a boolean 2D matrix
+    # @return {int} an integer
+    def numIslands(self, grid):
+        # Write your code here
+        result = 0
+        if len(grid) is 0:
+            return result
+        if grid is None:
+            return result
+        row = len(grid)
+        column = len(grid[0])
+        for i in range(row):
+            for j in range(column):
+                if grid[i][j] is 1:
+                    self.DFS(grid, i, j)
+                    result += 1
+        return result
+        
+    def DFS(self, grid, x, y):
+        grid[x][y] = 0
+        q= Queue()
+        a = [-1, 0, 0, 1]
+        b = [0, 1, -1, 0]
+        q.put(x, y)
+        while q.empty() is False:
+            tmp_row, tmp_column = q.get()
+            for i in range(4):
+                tmp_row = x + a[i]
+                tmp_column = y + b[i]
+                if tmp_row < 0 or tmp_row > len(grid) - 1 or tmp_column < 0 \
+                or tmp_column > len(grid[0]) - 1:
+                    continue
+                if grid[tmp_row][tmp_column] is 1:
+                    grid[tmp_row][tmp_column] = 0
+                    q.put(tmp_row, tmp_column)
