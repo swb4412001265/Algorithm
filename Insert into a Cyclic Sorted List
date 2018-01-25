@@ -122,3 +122,56 @@ public:
         return dummy;
     }
 };
+
+
+/////////////////////////////////////////////////////////////Python///////////////////////////////////////////////////////////////////
+
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+
+class Solution:
+    """
+    @param: node: a list node in the list
+    @param: x: An integer
+    @return: the inserted new list node
+    """
+    def insert(self, node, x):
+        # write your code here
+        if node is None:
+            tmpNode = ListNode(x)
+            tmpNode.next = tmpNode
+            return tmpNode
+        
+        if node.next is node:
+            tmpNode = ListNode(x, node)
+            node.next = tmpNode
+            return tmpNode
+        
+        curt = node
+        prev = None
+        
+        while True:
+            prev = curt
+            curt = curt.next
+            if prev.val <= x and curt.val >= x:
+                break
+            
+            if (prev.val > curt.val) and (prev.val <= x or curt.val >= x):
+                break
+            
+            if curt is node:
+                break
+            
+            
+        tmpNode = ListNode(x)
+        tmpNode.next = curt
+        prev.next = tmpNode
+        
+        return tmpNode
