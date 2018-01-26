@@ -42,3 +42,42 @@ public:
     }
     
 };
+
+
+
+/////////////////////////////////////////////////Python/////////////////////////////////////////////////////////////////////////////////
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+"""
+
+
+class Solution:
+    """
+    @param: root: the root of binary tree
+    @return: the root of the minimum subtree
+    """
+    import sys
+    min = sys.maxint
+    node = None
+    
+    def findSubtree(self, root):
+        # write your code here
+        if root is None:
+            return root
+        self.helper(root)
+        return self.node
+        
+    def helper(self, root):
+        if root is None:
+            return 0
+            
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+        sum = left + right + root.val
+        if self.min >= sum:
+            self.min = sum
+            self.node = root
+        return sum
