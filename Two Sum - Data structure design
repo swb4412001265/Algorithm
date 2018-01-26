@@ -66,3 +66,33 @@ public:
         return false;
     }
 };
+
+
+//////////////////////////////////Python Exceed Time Limit//////////////////////////////////////////////
+
+class TwoSum:
+    """
+    @param: number: An integer
+    @return: nothing
+    """
+    x = []
+    def add(self, number):
+        # write your code here
+        # self.x = []
+        self.x.append(number)
+
+    """
+    @param: value: An integer
+    @return: Find if there exists any pair of numbers which sum is equal to the value.
+    """
+    def find(self, value):
+        # write your code here
+        import copy
+        for i in range(len(self.x)):
+            tmp = copy.deepcopy(self.x)
+            tmpVal = value - tmp[i]
+            tmp.remove(tmp[i])
+            # print tmp
+            if tmpVal in tmp:
+                return True
+        return False
