@@ -96,3 +96,37 @@ class TwoSum:
             if tmpVal in tmp:
                 return True
         return False
+
+
+
+////////////////////////////////O(nlogn)/////////////////////////////////////////////////////
+
+
+class TwoSum:
+    """
+    @param: number: An integer
+    @return: nothing
+    """
+    def __init__(self):
+        self.x = []
+    def add(self, number):
+        # write your code here
+        self.x.append(number)
+    """
+    @param: value: An integer
+    @return: Find if there exists any pair of numbers which sum is equal to the value.
+    """
+    def find(self, value):
+        # write your code here
+        self.x.sort()
+        start = 0
+        end = len(self.x) - 1
+        while start < end:
+            if self.x[start] + self.x[end] > value:
+                end -= 1
+            elif self.x[start] + self.x[end] < value:
+                start += 1
+            else: 
+                self.x[start] + self.x[end] == value
+                return True
+        return False
