@@ -1,0 +1,100 @@
+class Solution:
+    """
+    @param root: the root of the binary tree
+    @param level: the depth of the target level
+    @return: An integer
+    """
+    def levelSum(self, root, level):
+        # write your code here
+        if root is None:
+            return 0
+        self.sum = 0
+        self.helper(root, level, 1)
+        return self.sum
+    
+    
+    def helper(self, root, level, depth):
+        if root is None:
+            return
+        if depth == level:
+            self.sum += root.val
+            return
+        self.helper(root.left, level, depth + 1)
+        self.helper(root.right, level, depth + 1)
+        
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+        """
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of the binary tree
+    @param level: the depth of the target level
+    @return: An integer
+    """
+    
+    def levelSum(self, root, level):
+        # write your code here
+        if root == None:
+            return 0
+        tmpList = []
+        tmpList.append(root)
+        count = 0
+        sum = 0
+        for _ in range(level):
+            sum = 0
+            size = len(tmpList)
+            for i in range(size):
+                tmpNode = tmpList.pop(0)
+                sum += tmpNode.val
+                if tmpNode.left != None:
+                    tmpList.append(tmpNode.left)
+                if  tmpNode.right != None:     
+                    tmpList.append(tmpNode.right)
+        return sum
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        """
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+"""
+from Queue import Queue
+
+class Solution:
+    """
+    @param: root: the root of the binary tree
+    @param: level: the depth of the target level
+    @return: An integer
+    """
+    def levelSum(self, root, level):
+        # write your code here
+        sum = 0
+        Q = Queue()
+        Q.put(root)
+        if root == None:
+            return 0
+        else:
+    #    while !Q.empty():
+            for _ in range(level):
+                size = Q.qsize()
+                sum = 0
+                for i in range(size):
+                    tmp = Q.get()
+                    sum += tmp.val
+                    if(tmp.left != None):
+                        Q.put(tmp.left)
+                    #    tmpList.appen()
+                    if(tmp.right != None):
+                        Q.put(tmp.right)
+        return sum
+        
+        
