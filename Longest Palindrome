@@ -1,0 +1,25 @@
+class Solution:
+    """
+    @param s: a string which consists of lowercase or uppercase letters
+    @return: the length of the longest palindromes that can be built
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+        if s is None:
+            return 0
+        if len(s) is 0:
+            return 0
+        tmp = {}
+        count = 0
+        for i in s:
+            tmp.update({i:s.count(i)})
+            x = tmp.values()
+        for i in x:
+            if i % 2 == 0:
+                count += i
+            else:
+                count = count + i - 1
+        if len(s) == count:
+            return count 
+        else:
+            return count + 1
