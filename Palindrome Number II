@@ -18,3 +18,17 @@ class Solution:
             i += 1
             j -= 1
         return True
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+def isPalindrome(self, n):
+        # Write your code here
+        tmp = []
+        while n / 2 != 0:
+            tmp.append(n % 2)
+            n = n / 2
+        tmp.append(n % 2)
+        for i in range(int(len(tmp) / 2)):
+            if tmp[i] != tmp[-i-1]:
+                return False
+        return True
