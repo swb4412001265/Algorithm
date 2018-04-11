@@ -1,0 +1,34 @@
+class Solution:
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        x = str(x)
+        x = list(x)
+        flag = False
+        if x[0] == '-':
+            x.pop(0)
+            flag = True
+        i = 0
+        j = len(x) - 1
+        while i < j:
+            x[i], x[j] = x[j], x[i]
+            i += 1
+            j -= 1
+        
+        while x[0] == 0:
+            x.pop(0)
+        # print(x)
+        res = 0
+        for i in range(len(x)):
+            res += int(x[i]) * 10**(len(x) - 1 - i)
+        #signed 32 bit intiger's range is from -2147483648 to 2147483647
+        if res > 2147483647 and flag == False or res > 2147483648 and flag == True :
+            return 0
+        elif flag == True:
+            return -res
+        else:
+            return res
+            
+            
