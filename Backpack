@@ -10,6 +10,7 @@ class Solution:
             return 0
         n = len(A)
         f = [[False for i in range(m + 1)] for j in range(n + 1) ]    
+        
         # f[i][j] defines that if first i items can define j, if yes return True 
         
         # f[0][0] = True
@@ -17,6 +18,7 @@ class Solution:
             f[i][0] = True
         for i in range(1, n + 1):
             for j in range(m + 1):
+            #if the previous i-1 items are able to create j or previous i-1 item can create j - A[i-1]
                 if f[i - 1][j] is True or (j >= A[i-1] and f[i-1][j-A[i-1]] is True):
                     f[i][j] = True
         for i in range(m, -1, -1):
