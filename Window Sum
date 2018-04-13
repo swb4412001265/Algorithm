@@ -1,0 +1,57 @@
+///////////////////////////exceed time limit/////////////
+class Solution:
+    """
+    @param nums: a list of integers.
+    @param k: length of window.
+    @return: the sum of the element inside the window at each moving.
+    """
+    def winSum(self, nums, k):
+        # write your code here
+        if not nums:
+            return []
+        if k == 0:
+            return []
+        res = []    
+        start = 0
+        end = k - 1
+        while end < len(nums):
+            tmp = 0
+            for i in range(start, end + 1):
+                tmp += nums[i]
+            res.append(tmp)
+            start += 1
+            end += 1
+        return res    
+       
+       
+       
+////////////////////////////////////////////////////PASS//////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: a list of integers.
+    @param k: length of window.
+    @return: the sum of the element inside the window at each moving.
+    """
+    def winSum(self, nums, k):
+        # write your code here
+        if not nums:
+            return []
+        if k == 0:
+            return []
+        res = []    
+        start = 0
+        end = k - 1
+        tmp = 0
+        if end < len(nums):
+            
+            for i in range(start, end + 1):
+                tmp += nums[i]
+            res.append(tmp)
+            start += 1
+            end += 1
+        while end < len(nums):
+            tmp = tmp + nums[end] - nums[start - 1]
+            res.append(tmp)
+            start += 1
+            end += 1
+        return res
