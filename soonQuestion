@@ -1,0 +1,54 @@
+Mission 2.
+Presenter: Wenbo
+Question : Given an array of integers, determine the index where the sum of the preceding value is equal to the sum of the following values.
+                   - The value at this index should not be included in either sum.
+                   - The first balanced index should be returned in the event of the existence of many balanced indices.
+                   ex) [1,3,1,4] -> return 2
+                         [2,5,2] -> return 1
+                           [5,-2,2,-5,5] -> return 0
+                           (There are three balanced indices [0,3 and 4], so return the first)
+ 
+                   More hint:
+                   (a, b, c, d, e, f, g)
+                                if (a+b+c == e+f+g) return index of d;
+                                if (a+b == d+e+f+g) return index of c;
+                                a,b,c
+                                if (a == c) return index of b
+Solution : Write code to Python & C/C++. (20 min)
+
+
+
+
+def solution(array):
+	if not array:
+		return -1
+	i = 0
+	j = len(array) - 1
+	left = array[i]
+	right = array[j]
+	if len(array) == 0:
+		return -1
+	if len(array) == 1:
+		return 0
+	if len(array) == 2:
+		if array[0] == array[1]:
+			return 0
+		else:
+			return -1
+	while i + 2 < j:
+		if left > right:
+			j -= 1
+			right += array[j]
+		elif left < right:
+			i += 1
+			left += array[i]
+		else:
+			i += 1
+			j -= 1
+	if left == right:
+		return i + 1
+	else:
+		return -1
+		
+		
+print(solution([5,-2,2,-5,5]))
