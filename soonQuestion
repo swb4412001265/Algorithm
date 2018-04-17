@@ -44,7 +44,6 @@ def solution(array):
 			left += array[i]
 		else:
 			i += 1
-			j -= 1
 	if left == right:
 		return i + 1
 	else:
