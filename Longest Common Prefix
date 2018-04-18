@@ -1,0 +1,44 @@
+//////////////////////Using dict///////////////////////
+class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if len(strs) is 0:
+            return ""
+        x = {}
+        res = ""
+        for i in strs:
+            for j in i:
+                if x.get(j, None) is None:
+                    x[j] = 1
+                else:
+                    x[j] += 1
+        print(x)
+        for i in x.keys():
+            if x[i] == len(strs):
+                res += i
+        return res
+            
+            /////////////////////////////////////////////////////////
+            
+            class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if len(strs) is 0:
+            return ""
+        if len(strs) is 1:
+            return strs[0]
+        x = {}
+        res = ""
+        for i in range(len(strs[0])):
+            tmp = strs[0][i]
+            for j in strs:
+                if i >= len(j) or tmp is not j[i]:
+                    return res
+            res += tmp
+        return res
