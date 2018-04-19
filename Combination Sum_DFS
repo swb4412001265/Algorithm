@@ -45,6 +45,32 @@ public:
         }
     }
 };
+////////////////////////////////////////////python//////////////////////////////////////////////
+class Solution:
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        self.res = []
+        candidates.sort()
+        self.helper(candidates, [], self.res, target, 0)
+        return self.res
+    
+    
+    def helper(self, candidates,tmp, res, target, startIndex):
+        if target == 0:
+            res.append(tmp[:])
+        for i in range(startIndex, len(candidates)):
+            if candidates[i] > target:
+                break
+            tmp.append(candidates[i])
+            self.helper(candidates, tmp, res, target - candidates[i], i)
+            tmp.pop()
+            
+
+
 /////////////////////////////////////////////follow up /////////////////////////////////////////////////////////
 class Solution {
 public:
