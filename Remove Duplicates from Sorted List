@@ -22,3 +22,24 @@ class Solution:
             else:     
                 head = head.next
         return tmp
+
+
+//////////////////////////Remove Duplicates from Sorted Array////////////////////////
+class Solution:
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) is 0:
+            return 0
+        if len(nums) is 1:
+            return 1
+        i = 0
+        while i < len(nums) - 1:
+            if nums[i] == nums[i + 1]:
+                nums.pop(i)
+            else:
+                i += 1
+        return len(nums)
+        
