@@ -1,0 +1,23 @@
+class Solution:
+    def addOneRow(self, root, v, d):
+        """
+        :type root: TreeNode
+        :type v: int
+        :type d: int
+        :rtype: TreeNode
+        """
+        import Queue from queue
+        count = 1
+        q = Queue()
+        q.put(root)
+        while not q.empty():
+            if count == d
+            x = q.get()
+            if x.left is not None:
+                q.put(x.left)
+            if x. right is not None:
+                q.put(x.right)
+                
+        root.left
+        
+    def helper(self, root, v, d):
