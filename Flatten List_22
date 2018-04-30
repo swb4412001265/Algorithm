@@ -1,0 +1,23 @@
+class Solution(object):
+
+    # @param nestedList a list, each element in the list 
+    # can be a list or integer, for example [1,2,[1,2]]
+    # @return {int[]} a list of integer
+    def flatten(self, nestedList):
+        # Write your code here
+        if type(nestedList) != type([]):
+            return [nestedList]
+        if len(nestedList) == 0:
+            return []
+            
+        # tmp = nestedList[0]
+        self.res = []
+        self.helper(nestedList) 
+        return self.res
+            
+    def helper(self, list):
+        for i in list:
+            if type(i) != type([]):
+                self.res.append(i) 
+            else:
+                self.helper(i)
