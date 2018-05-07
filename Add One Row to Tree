@@ -6,18 +6,23 @@ class Solution:
         :type d: int
         :rtype: TreeNode
         """
-        import Queue from queue
-        count = 1
-        q = Queue()
-        q.put(root)
-        while not q.empty():
-            if count == d
-            x = q.get()
-            if x.left is not None:
-                q.put(x.left)
-            if x. right is not None:
-                q.put(x.right)
-                
-        root.left
-        
-    def helper(self, root, v, d):
+        if d == 1:
+            tmp = TreeNode(v)
+            tmp.left = root
+            return tmp
+        self.helper(root, v, 1, d)
+        return root
+    
+    def helper(self, root, v , depth, d):
+        if root == None:
+            return
+        if depth == d - 1:
+            tmp = root.left
+            root.left = TreeNode(v)
+            root.left.left = tmp
+            tmp = root.right
+            root.right = TreeNode(v)
+            root.right.right = tmp
+        else:
+            self.helper(root.left, v , depth + 1, d)
+            self.helper(root.right, v , depth + 1, d)
