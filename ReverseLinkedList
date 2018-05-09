@@ -92,3 +92,51 @@ class Solution:
             curt = head
             head = tmp
         return curt
+        
+///////////////////////////Python/////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+
+    def reverse(self, head):
+        prev = None
+        while head != None:
+            next = head.next
+            head.next = prev
+            prev = head
+            head = next
+        return prev
+
+    def findkth(self, head, k):
+        for i in range(k):
+            if head is None:
+                return None
+            head = head.next
+        return head
+
+    def reverseBetween(self, head, m, n):
+        # dummy = head
+        #dummy should be the previous of head, so dummy.next = head
+        dummy = ListNode(-1)
+        dummy.next = head
+        #mark previous node so we have m - 1
+        mth_prev = self.findkth(dummy, m - 1)
+        mth = mth_prev.next
+        nth = self.findkth(dummy, n)
+        nth_next = nth.next
+        #mark n.next = None, so revers function can run
+        nth.next = None
+
+        self.reverse(mth)
+        
+        #define after reverse, insert new reserved linked list into unchanged linked list
+        mth_prev.next = nth
+        mth.next = nth_next
+        return dummy.next
+        # return dummy
