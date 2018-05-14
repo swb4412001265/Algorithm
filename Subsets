@@ -9,7 +9,7 @@ class Solution:
             return nums
             
         self.res = []
-        self.helper(nums, [], 0)
+        self.helper(sorted(nums), [], 0)
         return self.res
         
     def helper(self, nums, tmp, index):
