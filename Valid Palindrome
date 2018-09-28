@@ -33,3 +33,31 @@ public:
         return flag;
     }
 };
+
+
+
+
+
+///////////////////////////////////////////////Python////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: A string
+    @return: Whether the string is a valid palindrome
+    """
+    def isPalindrome(self, s):
+        # write your code here
+        # if len(s) == 0 or len(s) == 1:
+        #     return True
+        start = 0
+        end = len(s) - 1
+        while start < end:
+            while start < end and s[start].isalnum() == False:
+                start = start + 1
+            while start < end and s[end].isalnum() == False:
+                end = end - 1
+            if start < end and s[start].lower() != s[end].lower():
+                return False
+            start = start + 1
+            end = end - 1
+        return True
+    
