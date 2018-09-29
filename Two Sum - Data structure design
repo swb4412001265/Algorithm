@@ -143,3 +143,15 @@ class TwoSum:
         for i in range(len(numbers)):
             if target - numbers[i] in numbers[i+1:]:
                 return [i, numbers[i + 1:].index(target - numbers[i]) + i + 1]
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ class Solution(object):
+    def twoSum(self, nums, target):
+        #hash用于建立数值到下标的映射
+        hash = {}
+        #循环nums数值，并添加映射
+        for i in range(len(nums)):
+            if target - nums[i] in hash:
+                return [hash[target - nums[i]], i]
+            hash[nums[i]] = i
+        #无解的情况
+        return [-1, -1]
