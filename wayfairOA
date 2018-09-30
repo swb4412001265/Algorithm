@@ -45,3 +45,43 @@ if (res.back() == '-')
 return res;
 
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+def solution(s):
+  tmp_str = ""
+  for i in s:
+    if i != " "  and i != "-":
+      tmp_str += i
+      
+  nG = int(len(tmp_str) / 3)
+  sG = (3 - len(tmp_str) % 3) % 3
+  
+  if sG > 0:
+    nG += 1
+  lG = nG - sG
+  g = 0
+  offset = 3 * lG
+  res = ""
+  for i in range(len(tmp_str)):
+    res += tmp_str[i]
+    if g < lG and i % 3 == 2:
+      res += "-"
+      g += 1
+    elif g >= lG and (i - offset) % 2 == 1:
+      res += "-"
+  if res[-1] == "-":
+    res = res[:-1]
+  return res
+
+print(solution("123--45  67"))
+print(solution("123- 97"))
+print(solution("123 -4"))
+print(solution("12345678"))
+print(solution("123456"))
+print(solution("123456789"))
+
+
+
+
+
