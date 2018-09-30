@@ -47,3 +47,41 @@ public:
         return result;
     }
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: A Tree
+    @return: Level order a list of lists of integer
+    """
+    def levelOrder(self, root):
+        # write your code here
+        if root == None:
+            return []
+        from queue import Queue
+        q = Queue()
+        q.put(root)
+        res = []
+        
+        while not q.empty():
+            # size = q.qsize()
+            level = []
+            for i in range(q.qsize()):
+                # tmp = TreeNode(0)
+                tmp = q.get()
+                level.append(tmp.val)
+                if tmp.left != None:
+                    q.put(tmp.left)
+                if tmp.right != None:
+                    q.put(tmp.right)
+            res.append(level[:])
+        return res
