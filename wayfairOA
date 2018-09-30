@@ -1,0 +1,47 @@
+There is a string only containing digit, dash and space, please reform the string to digit and dash only.
+Case 1: "001-002-000"
+Case 2: "001-22-22"
+Then last group should be at least 2 digit
+
+
+// you can use includes, for example:
+// #include <algorithm>
+
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+string solution(string &S) {
+    // write your code in C++14 (g++ 6.2.0)
+string str;
+for (char c : S) {
+    if (c != ' ' && c != '-')
+        str += c;
+}
+
+int numGroup = str.size() / 3;
+int smallGroup = (3 - str.size() % 3) % 3;
+if (smallGroup > 0)
+    ++numGroup;
+int longGroup = numGroup - smallGroup;
+
+string res;
+int group = 0;
+int offset = 3 * longGroup;
+cout<<longGroup<<" "<<smallGroup<<endl; 
+for (int i = 0; i < str.size(); ++i) {
+    res += str[i];
+    if (group < longGroup && i % 3 == 2) {
+        res += '-';
+        ++group;
+    } else if ((i - offset) % 2 == 1) {
+        res += '-';
+        ++group;
+    }
+}
+
+if (res.back() == '-')
+    res.pop_back();
+
+return res;
+
+}
