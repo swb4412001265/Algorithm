@@ -23,3 +23,41 @@ class Solution:
             return count 
         else:
             return count + 1
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+           # write your code here
+        self.start = 0
+        self.longest = 0
+        if s is None:
+            return ""
+        for i in range(len(s)):
+            self.if_string_is_palindrome_from_middle(s, i, i)
+            self.if_string_is_palindrome_from_middle(s, i, i + 1)
+        return s[self.start:self.start + self.longest - 1]
+    
+    def if_string_is_palindrome_from_middle(self, s, left, right):
+        while left >=0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        if self.longest < right - left :
+            self.longest = right - left
+            self.start = left + 1
+    # def isPalindrome(self, tmpStr):
+    #     start = 0
+    #     end = len(tmpStr)
+    #     while start < end:
+    #         if lower(tmpStr[start]) != lower(tmpStr[end])
+    #             return False
+    #         start += 1
+    #         end -= 1
+    #     return True
