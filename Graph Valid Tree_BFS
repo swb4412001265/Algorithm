@@ -86,3 +86,44 @@ public:
         }
     }
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: An integer
+    @param edges: a list of undirected edges
+    @return: true if it's a valid tree, or false
+    """
+    def validTree(self, n, edges):
+        # write your code here
+        if len(edges) != n - 1:
+            return False
+        from queue import Queue
+        q = Queue()
+        res = []
+        graph = self.createGraph(n, edges)
+        q.put(0)
+        visit = [False for _ in range(n)]
+        visit[0] = True
+        while not q.empty():
+            tmp = q.get()
+            res.append(tmp)
+            for i in graph[tmp]:
+                if visit[i] == True:
+                    continue
+                q.put(i)
+                visit[i] = True
+        # print(res)
+        if len(res) == n:
+            return True
+        return False
+        
+        
+    def createGraph(self, n, edges):
+        tmp = {n:[] for n in range(n)}
+        # print(tmp)
+        for i, j in edges:
+            tmp[i].append(j)
+            tmp[j].append(i)
+        return tmp
