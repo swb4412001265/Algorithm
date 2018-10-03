@@ -58,3 +58,54 @@ public:
     }
     
 };
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition for a Directed graph node
+class DirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+
+
+class Solution:
+    """
+    @param: graph: A list of Directed graph node
+    @return: Any topological order for the given graph.
+    """
+    def topSort(self, graph):
+        # write your code here
+        from queue import Queue
+        q = Queue()
+        visit = {}
+        res = []
+        tmp = self.inDegree(graph)
+        # print(tmp)
+        for i, j in tmp.items():
+            if j == 0:
+                q.put(i)
+                visit[i] = True
+                # print(q.qsize())
+        while not q.empty():
+            node = q.get()
+            for i in node.neighbors:
+                if i in visit:
+                    continue
+                tmp[i] -= 1
+                if tmp[i] == 0:
+                    q.put(i)
+                    visit[i] = True
+        return visit.keys()
+        
+    def inDegree(self,graph):
+        tmp = {n:0 for n in graph}
+        for i in graph:
+            for j in i.neighbors:
+                tmp[j] += 1
+        return tmp
+            
+            
+        
