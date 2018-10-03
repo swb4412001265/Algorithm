@@ -60,6 +60,8 @@ class Solution:
     """
     def numIslands(self, grid):
         # write your code here
+        if grid == None or len(grid) == 0:
+            return 0
         islandCount = 0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
@@ -72,18 +74,21 @@ class Solution:
         from queue import Queue
         q = Queue()
         q.put([i, j])
+        grid[i][j] = 0
         x = [0, 1, 0, -1]
         y = [1, 0, -1, 0]
-        x_max = len(grid[0])
-        y_max = len(grid)
+        x_max = len(grid)
+        y_max = len(grid[0])
         while not q.empty():
             i, j = q.get()
-            for i in range(4):
-                tmp_x = i + x[i]
-                tmp_y = j + y[i]
+            for z in range(4):
+                tmp_x = i + x[z]
+                tmp_y = j + y[z]
                 if tmp_x >= 0 and tmp_x < x_max and tmp_y >= 0 and tmp_y < y_max:
                     if grid[tmp_x][tmp_y] == 1:
                         q.put([tmp_x, tmp_y])
                         grid[tmp_x][tmp_y] = 0
+        
+        
         
         
