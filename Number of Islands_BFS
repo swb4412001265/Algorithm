@@ -50,3 +50,40 @@ public:
         }
     }
 };
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param grid: a boolean 2D matrix
+    @return: an integer
+    """
+    def numIslands(self, grid):
+        # write your code here
+        islandCount = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    self.transferGrid(grid, i, j)
+                    islandCount += 1
+        return islandCount
+                
+    def transferGrid(self, grid, i, j):
+        from queue import Queue
+        q = Queue()
+        q.put([i, j])
+        x = [0, 1, 0, -1]
+        y = [1, 0, -1, 0]
+        x_max = len(grid[0])
+        y_max = len(grid)
+        while not q.empty():
+            i, j = q.get()
+            for i in range(4):
+                tmp_x = i + x[i]
+                tmp_y = j + y[i]
+                if tmp_x >= 0 and tmp_x < x_max and tmp_y >= 0 and tmp_y < y_max:
+                    if grid[tmp_x][tmp_y] == 1:
+                        q.put([tmp_x, tmp_y])
+                        grid[tmp_x][tmp_y] = 0
+        
+        
