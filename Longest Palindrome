@@ -61,3 +61,32 @@ class Solution:
     #         start += 1
     #         end -= 1
     #     return True
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+           # write your code here
+        longest = []
+        if s is None:
+            return ""
+        for i in range(len(s)):
+            sub = self.if_string_is_palindrome_from_middle(s, i, i)
+            if len(sub) > len(longest):
+                longest = sub
+            sub = self.if_string_is_palindrome_from_middle(s, i, i + 1)
+            if len(sub) > len(longest):
+                longest = sub
+        return longest
+    
+    def if_string_is_palindrome_from_middle(self, s, left, right):
+        while left >=0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left + 1:right]
