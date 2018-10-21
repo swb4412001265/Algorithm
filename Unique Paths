@@ -1,0 +1,21 @@
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        # write your code here
+        # m * n grid
+        # f[x][y] define as there is how many ways moving from top left to x, 
+        # f[x][y] = f[x - 1][y] + f[x][y - 1]
+        f = [[0 for i in range(n)]for i in range(m)]
+        f[0][0] = 1
+        
+        for i in range(m):
+            for j in range(n):
+                if i == 0 or j == 0:
+                    f[i][j] = 1
+                    continue
+                f[i][j] = f[i - 1][j] + f[i][j - 1]
+        return f[m - 1][n - 1]
