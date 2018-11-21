@@ -1,0 +1,15 @@
+class Solution:
+    """
+    @param n: a integer
+    @return: return a string
+    """
+    def convertToTitle(self, n):
+        # write your code here                                                                                                                                      
+        wordMap = [char(x) for x in range(65,91)]
+        lenthOfA = n / 26
+        endingWord = n % 26
+        if endingWord == 0:
+            res = lenthOfA * ‘A’
+        else:
+            res = lenthOfA * ‘A’ + wordMap[endingWord - 1]
+        return res
