@@ -5,6 +5,8 @@ class Solution:
     """
     def convertToTitle(self, n):
         # write your code here
+        if n <= 0:
+            return ""
         ans = ""
         wordMap = [chr(x) for x in range(65, 91)]
         while n > 26:
