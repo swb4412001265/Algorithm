@@ -4,12 +4,17 @@ class Solution:
     @return: return a string
     """
     def convertToTitle(self, n):
-        # write your code here                                                                                                                                      
-        wordMap = [char(x) for x in range(65,91)]
-        lenthOfA = n / 26
-        endingWord = n % 26
-        if endingWord == 0:
-            res = lenthOfA * ‘A’
-        else:
-            res = lenthOfA * ‘A’ + wordMap[endingWord - 1]
-        return res
+        # write your code here
+        ans = ""
+        wordMap = [chr(x) for x in range(65, 91)]
+        while n > 26:
+            num = n % 26
+            n = int(n / 26)
+            if num == 0:
+                ans = 'Z' + ans
+                n -= 1
+                continue
+            char = wordMap[num - 1]
+            ans = char + ans
+        ans = wordMap[n - 1] + ans    
+        return ans
