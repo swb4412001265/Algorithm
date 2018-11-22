@@ -20,3 +20,31 @@ class Solution:
             ans = char + ans
         ans = wordMap[n - 1] + ans    
         return ans
+
+/////////////////////////////////version 2 is like 26 进制算法/////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: a integer
+    @return: return a string
+    """
+    def convertToTitle(self, n):
+        wordMap = [chr(x) for x in range(65, 91)]
+        ans = ""
+        while n != 0:
+            num = n % 26
+            n = int(n / 26)
+            if num == 0:
+                n -= 1
+            ans = wordMap[num - 1] + ans
+        return ans
+        
+/////////////////////////////////二进制 算法/////////////////////////////////////////////////////////////////////////////////
+
+  ans = ""
+        while n != 0::
+            nums = n % 2
+            n = int(n / 2)
+            ans = str(nums) + ans
+        print(ans)
+        ans = str(n % 2) + ans
+        return ans
