@@ -43,3 +43,29 @@ class Solution:
 #There is an issue with n = 3, not complete.
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution:
+    """
+    @param n: n pairs
+    @return: All combinations of well-formed parentheses
+    """
+    def generateParenthesis(self, n):
+        # write your code here
+        self.res = []
+        self.helper(n, 0, 0, "")
+        return self.res
+        
+    def helper(self, n, left, right, tmp):
+        # When right parenthesis is equal than n, add tmp to res
+        if right == n:
+            self.res.append(tmp)
+        # Add left parenthesis first when left is smaller than n
+        if left < n:
+            self.helper(n, left + 1, right, tmp + "(")
+        #Add right parenthesis when left parenthesis is bigger than right parenthesis
+        if left > right:
+            self.helper(n, left, right + 1, tmp + ")")
+        
+        
+            
+
