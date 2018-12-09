@@ -46,3 +46,52 @@ class Solution:
         
         self.flatten(root.left)
         self.flatten(right)
+        
+        
+        
+             
+        //////////////////////////////Divided Conquer////////////////////////////////////
+        """
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: a TreeNode, the root of the binary tree
+    @return: nothing
+    """
+    def flatten(self, root):
+        # write your code here
+        self.helper(root)
+        
+     #Return the lastNode of the tree
+    def helper(self, root):
+        if root == None:
+            return None
+        
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+        
+        
+        if left != None:
+        # Append root.right to left tree's lastNode
+            left.right = root.right
+        # Append root's left tree to root's right node
+            root.right = root.left
+        # Change the left Node to None
+            root.left = None
+            
+        # the lastNode of either left tree or right tree should not be None
+        if right != None:
+            return right
+            
+        if left != None:
+            return left
+        
+        return root
+        
+
