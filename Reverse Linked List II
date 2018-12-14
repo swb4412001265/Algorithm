@@ -1,3 +1,18 @@
+36. Reverse Linked List II
+Reverse a linked list from position m to n.
+
+Example
+Given 1->2->3->4->5->NULL, m = 2 and n = 4, return 1->4->3->2->5->NULL.
+
+Challenge
+Reverse it in-place and in one-pass
+
+Notice
+Given m, n satisfy the following condition: 1 ≤ m ≤ n ≤ length of list.
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Definition of singly-linked-list:
  * 
@@ -140,3 +155,66 @@ class Solution:
         mth.next = nth_next
         return dummy.next
         # return dummy
+
+
+
+///////////////////////////////////////////////////////////////////Latest Version////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: ListNode head is the head of the linked list 
+    @param m: An integer
+    @param n: An integer
+    @return: The head of the reversed ListNode
+    """
+    def reverseBetween(self, head, m, n):
+        # write your code here
+        # define head as the previous node of parameter head
+        dummy = ListNode(0)
+        dummy.next = head
+        head = dummy
+        # We totally need 4 nodes fot us to connect linkList
+        # previous mth Node, mth Node, nth Node, after Nth Node
+        # Find the previous node of mth node
+        prevNode = self.findNode(head, m - 1)
+        # Find the nth node
+        afterNode = self.findNode(head, n)
+        # Save the after node of nth node
+        tmpAfter = afterNode.next
+        # Change the afterNode as None, so it can work properly with function reverseNode
+        afterNode.next = None
+        # Save the mth Node
+        tmpPrev = prevNode.next
+        self.reverseNode(tmpPrev)
+        # Connect the link: previus mth Node -> nth
+        prevNode.next = afterNode
+        # Connect the link: mth Node -> after nth
+        tmpPrev.next = tmpAfter
+        return dummy.next
+        
+    def findNode(self, head, val):
+        for _ in range(val):
+            if head == None:
+                return None
+            head = head.next
+        return head
+    
+    def reverseNode(self, head):
+        prev = None
+        curt = head
+        while curt != None:
+            tmp = curt.next
+            curt.next = prev
+            prev = curt
+            curt = tmp
+        return prev
+        
+    
+            
