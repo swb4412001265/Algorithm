@@ -1,0 +1,47 @@
+96. Partition List
+Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+Example
+Given 1->4->3->2->5->2->null and x = 3,
+return 1->2->2->4->3->5->null.
+
+/////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: The first node of linked list
+    @param x: An integer
+    @return: A ListNode
+    """
+    def partition(self, head, x):
+        # write your code here
+        if head == None:
+            return None
+        dummyPre = ListNode(-1)
+        headPre = dummyPre
+        dummyAfter = ListNode(-1)
+        headAfter = dummyAfter
+        # Create two lists one called dummyPre which is for storing linkedList which value smaller than x
+        # another linkedList is for storing value greater and equal than x
+        # after iterate head list, merge these two linkedList
+        # Need to create two dummy nodes for two linkedList
+        while head != None:
+            if head.val < x:
+                headPre.next = head
+                headPre = headPre.next
+            else:
+                headAfter.next = head
+                headAfter = headAfter.next
+            head = head.next
+        headPre.next = dummyAfter.next
+        headAfter.next = None
+        return dummyPre.next
