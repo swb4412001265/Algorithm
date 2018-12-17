@@ -96,6 +96,7 @@ public:
         while(midIndex <= endIndex) {
             tmp[index++] = A[midIndex++];
         }
+        # Give tmp array to A and index should be from start to end but 0 to sizeof tmp
         for(int i = start; i <= end; ++i) {
             A[i] = tmp[i];
         }
@@ -270,5 +271,5 @@ class Solution:
             newStart += 1
             rightStart += 1
             
-        for i in range(len(tmp)):
+        for i in range(start, end + 1):
             A[i] = tmp[i]
