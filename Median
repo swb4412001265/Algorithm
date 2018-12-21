@@ -50,3 +50,35 @@ class Solution:
                     
         return res
         
+//////////////////////////////////////////////////////////////////////////////
+import queue as Q
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: An integer denotes the middle number of the array
+    """
+    def median(self, nums):
+        # write your code here
+        if nums == None:
+            return None
+        size = len(nums)
+        if size == 0:
+            return None
+        if size == 1:
+            return nums[0]
+            
+        # For python, int(5/2) = 2.
+        # When size is even the pick window should contain the previous number
+        k = int((size + 2) / 2)
+        pq = Q.PriorityQueue()
+        for i in range(size):
+            if pq.qsize() == k:
+                tmp = pq.get()
+                if nums[i] > tmp:
+                    pq.put(nums[i])
+                else:
+                    pq.put(tmp)
+            else:
+                pq.put(nums[i])
+        return pq.get()
+                    
