@@ -1,0 +1,87 @@
+65. Median of two Sorted Arrays
+There are two sorted arrays A and B of size m and n respectively. Find the median of the two sorted arrays.
+
+Example
+Given A=[1,2,3,4,5,6] and B=[2,3,4,5], the median is 3.5.
+
+Given A=[1,2,3] and B=[4,5], the median is 3.
+
+Challenge
+The overall run time complexity should be O(log (m+n)).
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        # write your code here
+        sizeA = len(A)
+        sizeB = len(B)
+        k = (sizeA + sizeB) 
+        return self.findKoftwoSortedArray(A, B, k)
+        
+    def findKoftwoSortedArray(self, A, B, k):
+        # Define k as the size of tmp list for storing kth smallest number
+        if A == None:
+            A = []
+        if B == None:
+            B = []
+        if len(A) + len(B) == 1:
+            if len(A) == 0:
+                return B[0]
+            else:
+                return A[0]
+        flag = False
+        if k % 2 == 1:
+        # when the length of merged list is odd
+            k = int((k + 1) / 2)
+        else:
+        # when the length of merged list is even
+            k = int((k + 2) / 2)
+            flag = True
+        print(k)
+        print(flag)
+        tmp = []
+        indexA = 0
+        indexB = 0
+        while indexA < len(A) and indexB < len(B) and len(tmp) != k:
+            if A[indexA] < B[indexB]:
+                tmp.append(A[indexA])
+                indexA += 1
+            else:
+                tmp.append(B[indexB])
+                indexB += 1
+        if len(tmp) == k:
+            if flag == False:
+                return tmp[-1]
+            else:
+                return (tmp[-1] + tmp[-2]) / 2
+        if indexA < len(A):
+            while indexA < len(A) and len(tmp) != k:
+                tmp.append(A[indexA])
+                indexA += 1
+            print(tmp)
+            if len(tmp) == k:
+                if flag == False:
+                    return tmp[-1]
+                else:
+                    return (tmp[-1] + tmp[-2]) / 2
+            else:
+                return None
+        if indexB < len(B):
+            while indexB < len(B) and len(tmp) != k:
+                tmp.append(B[indexB])
+                indexB += 1
+            print(tmp)    
+            if len(tmp) == k:
+                if flag == False:
+                    return tmp[-1]
+                else:
+                    return (tmp[-1] + tmp[-2]) / 2
+            else:
+                return None
+        
