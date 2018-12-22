@@ -1,3 +1,17 @@
+41. Maximum Subarray
+Given an array of integers, find a contiguous subarray which has the largest sum.
+
+Example
+Given the array [−2,2,−3,4,−1,2,1,−5,3], the contiguous subarray [4,−1,2,1] has the largest sum = 6.
+
+Challenge
+Can you do it in time complexity O(n)?
+
+Notice
+The subarray should contain at least one number.
+
+////////////////////////////////////////////////////////////////////////////////////////
+
 class Solution {
 public:    
     /**
@@ -23,3 +37,32 @@ public:
         return result;
     }
 };
+
+
+///////////////////////////////////////python//////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A integer indicate the sum of max subarray
+    """
+    def maxSubArray(self, nums):
+        # write your code here
+        # sum(i~j) = sum(j) - sum(i - 1)
+        if nums == None:
+            return None
+        if len(nums) == 0:
+            return nums
+        if len(nums) == 1:
+            return nums[0]
+        prefixSum = 0
+        # Need to define tmpMin as 0 not sys.maxsize, since prefixSum - tmpMin 
+        # will affect the first item
+        tmpMin = 0
+        tmpMax = -sys.maxsize
+        for i in range(len(nums)):
+            # Calculate prefixSum
+            prefixSum += nums[i]
+            
+            tmpMax = max(tmpMax, prefixSum - tmpMin)
+            tmpMin = min(tmpMin, prefixSum)
+        return tmpMax
