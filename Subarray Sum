@@ -1,3 +1,13 @@
+138. Subarray Sum
+Given an integer array, find a subarray where the sum of numbers is zero. Your code should return the index of the first number and the index of the last number.
+
+Example
+Given [-3, 1, 2, -3, 4], return [0, 2] or [1, 3].
+
+Notice
+There is at least one subarray that it's sum equals to zero.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution {
 public:
     /**
@@ -61,3 +71,29 @@ public:
         return result;
     }
 };
+
+
+/////////////////////////////////////////////////////////Python//////////////////////////////////////////
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySum(self, nums):
+        # write your code here
+        if nums == None:
+            return []
+        if len(nums) == 0:
+            return []
+        prefixSum = 0
+        # define tmp as hashmap to store prefixSum
+        # if there is two prefixSum is the same, that means
+        # there is subarraySum is equal 0
+        # prefixSum(i ~ j) = prefixSum[j] - prefixSum[i - 1]
+        tmp = {0:-1}
+        for i in range(len(nums)):
+            prefixSum += nums[i]
+            if prefixSum in tmp.keys():
+                return tmp[prefixSum] + 1, i
+            tmp[prefixSum] = i
+        return -1, -1
