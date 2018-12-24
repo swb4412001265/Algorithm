@@ -91,6 +91,7 @@ class Solution:
             return 0, 0
         
         prefixSum = 0
+        # Can not use dictionary since the same key pair will be deleted
         tmpDict = {0: -1}
         for i in range(len(nums)):
             prefixSum += nums[i]
