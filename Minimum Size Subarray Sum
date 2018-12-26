@@ -1,0 +1,37 @@
+406. Minimum Size Subarray Sum
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one, return -1 instead.
+
+Example
+Given the array [2,3,1,2,4,3] and s = 7, the subarray [4,3] has the minimal length under the problem constraint.
+
+Challenge
+If you have figured out the O(nlog n) solution, try coding another solution of which the time complexity is O(n).
+
+//////////////////////////////////////////////O(n)///////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        # write your code here
+        if nums == None and len(nums) == 0:
+            return -1
+        
+        prefixSum = 0
+        # define the index from the left of array
+        left = 0
+        res = sys.maxsize
+        for i in range(len(nums)):
+            prefixSum += nums[i]
+            # Iterate array from left and check the minium length
+            while left <= i and prefixSum >= s:
+                res = min(res, i - left + 1)
+                prefixSum -= nums[left]
+                left += 1
+        if res == sys.maxsize:
+             return -1
+        return res
+
+/////////////////////////////////////////////////////O(nlogn)/////////////////////////////////////////////////////////
