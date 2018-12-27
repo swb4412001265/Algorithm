@@ -39,3 +39,28 @@ class Solution:
             if prefixSum - k in tmpList[:][0]:
                 res = max(res, i - tmpList[tmpList[:][0].index(prefixSum - k)][1])
         return res
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: an array
+    @param k: a target value
+    @return: the maximum length of a subarray that sums to k
+    """
+    def maxSubArrayLen(self, nums, k):
+        # Write your code here
+        if nums == None:
+            return 0
+        if len(nums) == 0:
+            return 0
+        tmpDict = {0:-1}
+        res = -sys.maxsize
+        prefix_sum = 0
+        for i in range(len(nums)):
+            prefix_sum += nums[i]
+            if prefix_sum - k in tmpDict:
+                res = max(res, i - tmpDict[prefix_sum - k])
+            if prefix_sum not in tmpDict:
+                tmpDict[prefix_sum] = i
+        return res
