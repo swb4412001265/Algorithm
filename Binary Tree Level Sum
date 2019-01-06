@@ -1,4 +1,4 @@
-inary Tree Level Sum
+Binary Tree Level Sum
 
 Given a binary tree and an integer which is the depth of the target level.
 Calculate the sum of the nodes in the target level.
