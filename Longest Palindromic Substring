@@ -16,6 +16,7 @@ class Solution:
     def longestPalindrome(self, s):
         # write your code here
         if s == None:
+        # it is the same as if if not s:
             return None
         if len(s) == 0:
             return None
