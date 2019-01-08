@@ -44,8 +44,34 @@ class Solution:
 
 /////////////////////////////////////////////////////////////O(n2)//////////////////////////////////////////////////////////
 # 中心线算法： 
-# string 长度是基数（odd）的时候, 中心线left = right = 枚举数组所有下标
-# string 长度是偶数（even）的时候, 中心线left 和 right + 1 
+# LongestPalindromestring 长度是基数（odd）的时候, 中心线left = right = 枚举数组所有下标
+# LongestPalindromestring 长度是偶数（even）的时候, 中心线left 和 right + 1 
 
 
-# 
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+        if not s:
+            return None
+        if len(s) == 0:
+            return ""
+        res = ""
+        for i in range(len(s)):
+            tmpLongest1 = self.isPalindrome(s, i, i)
+            if len(tmpLongest1) > len(res):
+                res = tmpLongest1
+            tmpLongest2 = self.isPalindrome(s, i, i + 1)
+            if len(tmpLongest2) > len(res):
+                res = tmpLongest2
+        return res
+        
+    def isPalindrome(self, s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left + 1: right]
+    
