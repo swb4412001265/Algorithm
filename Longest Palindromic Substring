@@ -80,7 +80,6 @@ class Solution:
 ///////////////////////////////////////////////dp O(n2)///////////////////////////////////////////////////////////////////////////
 To be Continue
 
-
 class Solution:
     """
     @param s: input string
@@ -92,6 +91,7 @@ class Solution:
             return ""
         # define dp[i][j] = True as s[i:j+1] is palindrome
         dp = [[False] * len(s)] * len(s)
+        # print(dp)
         # dp[0][0] = True
         # for i in range(len(s)):
         #     dp[i][i] = True
@@ -100,10 +100,11 @@ class Solution:
         res = ""
         longest = 0
         for j in range(len(s)):
-            for i in range(j+1):
-                dp[i][j] = s[i] == s[j] and ((j - i <= 2) or dp[i + 1][j - 1])
-                if j - i + 1 > longest:
-                    longest = j - i + 1
-                    res = s[i: j+1]
-                
+            for i in range(j + 1):
+                # When j - i <= 2 which means there is no valid dp[i+1][j-1](j-1 <= i+1)
+                if s[i] == s[j] and ((j - i <= 2) or dp[i + 1][j - 1]):
+                    dp[i][j] = True
+                    if j - i + 1 > longest:
+                        longest = j - i + 1
+                        res = s[i: j+1]
         return res
