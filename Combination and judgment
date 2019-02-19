@@ -30,15 +30,20 @@ class Solution:
     def getWays(self, a, k):
         # Write your code here
         self.count = 0
-        self.allCom(a, k, 0, [])
+        visited = {}
+        self.allCom(a, k, 0, visited)
         return self.count
             
-    def allCom(self, a, k, i, tmp):
+    def allCom(self, a, k, i, tmp, visited):
         if len(tmp) == 4 and self.isPrime(sum(tmp)):
-            self.count += 1
+            if tmp in visited:
+                continue
+            else:
+                visited[tmp] = True
+                self.count += 1
         for x in range(i, len(a)):
-            tmp.append(a[i])
-            self.allCom(a, k, i + 1, tmp)
+            tmp.append(a[x])
+            self.allCom(a, k, i + 1, tmp, visited)
             tmp.pop()
                     
     def isPrime(self, num):
