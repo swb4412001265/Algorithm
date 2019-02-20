@@ -36,14 +36,12 @@ class Solution:
         return self.count
             
     def allCom(self, a, k, i, tmp, visited, b):
-        if len(tmp) == 4 and self.isPrime(sum(tmp)):
-            tmp.sort()
-            if tmp.sort not in visited:
-                print(tmp)
-                visited.append(tmp)
-                self.count += 1
-        for x in range(i, len(a)):
-            if b[i] == True:
+        if len(tmp) == k and self.isPrime(sum(tmp)) and sorted(tmp) not in visited:
+            visited.append(sorted(tmp))
+            # print(tmp)
+            self.count += 1
+        for x in range(len(a)):
+            if b[x] == True:
                 continue
             tmp.append(a[x])
             b[x] = True
