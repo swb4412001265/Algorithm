@@ -40,7 +40,7 @@ class Solution:
             visited.append(sorted(tmp))
             # print(tmp)
             self.count += 1
-        for x in range(len(a)):
+        for x in range(i, len(a)):
             if b[x] == True:
                 continue
             tmp.append(a[x])
