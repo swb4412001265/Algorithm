@@ -1,0 +1,58 @@
+1668. Interval Minimum Coverage
+cat-only-icon
+CAT Only
+中文English
+Given n intervals, Output the minimal point numbers so that any one of the intervals contains at least one point.
+
+Example
+Given a=[(1,5),(4,8),(10,12)], return 2.
+
+Explain:
+Choose two points: 5,10,
+The first interval [1, 5] contains 5,
+The second interval [4,8] contains 5,
+The third interval [10,12] contains 10.
+Givena=[(1,5),(4,8),(5,12)], return 1.
+
+Explain:
+Choose one point: 5.
+The first interval [1, 5] contains 5,
+The second interval [4,8] contains 5,
+The third interval [5,12] contains 5.
+Notice
+1 \leq n \leq 1e41≤n≤1e4
+The maximum interval does not exceed 1e51e5
+
+//////////////////////////////////////////////////To be Continue/////////////////////////////////////////////////////////////////////////////
+"""
+Definition of Interval.
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param a: the array a
+    @return: return the minimal points number
+    """
+    def getAns(self, a):
+        # write your code here
+        if not a:
+            return 0
+            
+        if len(a) == 0:
+            return 0
+        tmpList = []
+        tmpInterval = Interval(0, 0)
+        for i in range(len(a) - 1):
+            for j in range(i, len(a) - 1):
+                tmpInterval = Interval(max(a[i].start, a[j + 1].start), min(a[i].end, a[j + 1].end))
+                if tmpInterval.start > tmpInterval.end:
+                    #for j in range(len(tmpList)):
+                    tmpList.append(a[i])
+                    tmpList.append(a[j + 1])
+                else:
+                    tmpList.append(tmpInterval)
+        return len(tmpList)
