@@ -1,3 +1,26 @@
+62. Search in Rotated Sorted Array
+中文English
+Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+
+You may assume no duplicate exists in the array.
+
+Example
+Example 1:
+
+Input: [4, 5, 1, 2, 3] and target=1, 
+Output: 2.
+Example 2:
+
+Input: [4, 5, 1, 2, 3] and target=0, 
+Output: -1.
+Challenge
+O(logN) time
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution {
     /** 
      * param A : an integer ratated sorted array
@@ -72,6 +95,15 @@ public:
 
 
 //////////////////////////////////////////////////////////////python////////////////////////////////////////////////////////////////
+#1. Use Binary Search two times,
+# First time, find out the lowest element
+# Based on target is greater or smaller than the lowest element
+# Try to use binary search again to find the result integer.
+
+#2. Only use binary search once.
+# Mid point can be in upper hill or lower hill depends on greater or smaller than A[0]
+# For upper hill senario, target will be A[start] <= target < A[mid] or (target > A[mid] or target > A[end])
+
 class Solution:
     """
     @param A: an integer rotated sorted array
