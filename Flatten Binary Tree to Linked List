@@ -42,6 +42,7 @@ class Solution:
             self.newnode.right = root 
         
         self.newnode = root
+        # root has changed, so can not use self.flatten(root.right) but right = root.right
         right = root.right
         
         self.flatten(root.left)
