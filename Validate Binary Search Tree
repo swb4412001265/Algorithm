@@ -76,3 +76,42 @@ class Solution:
             maxNode = root.val
         
         return True, minNode, maxNode
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        # write your code here
+        if not root:
+            return True
+        if root.left == None and root.right == None:
+            return True
+        res, x, y = self.helper(root)    
+        return res
+            
+    def helper(self, root):
+        if not root:
+            return True, sys.maxsize, -sys.maxsize - 1
+            
+        leftBST, leftMin, leftMax = self.helper(root.left)
+        rightBST, rightMin, rightMax = self.helper(root.right)
+        
+        if leftBST == False or rightBST == False:
+            return False, sys.maxsize, -sys.maxsize - 1
+        if leftMax >= root.val or rightMin <= root.val:
+            return False, sys.maxsize, -sys.maxsize - 1
+        leftMin = min(leftMin, root.val)
+        rightMax = max(rightMax, root.val)
+        
+        return True, leftMin, rightMax
