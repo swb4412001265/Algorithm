@@ -56,11 +56,9 @@ class Solution:
             if tmpNode.val > node.val:
                 if tmpNode.left == None:
                     tmpNode.left = node
-                    break
                 tmpNode = tmpNode.left
             else:
                 if tmpNode.right == None:
                     tmpNode.right = node
-                    break
                 tmpNode = tmpNode.right
         return root
