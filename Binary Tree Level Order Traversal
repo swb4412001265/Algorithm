@@ -110,3 +110,153 @@ class Solution:
                     q.put(tmp.right)
             res.append(level[:])
         return res
+        
+///////////////////////////////////////////////II///////////////////////////////////////////////////////////
+LintCode-Logo
+Home
+Algorithms
+AI
+CATnew
+VIP
+Language
+avatarswb441200165
+Back
+70. Binary Tree Level Order Traversal II
+This is the problem you have done. Do you remember how to solve it?
+Description
+中文
+English
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+Have you met this question in a real interview?  
+Example
+Example 1:
+
+Input:
+{1,2,3}
+Output:
+[[2,3],[1]]
+Explanation:
+    1
+   / \
+  2   3
+Example 2:
+
+Input:
+{3,9,20,#,#,15,7}
+Output:
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+Explanation:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+Related Problems
+DifficultyMedium
+Total Accepted15123
+Total Submitted33046
+Accepted Rate45%
+ Show Tags
+Leaderboard - Python3
+
+zhouchenye
+762ms
+
+balabalalang
+796ms
+
+xwzlint
+808ms
+
+tonytan4ever
+809ms
+
+jiaokun
+844ms
+Note
+感觉这种方法在耍流氓啊，不是真正的从底向上啊。
+avatarrong682
+Created at 6 days ago
+res = list(reversed(res)) 这样用reversed，而不能直接就reversed，因为reversed回来的是一个iterator 或者可以直接用res.reverse() 但是这样就是改变了原来的res不生成新的res
+avatarziyingfeng
+Created at 17 days ago
+逆转元素顺序：reverse（begin,end）
+avatarforzenluo
+Created at 20 days ago
+Discuss
+jie27 · Last reply by · qzhang85 · 9 months ago
+  
+70. Binary Tree Level Order Traversal II
+中文English
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+Example
+Example 1:
+
+Input:
+{1,2,3}
+Output:
+[[2,3],[1]]
+Explanation:
+    1
+   / \
+  2   3
+Example 2:
+
+Input:
+{3,9,20,#,#,15,7}
+Output:
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+Explanation:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+{1,2,3}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: A tree
+    @return: buttom-up level order a list of lists of integer
+    """
+    def levelOrderBottom(self, root):
+        # write your code here
+        if root == None:
+            return []
+        from queue import Queue
+        q = Queue()
+        q.put(root)
+        res = []
+        while not q.empty():
+            leveltmp = []
+            for _ in range(q.qsize()):
+                tmp = q.get()
+                leveltmp.append(tmp.val)
+                if tmp.left != None:
+                    q.put(tmp.left)
+                if tmp.right != None:
+                    q.put(tmp.right)
+            res.insert(0, leveltmp[:])
+        return res
+
