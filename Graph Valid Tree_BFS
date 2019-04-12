@@ -127,3 +127,42 @@ class Solution:
             tmp[i].append(j)
             tmp[j].append(i)
         return tmp
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: An integer
+    @param edges: a list of undirected edges
+    @return: true if it's a valid tree, or false
+    """
+    def validTree(self, n, edges):
+        # write your code here
+        if n == 0:
+            return False
+        if len(edges) != n - 1:
+            return False
+        from queue import Queue
+        q = Queue()
+        res = []
+        q.put(0)
+        tmpGraph = self.graph(n, edges)
+        
+        while not q.empty():
+            tmp = q.get()
+            res.append(tmp)
+            for node in tmpGraph[tmp]:
+                if node in res:
+                    continue
+                q.put(node)
+        if len(res) == n:
+            return True
+        return False
+    
+    def graph(self, n, edges):
+        tmp = {i:[] for i in range(n)}
+        
+        for node in edges:
+            tmp[node[0]].append(node[1])
+            tmp[node[1]].append(node[0])
+        return tmp
