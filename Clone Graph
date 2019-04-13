@@ -183,6 +183,7 @@ class Solution:
         q = Queue()
         q.put(node)
         allOldNodes = set()
+        allOldNodes.add(node)
         while not q.empty():
             tmp = q.get()
             for i in tmp.neighbors:
