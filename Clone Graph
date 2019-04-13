@@ -157,3 +157,47 @@ public:
         }
     }
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition for a undirected graph node
+class UndirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+
+
+class Solution:
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        # write your code here
+        root = node
+        if node is None:
+            return node
+            
+        from queue import Queue
+        q = Queue()
+        q.put(node)
+        allOldNodes = set()
+        while not q.empty():
+            tmp = q.get()
+            for i in tmp.neighbors:
+                if i not in allOldNodes:
+                    # continue
+                    q.put(i)
+                    allOldNodes.add(i)
+        print(len(allOldNodes))        
+        mapping = {}
+        for i in allOldNodes:
+            mapping[i] = UndirectedGraphNode(i.label)
+        for tmpnode in allOldNodes:
+            newNode = mapping[tmpnode]
+            for neighbor in tmpnode.neighbors:
+                newNeighbor = mapping[neighbor]
+                newNode.neighbors.append(newNeighbor)
+                
+        return mapping[root]
