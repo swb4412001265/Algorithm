@@ -1,3 +1,44 @@
+8. Rotate String
+中文English
+Given a string(Given in the way of char array) and an offset, rotate the string by offset in place. (rotate from left to right)
+
+Example
+Example 1:
+	Input: str="abcdefg", offset = 3
+	Output:"efgabcd"
+	
+	Explanation: 
+	Given a string and an offset, rotate string by offset. (rotate from left to right)
+
+Example 2:
+	Input: str="abcdefg", offset = 0
+	Output: "abcdefg"
+	
+	Explanation: 
+	Given a string and an offset, rotate string by offset. (rotate from left to right)
+
+Example 3:
+	Input: str="abcdefg", offset = 1
+	Output: "gabcdef"
+	
+	Explanation: 
+	Given a string and an offset, rotate string by offset. (rotate from left to right)
+
+Example 4
+	Input: str="abcdefg", offset =2
+	Output:"fgabcde"
+	
+	Explanation: 
+  Given a string and an offset, rotate string by offset. (rotate from left to right)
+
+Challenge
+Rotate in-place with O(1) extra memory.
+
+Notice
+offset >= 0
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution:
     """
     @param str: An array of char
@@ -18,3 +59,21 @@ class Solution:
             
         for i in range(len(str)):
             str[i] = tmp[(i - offset) % len(str)]
+            
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  class Solution:
+    """
+    @param str: An array of char
+    @param offset: An integer
+    @return: nothing
+    """
+    def rotateString(self, str, offset):
+        # write your code here
+        if not str:
+            return 
+        if offset == 0:Q
+            return str
+        offset %= len(str)
+        str[:len(str) - offset], str[len(str) - offset:] = str[len(str) - offset:], str[:len(str) - offset]
+        
+  
