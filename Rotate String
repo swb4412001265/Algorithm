@@ -75,5 +75,24 @@ class Solution:
             return str
         offset %= len(str)
         str[:len(str) - offset], str[len(str) - offset:] = str[len(str) - offset:], str[:len(str) - offset]
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param str: An array of char
+    @param offset: An integer
+    @return: nothing
+    """
+    def rotateString(self, str, offset):
+        # write your code here
+        if not str:
+            return 
+        if offset == 0:
+            return str
+        offset %= len(str)
+        tmp = (str * 2)[len(str) - offset: len(str) - offset + len(str)]
+        for i in range(len(tmp)):
+            str[i] = tmp[i]
+	    
         
   
