@@ -217,4 +217,61 @@ class Solution:
         return prev
         
     
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    version of m, n stands for value instand mth and nth:
+    
+    """
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: ListNode head is the head of the linked list 
+    @param m: An integer
+    @param n: An integer
+    @return: The head of the reversed ListNode
+    """
+    def reverseBetween(self, head, m, n):
+        # write your code here
+        if not head:
+            return None
+        dummy = ListNode(-1)
+        dummy.next = head
+        headCurt, headPrev = self.findHead(head, m)
+        tailCurt, dummy = self.findHead(head, n)
+        reversedHead, reversedTail = self.reverList(headCurt, tailCurt)
+        headPrev.next = reversedHead
+        reversedTail.next = tailCurt.next
+        return dummy.next
+
+
+    def reverList(self, head, tail):
+        if not head:
+            return None
+        prev = None
+        curt = head
+        while curt != tail.next:
+            tmp = curt.next
+            curt.next = prev
+            prev = curt
+            curt = tmp
+        return prev, head
+    
+    def findHead(self, head, m):
+        dummy = ListNode(-1)
+        dummy.next = head
+        
+        while head != None:
+            if head.val = m:
+                return head, dummy
+            head = head.next
+            dummy = dummy.next
             
+        return None, None
+        
+    
