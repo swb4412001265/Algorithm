@@ -1,3 +1,21 @@
+98. Sort List
+中文English
+Sort a linked list in O(n log n) time using constant space complexity.
+
+Example
+Example 1:
+
+Input:  1->3->2->null
+Output:  1->2->3->null
+Example 2:
+
+Input: 1->7->2->6->null
+Output: 1->2->6->7->null	
+Challenge
+Solve it by merge sort & quick sort separately.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Definition for ListNode.
  * public class ListNode {
@@ -56,3 +74,57 @@ public class Solution {
     }
 }
 
+//////////////////////////////////////////////////////Merge Sort/////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: The head of linked list.
+    @return: You should return the head of the sorted linked list, using constant space complexity.
+    """
+    def sortList(self, head):
+        # write your code here
+        if head == None or head.next == None:
+            return head
+        
+        mid = self.findMidNode(head)
+        right = self.sortList(mid.next)
+        mid.next = None
+        left = self.sortList(head)
+        return self.mergeSort(left, right)
+    
+    
+    def findMidNode(self, head):
+        slowNode = head
+        fastNode = head.next
+        while fastNode != None and fastNode.next != None:
+            slowNode = slowNode.next
+            fastNode = fastNode.next.next
+        return slowNode
+
+    def mergeSort(self, list1, list2):
+        dummy = ListNode(-1)
+        tmp = dummy  
+        while list1 != None and list2 != None:
+            if list1.val < list2.val:
+                tmp.next = list1
+                list1 = list1.next
+            else:
+                tmp.next = list2
+                list2 = list2.next
+            tmp = tmp.next
+        if list1 != None:
+            tmp.next = list1
+        if list2 != None:
+            tmp.next = list2
+        return dummy.next
+        
+        
+            
+            
