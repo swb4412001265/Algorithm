@@ -1,3 +1,27 @@
+16. Permutations II
+中文English
+Given a list of numbers with duplicate number in it. Find all unique permutations.
+
+Example
+Example 1:
+
+Input: [1,1]
+Output:
+[
+  [1,1]
+]
+Example 2:
+
+Input: [1,2,2]
+Output:
+[
+  [1,2,2],
+  [2,1,2],
+  [2,2,1]
+]
+Challenge
+Using recursion to do it is acceptable. If you can do it without recursion, that would be great!
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution {
 public:
     /**
@@ -37,3 +61,34 @@ public:
         }
     }
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: :  A list of integers
+    @return: A list of unique permutations
+    """
+
+    def permuteUnique(self, nums):
+        if not nums:
+            return [[]]
+        self.res = []
+        visited = [False for _ in range(len(nums))]
+        nums.sort()
+        self.helper(nums, [], visited)
+        return self.res
+    
+    def helper(self, nums, tmpList, visited):
+        if len(tmpList) == len(nums):
+            self.res.append(tmpList[:])
+        
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i - 1] and visited[i - 1] == False:
+                continue
+            if visited[i] == False:
+                visited[i] = True
+                tmpList.append(nums[i])
+                self.helper(nums, tmpList,visited)
+                tmpList.pop()
+                visited[i] = False
+        
