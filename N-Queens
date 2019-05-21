@@ -44,9 +44,31 @@ class Solution:
     """
     def solveNQueens(self, n):
         # write your code here
-    
-    
-    def dfs(self, )
+        if n == 0:
+            return [[]]
+        qArray = [i for i in range(n)]
+        visited = [False for _ in range(n)]
+        self.res = []
+        self.result = []
+        self.dfs(qArray, visited, [])
+        self.buildSolution(self.res)
+        print(self.res)
+        return self.result
+        
+    def dfs(self, qArray, visited, tmpList):
+        if len(qArray) == len(tmpList) and self.isValid(tmpList):
+            self.res.append(tmpList[:])
+        
+        for i in range(len(qArray)):
+            if visited[i]:
+                continue
+            else:
+                visited[i] = True
+                tmpList.append(qArray[i])
+                self.dfs(qArray, visited, tmpList)
+                visited[i] = False
+                tmpList.pop()
+                
     def isValid(self, tmpList):
         list1 = []
         list2 = []
@@ -60,7 +82,23 @@ class Solution:
             else:
                 return False
         return True
+        
+    def buildSolution(self, Solutions):
+        for Solution in Solutions:
+            tmpList = []
+            for i in Solution:
+                tmpString = ""
+                for j in range(len(Solution)):
+                    if i == j:
+                        tmpString += "Q"
+                    else:
+                        tmpString += "."
+                tmpList.append(tmpString[:])        
+            self.result.append(tmpList[:])
+                   
             
+        
+        
             
 
 
