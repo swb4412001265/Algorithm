@@ -30,18 +30,51 @@ class Solution:
         # write your code here
         #define f[n] as there are f[n] ways to decode when message length is n
         if not s:
-            return 1
+            return 0
+        #when it is "03"
+        if int(s[0]) == 0:
+            return 0
         if len(s) == 1:
-            return 
-        f = [0 for _ in range(len(s))]
+            return 1
+        f = [0 for _ in range(len(s) + 1)]
         f[0] = 1
         f[1] = 1
         for i in range(2, len(s) + 1):
-            if int(s[i-1]) == 0:
+            #when it is "30"
+            if int(s[i-1]) == 0 and int(s[i-2: i-1]) > 2:
+                return 0
+            elif int(s[i-1]) == 0:
                 f[i] = f[i - 2]
-            elif int(s[i-2,i]) >26 or int(s[i-2,i]) < 10:
+            if int(s[i-2: i]) >26 or 0 < int(s[i-2: i]) < 10:
                 f[i] = f[i - 1]
+            #when it is "1200"    
+            elif int(s[i-2: i]) == 0:
+                return 0
             else:
                 f[i] = f[i - 1] + f[i -2]
-        return f[len(s)]        
-        
+        return f[len(s)]    
+
+
+//////////////////////////////answer///////////////////////////////////////////////////////////////////////////////
+class Solution:
+    # @param {string} s a string,  encoded message
+    # @return {int} an integer, the number of ways decoding
+    def numDecodings(self, s):
+        if s == "" or s[0] == '0':
+            return 0
+
+        dp = [1, 1]
+        for i in range(2,len(s) + 1):
+            #when from 10 ~ 26 and no 10 and 20 
+            if 10 <= int(s[i - 2 : i]) <=26 and s[i - 1] != '0':
+                dp.append(dp[i - 1] + dp[i - 2])
+            #When 10 and 20, there is only f[n-2]
+            elif int(s[i-2 : i]) == 10 or int(s[i - 2 : i]) == 20:
+                dp.append(dp[i - 2])
+            #when the ending char is not 0, there is only f[n-1] 
+            elif s[i-1] != '0':
+                dp.append(dp[i-1])
+            else:
+                return 0
+
+        return dp[len(s)]
