@@ -1,0 +1,56 @@
+1479. Can Reach The Endpoint
+中文English
+Given a map size of m*n, 1 means space, 0 means obstacle, 9 means the endpoint. You start at (0,0) and return whether you can reach the endpoint.
+
+Example
+Example1
+
+Input: 
+[
+	[1,1,1],
+	[1,1,1],
+	[1,1,9]
+]
+Output: true
+Example2
+
+Input: 
+[
+	[1,1,1],
+	[1,0,0],
+	[1,0,9]
+]
+Output: false
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param map: the map
+    @return: can you reach the endpoint
+    """
+    def reachEndpoint(self, map):
+        # Write your code here
+        if not map:
+            return False
+        lengthX = len(map)
+        lengthY = len(map[0])
+        visited = [[0 for i in range(lengthY)] for j in range(lengthX)]
+        directionX = [0,-1,0,1]
+        directionY = [-1,0,1,0]
+        from queue import Queue
+        q = Queue()
+        # s = set()
+        q.put([0, 0])
+        while not q.empty():
+            tmp = q.get()
+            for i in range(4):
+                tmpX = tmp[0] + directionX[i]
+                tmpY = tmp[1] + directionY[i]
+                if tmpX < 0 or tmpX >= lengthX or tmpY < 0 or tmpY >= lengthY \
+                or visited[tmpX][tmpY] or map[tmpX][tmpY] == 0:
+                    continue
+                if map[tmpX][tmpY] == 9:
+                    return True
+                q.put([tmpX, tmpY])
+                visited[tmpX][tmpY] = 1
+        return False
