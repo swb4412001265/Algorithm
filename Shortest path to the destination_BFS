@@ -1,0 +1,70 @@
+1563. Shortest path to the destination
+中文
+English
+Given a 2D array representing the coordinates on the map, there are only values 0, 1, 2 on the map. value 0 means that it can pass, value 1 means not passable, value 2 means target place. Starting from the coordinates [0,0],You can only go up, down, left and right. Find the shortest path that can reach the destination, and return the length of the path.
+
+Example
+Example 1
+
+Input:
+[
+ [0, 0, 0],
+ [0, 0, 1],
+ [0, 0, 2]
+]
+Output: 4
+Explanation: [0,0] -> [1,0] -> [2,0] -> [2,1] -> [2,2]
+Example 2
+
+Input:
+[
+    [0,1],
+    [0,1],
+    [0,0],
+    [0,2]
+]
+Output: 4
+Explanation: [0,0] -> [1,0] -> [2,0] -> [3,0] -> [3,1]
+Notice
+1.The map must exist and is not empty, there is only one target
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param targetMap: 
+    @return: nothing
+    """
+    def shortestPath(self, targetMap):
+        # Write your code here
+        if not targetMap:
+            return 0
+        lengthX = len(targetMap)
+        lengthY = len(targetMap[0])
+        visited = [[0 for i in range(lengthY)] for j in range(lengthX)]
+        visited[0][0] = 1
+        from queue import Queue
+        q = Queue()
+        q.put([0,0])
+        res = []
+        res.append([0,0])
+        directionX = [0,-1,0,1]
+        directionY = [-1,0,1,0]
+        while not q.empty():
+            tmpLevel = []
+            for _ in range(q.qsize()):
+                tmp = q.get()
+                for i in range(4):
+                    tmpX = tmp[0] + directionX[i]
+                    tmpY = tmp[1] + directionY[i]
+                    if tmpX < 0 or tmpX >= lengthX or tmpY < 0 or tmpY >= lengthY \
+                    or visited[tmpX][tmpY] or targetMap[tmpX][tmpY] == 1:
+                        continue
+                    if targetMap[tmpX][tmpY] == 2:
+                        return len(res)
+                    tmpLevel.append([tmpX, tmpY])
+                    q.put([tmpX, tmpY])
+                    visited[tmpX][tmpY] = 1
+            print(tmpLevel[:])    
+            res.append(tmpLevel[:])
+        return -1
+    
