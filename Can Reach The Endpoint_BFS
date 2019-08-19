@@ -41,6 +41,7 @@ class Solution:
         q = Queue()
         # s = set()
         q.put([0, 0])
+	visited[0][0] = 1
         while not q.empty():
             tmp = q.get()
             for i in range(4):
