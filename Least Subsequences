@@ -1,0 +1,105 @@
+中文
+English
+Given an array with n integers. Splitting it into subsequences of strictly descending order.
+Output the minimum number of subsequences you can get by splitting.
+
+Example
+Example1
+
+Input: [5,2,4,3,1,6]
+Output: 3
+Explanation:
+You can split this array into : [5,2,1], [4,3], [6]. And there are 3 subsequences you get.﻿ 
+Or you can split it into [5, 4, 3],[2,1], [6] also 3 subsequences.
+But [5, 4, 3, 2, 1], [6] is not legal because [5, 4, 3, 2, 1] is not a subsuquence of the original array.
+Example2
+
+input: [1, 1, 1]
+Output: 3
+Explanation: Because of the strictly descending order you must split it into 3 subsequences: [1],[1],[1]
+Challenge
+Deal it with the complexity: o(nlogn)
+
+//////////////////////////////////////////////////////////O(n2)/////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param arrayIn: The original array.
+    @return: Count the minimum number of subarrays.
+    """
+    def LeastSubsequences(self, arrayIn):
+        # Write your code here.
+        if not arrayIn:
+            return 0
+        res = []
+        while len(arrayIn) != 0:
+            tmp = arrayIn[0]
+            tmpList= [arrayIn[0]]
+            arrayIn.pop(0)
+            i = 0
+            while i < len(arrayIn):
+                if tmp > arrayIn[i]:
+                    tmpList.append(arrayIn[i])
+                    tmp = arrayIn[i]
+                    arrayIn.pop(i)
+                else:
+                    i += 1
+            print(tmpList)
+            res.append(tmpList[:])
+        return len(res)
+
+/////////////////////////////////////////////////////dp//////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param arrayIn: The original array.
+    @return: Count the minimum number of subarrays.
+    """
+    def LeastSubsequences(self, arrayIn):
+        # Write your code here.
+        n = len(arrayIn)
+        dp = []
+        dp.append(1)
+        ans = 1
+        for i in range(1, n):
+            dp.append(1)
+            for j in range(0, i):
+                if arrayIn[i] >= arrayIn[j]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+            ans = max(ans, dp[i])
+        
+        return ans
+        
+////////////////////////////////////nlogn///////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param arrayIn: The original array.
+    @return: Count the minimum number of subarrays.
+    """
+    def LeastSubsequences(self, arrayIn):
+        # Write your code here.
+        if not arrayIn:
+            return 0
+        tab = [arrayIn[0]]
+        for i in range(1, len(arrayIn)):
+            num = arrayIn[i]
+            tab = self._binary_search(tab, num)
+        return len(tab)
+        
+    def _binary_search(self, tab, val):
+        s, e = 0, len(tab)-1
+        while s+1 < e:
+            m = int(s + (e-s)/2)
+            if tab[m] == val:
+                s = m
+            elif tab[m] < val:
+                s = m
+            else:
+                e = m
+        
+        if tab[e] <= val:
+            tab.append(val)
+        elif tab[s] > val:
+            tab[s] = val
+        elif tab[e] > val:
+            tab[e] = val
+        return tab
+        
