@@ -1,0 +1,56 @@
+94. Binary Tree Maximum Path Sum
+中文English
+Given a binary tree, find the maximum path sum.
+
+The path may start and end at any node in the tree.
+
+Example
+Example 1:
+	Input:  For the following binary tree（only one node）:
+	2
+	Output：2
+	
+Example 2:
+	Input:  For the following binary tree:
+
+      1
+     / \
+    2   3
+		
+	Output: 6
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: An integer
+    """
+    def maxPathSum(self, root):
+        # write your code here
+        if not root:
+            return 0
+        self.res = -sys.maxsize
+        self.helper(root)
+        return self.res
+            
+    def helper(self, root):
+        if not root:
+            return 0
+        
+        leftMaxSum = self.helper(root.left)
+        rightMaxSum = self.helper(root.right)
+        
+        # max will be from these 4 values
+        self.res = max(self.res, root.val,\
+                        root.val + leftMaxSum, root.val + rightMaxSum,\
+                        root.val + leftMaxSum + rightMaxSum)
+                        
+        # left or right subtree max value will be from these 3 values                
+        return max(root.val, root.val + leftMaxSum, root.val + rightMaxSum)
