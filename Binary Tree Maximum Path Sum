@@ -53,4 +53,50 @@ class Solution:
                         root.val + leftMaxSum + rightMaxSum)
                         
         # left or right subtree max value will be from these 3 values                
-        return max(root.val, root.val + leftMaxSum, root.val + rightMaxSum)
+        return max(root.val + leftMaxSum, root.val + rightMaxSum)
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    
+    int res = INT_MIN;
+    int maxPathSum(TreeNode * root) {
+        // write your code here
+        if (root == NULL) {
+            return 0;
+        }
+        helper(root);
+        return res;
+        
+    }
+    
+    
+    int helper(TreeNode * root) {
+        if (root == NULL) {
+            return 0;
+        }
+        int leftSumMax = helper(root->left);
+        int rightSumMax = helper(root->right);
+        res = max(max(res, root->val), max(leftSumMax + rightSumMax + root->val, max(root->val + leftSumMax, root->val + rightSumMax)));
+        
+        return max(root->val + leftSumMax, root->val + rightSumMax);
+        
+    }
+};
