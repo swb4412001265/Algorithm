@@ -45,3 +45,51 @@ class Solution:
         headPre.next = dummyAfter.next
         headAfter.next = None
         return dummyPre.next
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Definition of singly-linked-list:
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *        this->val = val;
+ *        this->next = NULL;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param head: The first node of linked list
+     * @param x: An integer
+     * @return: A ListNode
+     */
+    ListNode * partition(ListNode * head, int x) {
+        // write your code here
+        if (head == NULL) {
+            return 0;
+        }
+        
+        ListNode *head1 = new ListNode(-1);
+        ListNode *dummmy1 = head1;
+        ListNode *head2 = new ListNode(-1);
+        ListNode *dummmy2 = head2;
+        
+        while (head != NULL) {
+            if (head->val >= x) {
+                head2->next = head;
+                head2 = head2->next;
+            } else {
+                head1->next = head;
+                head1 = head1->next;
+            }
+            head = head->next;
+        }
+        head1->next = dummmy2->next;
+        head2->next = NULL;
+        return dummmy1->next;
+    }
+};
