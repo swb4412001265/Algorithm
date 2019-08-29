@@ -93,3 +93,64 @@ class Solution:
         
         prev2.next = node1
         node1.next = post2
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: a ListNode
+    @param v1: An integer
+    @param v2: An integer
+    @return: a new head of singly-linked list
+    """
+    def swapNodes(self, head, v1, v2):
+        # write your code here
+        if not head:
+            return None
+        dummy = ListNode(-1)
+        dummy.next = head
+        head = dummy
+        preP1 = self.findPos(head, v1)
+        if preP1 == None:
+            return dummy.next
+        P1 = preP1.next
+        postP1 = P1.next
+        
+        preP2 = self.findPos(head, v2)
+        if preP2 == None:
+            return dummy.next
+        P2 = preP2.next
+        postP2 = P2.next
+        
+        if preP1.next == preP2:
+            preP1.next = P2
+            P2.next = P1
+            P1.next = postP2
+        
+        elif preP2.next == preP1:
+            preP2.next = P1
+            P1.next = P2
+            P2.next = postP1
+        else:    
+            preP1.next = P2
+            P2.next = postP1
+            preP2.next = P1
+            P1.next = postP2
+        
+        return dummy.next
+    
+    def findPos(self, head, val):
+        while head.next != None:
+            if head.next.val == val:
+                return head
+            head = head.next
+        return None
