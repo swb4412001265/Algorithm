@@ -53,3 +53,38 @@ class Solution:
         head.next = dummy.next
         return dummy2.next
         
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: the List
+    @param k: rotate to the right k places
+    @return: the list after rotation
+    """
+    def rotateRight(self, head, k):
+        # write your code here
+        if not head:
+            return head
+        tmp = head
+        # dummy = ListNode(-1)
+        # dummy.next = head
+        # head = dummy
+        tmpNode = []
+        while head != None:
+            tmpNode.append(head)
+            head = head.next
+        if len(tmpNode) == 1:
+            return tmp
+        k %= len(tmpNode)
+        if k == 0:
+            return tmp
+        tmpNode[-k - 1].next = None
+        tmpNode[-1].next = tmp
+        return tmpNode[-k]
