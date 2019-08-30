@@ -72,3 +72,69 @@ public:
 };
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: The head of linked list.
+    @return: nothing
+    """
+    def reorderList(self, head):
+        # write your code here
+        if not head:
+            return head
+        
+        midNode = self.findMid(head)
+        reversedNode = self.reverse(midNode.next)
+        midNode.next = None
+        self.merge(head, reversedNode)
+        
+        
+    def merge(self, head1, head2):
+        dummy = ListNode(-1)
+        tmpNode = ListNode(-2)
+        dummy.next = tmpNode
+        tmpNode = dummy
+        index = 0
+        while head1 != None and head2 != None:
+            if index % 2 == 0:
+                tmpNode.next = head1
+                head1 = head1.next
+            else:
+                tmpNode.next = head2
+                head2 = head2.next
+            tmpNode = tmpNode.next
+            index += 1
+            
+        if head1 == None:
+            tmpNode.next = head2
+        if head2 == None:
+            tmpNode.next = head1
+        return dummy.next
+            
+            
+    def reverse(self, head):
+        prev = None
+        curt = head
+        while curt != None:
+            tmp = curt.next
+            curt.next = prev
+            prev = curt
+            curt = tmp
+        return prev
+    
+    def findMid(self, head):
+        slow  = head
+        fast = slow.next
+        
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
