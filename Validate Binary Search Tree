@@ -63,17 +63,17 @@ class Solution:
         if rightMin != None and rightMin <= root.val:
             return False, None, None
         # # is BST
-        # minNode = leftMin if leftMin is not None else root.val
-        # maxNode = rightMax if rightMax is not None else root.val
+        # minNode = leftMin if leftMin is not None else root
+        # maxNode = rightMax if rightMax is not None else root
         
         if leftMin != None:
             minNode = leftMin
         else:
-            minNode = root.val
+            minNode = root
         if rightMax != None:
             maxNode = rightMax
         else:
-            maxNode = root.val
+            maxNode = root
         
         return True, minNode, maxNode
 
