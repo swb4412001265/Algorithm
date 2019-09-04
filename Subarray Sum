@@ -89,7 +89,8 @@ class Solution:
         # define tmp as hashmap to store prefixSum
         # if there is two prefixSum is the same, that means
         # there is subarraySum is equal 0
-        # prefixSum(i ~ j) = prefixSum[j] - prefixSum[i - 1]
+        # prefixSum(i ~ j) = prefixSum[j + 1] - prefixSum[i]
+        # when there preSum equal to 0 from the begining
         tmp = {0:-1}
         for i in range(len(nums)):
             prefixSum += nums[i]
