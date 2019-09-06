@@ -1,3 +1,22 @@
+6. Merge Two Sorted Arrays
+中文English
+Merge two given sorted ascending integer array A and B into a new sorted integer array.
+
+Example
+Example 1:
+
+Input:  A=[1], B=[1]
+Output: [1,1]	
+Explanation:  return array merged.
+Example 2:
+
+Input:  A=[1,2,3,4], B=[2,4,5,6]
+Output: [1,2,2,3,4,4,5,6]	
+Explanation: return array merged.
+Challenge
+How can you optimize your algorithm if one array is very large and the other is very small?
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution {
 public:
     /**
@@ -91,6 +110,28 @@ class Solution:
         return dummy.next
         
   ////////////////////////Merge B into A///////////////////////////////////////
+  64. Merge Sorted Array
+中文English
+Given two sorted integer arrays A and B, merge B into A as one sorted array.
+
+Example
+Example 1:
+
+Input：[1, 2, 3] 3  [4,5]  2
+Output：[1,2,3,4,5]
+Explanation:
+After merge, A will be filled as [1, 2, 3, 4, 5]
+Example 2:
+
+Input：[1,2,5] 3 [3,4] 2
+Output：[1,2,3,4,5]
+Explanation:
+After merge, A will be filled as [1, 2, 3, 4, 5]
+Notice
+You may assume that A has enough space (size that is greater or equal to m + n) to hold additional elements from B. The number of elements initialized in A and B are m and n respectively.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   class Solution:
     """
     @param: A: sorted integer array A which has m elements, but size of A is m+n
