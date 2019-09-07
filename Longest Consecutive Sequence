@@ -38,3 +38,37 @@ class Solution:
             else:
                 tmp = 1
         return res
+
+
+//////////////////////////////////////////////O(n) when using dict(del dict[x]) or set(set.remove(x))//////////////////////////////////////////////////////
+class Solution:
+    """
+    @param num: A list of integers
+    @return: An integer
+    """
+    def longestConsecutive(self, num):
+        # write your code here
+        if not num:
+            return 0
+
+        s = set()
+        res = 0
+        for i in num:
+            s.add(i)
+        
+        for i in num:
+            if i in s:
+                tmpLen = 1
+                s.remove(i)
+                left = i - 1
+                right = i + 1
+                while left in s:
+                    s.remove(left)
+                    left -= 1
+                    tmpLen += 1
+                while right in s:
+                    s.remove(right)
+                    right += 1
+                    tmpLen += 1
+                res = max(res, tmpLen)
+        return res
