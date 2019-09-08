@@ -45,6 +45,31 @@ public:
     }
 };
 
+///////////////////////////////////////////python///////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: An integer array
+    @return: The length of LIS (longest increasing subsequence)
+    """
+    def longestIncreasingSubsequence(self, nums):
+        # write your code here
+        # define f[n] as the length of the longest increasing subsequence
+        # from index 0 to i
+        # f[n] = max(f[n - 1] + 1, f[n])
+        
+        if not nums:
+            return 0
+        
+        f = [1 for _ in range(len(nums))]
+        res = 1
+        for i in range(1, len(nums)):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    f[i] = max(f[j] + 1, f[i])
+            res = max(res, f[i])
+        return res            
+        
+
 
 ////////////////////longest increasing consecutive subsequence///////////////////////////////////////////////////////
 int count = 1;
