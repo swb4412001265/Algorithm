@@ -50,4 +50,66 @@ public:
 
 
 
+////////////////////////////////Does not sort nodes with the same distance///////////////////////////////////////////////
+"""
+Definition for a point.
+class Point:
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
+"""
 
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        # write your code here
+        tmpDict = {}
+        res = []
+        for i in range(len(points)):
+            tmpDict[i] = abs(points[i].x - origin.x)**2 + abs(points[i].y - origin.y)**2 
+        tmpDict = sorted(tmpDict.items(), key = lambda x: x[1])
+        print(tmpDict)
+        
+        for i in range(k):
+            res.append(points[tmpDict[i][0]])
+        return res
+                
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import heapq
+
+"""
+Definition for a point.
+class Point:
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
+"""
+
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        self.heap = []
+        for point in points:
+            dist = self.getDistance(point, origin)
+            heapq.heappush(self.heap, (dist, point.x, point.y))
+
+        self.heap = heapq.nsmallest(k, self.heap)
+        print(self.heap)
+
+        ret = []
+        for i in self.heap:
+            ret.append(Point(i[1], i[2]))
+        return ret
+
+    def getDistance(self, a, b):
+        return (a.x - b.x) ** 2 + (a.y - b.y) ** 2
