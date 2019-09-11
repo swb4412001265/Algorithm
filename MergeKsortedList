@@ -12,7 +12,7 @@ Example 1:
 Example 2:
 	Input: [2->6->null,5->null,7->null]
 	Output:  2->5->6->7->null
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////O(nlogk)///////////////////////////////////////////////////////////////////////
 /**
  * Definition of ListNode
  * class ListNode {
@@ -107,6 +107,191 @@ class Solution:
         for i in tmpList:
             tmpNode.next = ListNode(i)
             tmpNode = tmpNode.next
+            
+        return dummy.next
+        
+
+///////////////////////////////Using Heap////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+import heapq
+
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if not lists:
+            return None
+        heap = []
+        dummy = ListNode(-1)
+        head = dummy
+        
+        for i in lists:
+            while i:
+                heapq.heappush(heap, i.val)
+                i = i.next
+                
+        while len(heap) != 0:
+	# while heap: is better
+            head.next = ListNode(heapq.heappop(heap))
+            head = head.next
+            
+        return dummy.next
+
+///////////////////////////////////////////Heap/////O(nlogk)///////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+import heapq
+
+# overwrite the compare function 
+# so that we can directly put ListNode into heapq
+ListNode.__lt__ = lambda x, y: (x.val < y.val)
+
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if not lists:
+            return None
+        heap = []
+        dummy = ListNode(-1)
+        head = dummy
+        
+        for i in lists:
+            if i:
+                heapq.heappush(heap, i)
+                
+        while heap:
+            tail = heapq.heappop(heap)
+            head.next = tail
+            head = head.next
+            if tail.next:
+                heapq.heappush(heap, tail.next)
+        return dummy.next
+            
+
+            
+////////////////////////////////////Divided Conquer//////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if not lists:
+            return None
+        return self.divideAndMerge(lists, 0, len(lists) - 1)
+        
+    
+    def divideAndMerge(self, lists, start, end):
+        if start == end:
+            return lists[start]
+        mid = (start + end) // 2
+        left = self.divideAndMerge(lists, start, mid)
+        right = self.divideAndMerge(lists, mid + 1, end)
+        return self.mergeTwoSortedList(left, right)
+    
+    def mergeTwoSortedList(self, head1, head2):
+        if not head1:
+            return head2
+        if not head2:
+            return head1
+        dummy = ListNode(-1)
+        head = dummy
+        while head1 and head2:
+            if head1.val < head2.val:
+                head.next = head1
+                head = head.next
+                head1 = head1.next
+            else:
+                head.next = head2
+                head = head.next
+                head2 = head2.next
+                
+        if head1:
+            head.next = head1
+        if head2:
+            head.next = head2
+            
+        return dummy.next
+        
+
+///////////////////////////////////////////////Two two merge////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if not lists:
+            return None
+        while len(lists) > 1:
+            tmpList = []
+            for i in range(0, len(lists), 2):
+                if i + 1 < len(lists):
+                    tmpList.append(self.mergeTwoSortedList(lists[i], lists[i + 1]))
+                else:
+                    tmpList.append(lists[-1])
+            lists = tmpList
+        return lists[0]       
+    
+    def mergeTwoSortedList(self, head1, head2):
+        if not head1:
+            return head2
+        if not head2:
+            return head1
+        dummy = ListNode(-1)
+        head = dummy
+        while head1 and head2:
+            if head1.val < head2.val:
+                head.next = head1
+                head = head.next
+                head1 = head1.next
+            else:
+                head.next = head2
+                head = head.next
+                head2 = head2.next
+                
+        if head1:
+            head.next = head1
+        if head2:
+            head.next = head2
             
         return dummy.next
         
