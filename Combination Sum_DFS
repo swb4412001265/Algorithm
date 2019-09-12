@@ -68,28 +68,32 @@ public:
 };
 ////////////////////////////////////////////python//////////////////////////////////////////////
 class Solution:
+    """
+    @param candidates: A list of integers
+    @param target: An integer
+    @return: A list of lists of integers
+    """
     def combinationSum(self, candidates, target):
-        """
-        :type candidates: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
+        # write your code here
+        if not candidates:
+            return []
         self.res = []
-        candidates.sort()
-        self.helper(candidates, [], self.res, target, 0)
+        candidates = sorted(list(set(candidates)))
+        self.helper(candidates, [], target, 0)
         return self.res
-    
-    
-    def helper(self, candidates,tmp, res, target, startIndex):
-        if target == 0:
-            res.append(tmp[:])
-        for i in range(startIndex, len(candidates)):
+        
+    def helper(self, candidates, tmp, target, index):
+        if target < 0:
+            return
+        if not target:
+            self.res.append(tmp[:])
+
+        for i in range(index, len(candidates)):
             if candidates[i] > target:
                 break
             tmp.append(candidates[i])
-            self.helper(candidates, tmp, res, target - candidates[i], i)
+            self.helper(candidates, tmp, target - candidates[i], i)
             tmp.pop()
-            
 
 
 /////////////////////////////////////////////follow up /////////////////////////////////////////////////////////
