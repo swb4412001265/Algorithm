@@ -72,6 +72,9 @@ class Solution:
     def isValid(self, tmpList):
         list1 = []
         list2 = []
+        # if row key - colomn key equals the same number from the matrix
+        # Or row key + colomn key equals the same number from the matrix
+        # This means there are items are in the diagonal line
         for i in range(len(tmpList)):
             if tmpList[i] - i not in list1:
                 list1.append(tmpList[i] - i)
