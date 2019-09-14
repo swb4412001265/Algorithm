@@ -59,3 +59,42 @@ public:
     }
 };
 
+/////////////////////////////////////////////python///////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: A string
+    @return: An integer
+    """
+    def minCut(self, s):
+        # write your code here
+        # define f[m] as the lenth is m and minimal cuts can create how many Palindrome
+        # cuts equals number of Palindromes - 1
+        if not s:
+            return 0
+        # the maxium number of Palindromes is the lenth of strng
+        # i.e each letter is a Palindromes
+        f = [i for i in range(len(s) + 1)]
+        for i in range(1, len(s) + 1):
+            for j in range(i):
+                # j starts from 0 and f[0] = 0
+                # from j to i, if s[j:i] is Palindrome, ie the number of Palindrome
+                # of s[i:j] is 1
+                #f[i] = number of Palindrome of s[:j](f[j)) + number of Palindrome s[j:i]
+                # the total number of Palindrome of f[i] should be f[j] + 1
+                if self.isPalindrome(s[j:i]):
+                    f[i] = min(f[i], f[j] + 1)
+                    
+        return f[len(s)] - 1
+    
+    def isPalindrome(self, s):
+        if not s or len(s) == 1:
+            return True
+            
+        i = 0
+        j = len(s) - 1
+        while i < j:
+            if s[i] != s[j]:
+                return False
+            i += 1
+            j -= 1
+        return True
