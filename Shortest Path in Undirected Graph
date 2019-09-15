@@ -59,3 +59,46 @@ class Solution:
                             q.put(i)
         return -1
         
+
+
+
+///////////////////////////////DFS all the path from source to target////////////////////////////////////////////
+class Solution:
+    """
+    @param graph: a list of Undirected graph node
+    @param A: nodeA
+    @param B: nodeB
+    @return:  the length of the shortest path
+    """
+# Definition for a undirected graph node
+# class UndirectedGraphNode:
+#     def __init__(self, x):
+#         self.label = x
+#         self.neighbors = []
+    
+    def shortestPath(self, graph, A, B):
+        if A == B:
+            return 0
+        if not graph:
+            return 0
+        self.res = []
+        hash = {}
+        for i in graph:
+            hash[i] = False
+        # visited = [False for _ in len(graph)]
+        self.DFS(graph, A, B, hash, [])
+        print(self.res)
+        
+    def DFS(self, graph, A, B, visited, tmp):
+        if A == B:
+            self.res.append(tmp[:])
+        tmp.append(A.label)
+        visited[A] = True
+        for i in A.neighbors:
+            if visited[i]:
+                continue
+            visited[i] = True
+            tmp.append(i.label)
+            self.DFS(graph, i, B, visited, tmp)
+            visited[i] = False
+            tmp.pop()
