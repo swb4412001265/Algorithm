@@ -53,3 +53,82 @@ public:
         }
     }
 };
+
+///////////////////////////////////////////Python///////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+"""
+class Solution:
+    # @param {TreeNode} root the root of binary tree
+    # @return {ListNode[]} a lists of linked list
+    def binaryTreeToLists(self, root):
+        # Write your code here
+        if not root:
+            return []
+        from queue import Queue
+        q = Queue()
+        q.put(root)
+        tmpList = []
+        while not q.empty():
+            dummy = ListNode(0)
+            tmpNode = dummy
+            tmpSize = q.qsize()
+            for i in range(q.qsize()):
+                tmp = q.get()
+                dummy.next = ListNode(tmp.val)
+                dummy = dummy.next
+                tmpSize -= 1
+                if not tmpSize:
+                    tmpList.append(tmpNode.next)
+                if tmp.left:
+                    q.put(tmp.left)
+                if tmp.right:
+                    q.put(tmp.right)
+        return tmpList
+        
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ """
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+"""
+class Solution:
+    # @param {TreeNode} root the root of binary tree
+    # @return {ListNode[]} a lists of linked list
+    def binaryTreeToLists(self, root):
+        # Write your code here
+        if not root:
+            return []
+        from queue import Queue
+        q = Queue()
+        q.put(root)
+        tmpList = []
+        while not q.empty():
+            dummy = ListNode(0)
+            tmpNode = dummy
+            for i in range(q.qsize()):
+                tmp = q.get()
+                dummy.next = ListNode(tmp.val)
+                dummy = dummy.next
+                if tmp.left:
+                    q.put(tmp.left)
+                if tmp.right:
+                    q.put(tmp.right)
+            tmpList.append(tmpNode.next)
+        return tmpList
