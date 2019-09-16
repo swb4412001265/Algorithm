@@ -182,8 +182,26 @@ public:
     
 };
 
+///////////////////////////////////////////////////Heap sort Python////////////////////////////////////////////////////
+class Solution:
+    """
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers(self, A):
+        # write your code here
+        import heapq
+        if not A:
+            return []
+        tmpList = []
+        for i in range(len(A)):
+            heapq.heappush(tmpList, A[i])
+        # print(tmpList)
+        for i in range(len(A)):
+            A[i] = heapq.heappop(tmpList)
+            
 
-//////////////////////////////Quick Sort Python//////////////////////////////////////
+//////////////////////////////Quick Sort Python//////////////////////////////////////////////////////////////////////////
 class Solution:
     """
     @param A: an integer array
