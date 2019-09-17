@@ -187,7 +187,7 @@ class Solution:
         return tmp
             
             
-////////////////////////////////////////////////////////////////There is some issue////////////////////////////////////////////////////////////////////\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
 """
 Definition for a Directed graph node
 class DirectedGraphNode:
@@ -206,29 +206,29 @@ class Solution:
         # write your code here
         if not graph:
             return []
-        indegreeMap = self.inDegree(graph)
+        res = []
+        hash = self.inDegree(graph)
         from queue import Queue
         q = Queue()
-        res = set()
-        for key, value in indegreeMap.items():
-            if value == 0:
-                q.put(key)
+        for i in hash.keys():
+            if not hash[i]:
+                q.put(i)
         while not q.empty():
             tmp = q.get()
-            res.add(tmp)
+            res.append(tmp)
+            if len(res) == len(graph):
+                return res
             for i in tmp.neighbors:
-                if indegreeMap[i] > 0:
-                    indegreeMap[i] -= 1
-                    if indegreeMap[i] == 0:
-                        q.put(i)
-        if len(res) == len(indegreeMap):
-            return res
-        return []
-        
+                hash[i] -= 1
+                if not hash[i]:
+                    q.put(i)
+                    
+    
     def inDegree(self, graph):
-        indegreeMap = {x: 0 for x in graph}
+        nodeMap = {i: 0 for i in graph}
         for i in graph:
             for j in i.neighbors:
-                indegreeMap[j] += 1
-        return indegreeMap
+                nodeMap[j] += 1
+        return nodeMap
+        
         
