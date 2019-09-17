@@ -202,3 +202,54 @@ class Solution:
                 newNode.neighbors.append(newNeighbor)
                 
         return mapping[root]
+
+/////////////////////////////////////////////python///////////////////////////////////////////////////////////////////////////
+"""
+Definition for a undirected graph node
+class UndirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+
+
+class Solution:
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        # write your code here
+        if not node:
+            return None
+        nodes = self.findAllNode(node)
+        newNodesMapping = self.copyNode(nodes)
+        self.linkNode(newNodesMapping, nodes)
+        return newNodesMapping[node]
+        
+    def findAllNode(self, node):
+        from queue import Queue
+        q = Queue()
+        tmpList = []
+        q.put(node)
+        
+        while not q.empty():
+            tmp = q.get()
+            if tmp not in tmpList:
+                tmpList.append(tmp)
+            for i in tmp.neighbors:
+                if i in tmpList:
+                    continue
+                q.put(i)
+        return tmpList
+        
+    def copyNode(self, node):
+        hash = {}
+        for i in node:
+            hash[i] = UndirectedGraphNode(i.label)
+        return hash            
+        
+    def linkNode(self, hash, nodes):
+        for i in nodes:
+            for j in i.neighbors:
+                hash[i].neighbors.append(hash[j])
