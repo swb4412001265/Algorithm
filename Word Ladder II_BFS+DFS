@@ -25,7 +25,7 @@ All words have the same length.
 All words contain only lowercase alphabetic characters.
 At least one solution exists.
 
-///////////////////////////////////////////////To be continue//////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////Python//////////////////////////////////////////////////////////////
 class Solution:
     """
     @param: start: a string
@@ -36,7 +36,8 @@ class Solution:
     def findLadders(self, start, end, dict):
         # write your code here
         self.res = []
-        dict.add(start)
+        self.distance = {}
+        self.distance[start] = 0
         dict.add(end)
         self.BFS(start, dict)
         self.DFS(start, end, dict, [start])
@@ -65,14 +66,12 @@ class Solution:
         return words 
         
     def BFS(self, start, dict):
-        self.distance = {}
-        self.distance[start] = 0
         from queue import Queue
         q = Queue()
         q.put(start)
         while not q.empty():
             tmp = q.get()
             for i in self.buildAllwords(tmp, dict):
-                if tmp not in self.distance:
+                if i not in self.distance:
                     self.distance[i] = self.distance[tmp]  + 1
                     q.put(i)
