@@ -1,0 +1,78 @@
+121. Word Ladder II
+中文English
+Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, output sequence in dictionary order.
+Transformation rule such that:
+
+Only one letter can be changed at a time
+Each intermediate word must exist in the dictionary
+Example
+Example 1:
+
+Input：start = "a"，end = "c"，dict =["a","b","c"]
+Output：[["a","c"]]
+Explanation：
+"a"->"c"
+Example 2:
+
+Input：start ="hit"，end = "cog"，dict =["hot","dot","dog","lot","log"]
+Output：[["hit","hot","dot","dog","cog"],["hit","hot","lot","log","cog"]]
+Explanation：
+1."hit"->"hot"->"dot"->"dog"->"cog"
+2."hit"->"hot"->"lot"->"log"->"cog"
+The dictionary order of the first sequence is less than that of the second.
+Notice
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+At least one solution exists.
+
+///////////////////////////////////////////////To be continue//////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dict):
+        # write your code here
+        self.res = []
+        dict.add(start)
+        dict.add(end)
+        self.BFS(start, dict)
+        self.DFS(start, end, dict, [start])
+        return self.res
+        
+    def DFS(self, start, end, dict, tmp):
+        if tmp[-1] == end:
+            self.res.append(tmp[:])
+        for i in self.buildAllwords(start, dict):
+            if self.distance[i] != self.distance[start] + 1:
+                continue
+            tmp.append(i)
+            self.DFS(i, end, dict, tmp)
+            tmp.pop()
+        
+        
+    def buildAllwords(self, word, dict):
+        words = []
+        for i in range(len(word)):
+            left, right = word[:i], word[i + 1:]
+            for j in "abcdefghijklmnopqrstuvwxyz":
+                tmpWord = left + j + right
+                if tmpWord == word or tmpWord not in dict:
+                    continue
+                words.append(tmpWord)
+        return words 
+        
+    def BFS(self, start, dict):
+        self.distance = {}
+        self.distance[start] = 0
+        from queue import Queue
+        q = Queue()
+        q.put(start)
+        while not q.empty():
+            tmp = q.get()
+            for i in self.buildAllwords(tmp, dict):
+                if tmp not in self.distance:
+                    self.distance[i] = self.distance[tmp]  + 1
+                    q.put(i)
