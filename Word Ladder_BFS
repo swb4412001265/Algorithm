@@ -1,0 +1,65 @@
+120. Word Ladder
+中文English
+Given two words (start and end), and a dictionary, find the shortest transformation sequence from start to end, output the length of the sequence.
+Transformation rule such that:
+
+Only one letter can be changed at a time
+Each intermediate word must exist in the dictionary. (Start and end words do not need to appear in the dictionary )
+Example
+Example 1:
+
+Input：start = "a"，end = "c"，dict =["a","b","c"]
+Output：2
+Explanation：
+"a"->"c"
+Example 2:
+
+Input：start ="hit"，end = "cog"，dict =["hot","dot","dog","lot","log"]
+Output：5
+Explanation：
+"hit"->"hot"->"dot"->"dog"->"cog"
+Notice
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+        
+///////////////////////////////////////////////////////BFS Solution///////////////////////////////////////////////////////////
+
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: An integer
+    """
+    def ladderLength(self, start, end, dict):
+        # write your code here
+        res = 0
+        dict.add(end)
+        visited = [start]
+        from queue import Queue
+        q = Queue()
+        q.put(start)
+        while not q.empty():
+            res += 1
+            for i in range(q.qsize()):
+                tmp = q.get()
+                if tmp == end:
+                    return res
+                for x in self.buildAllwords(tmp):
+                    if x not in dict or x in visited:
+                        continue
+                    q.put(x)
+                    visited.append(x)
+        return 0
+        
+        
+    def buildAllwords(self, word):
+        words = []
+        for i in range(len(word)):
+            left, right = word[:i], word[i + 1:]
+            for j in "abcdefghijklmnopqrstuvwxyz":
+                if j == word[i]:
+                    continue
+                words.append(left + j + right)
+        return words        
