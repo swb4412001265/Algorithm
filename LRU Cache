@@ -35,7 +35,7 @@ cache cap is 1，set(2,1)，get(2) and return 1，set(3,2) and delete (2,1)，ge
 
 //////////////////////////////////////////////////////Python/////////////////////////////////////////////////////////////////////
 class LinkedNode:
-    
+    # Need a singel linkedList and hashMap
     def __init__(self, key=None, value=None, next=None):
         self.key = key
         self.value = value
@@ -51,6 +51,7 @@ class LRUCache:
         self.capacity = capacity
     
     def push_back(self, node):
+        # The node's hashMap changed
         self.key_to_prev[node.key] = self.tail
         self.tail.next = node
         self.tail = node
@@ -64,8 +65,11 @@ class LRUCache:
         
     # change "prev->node->next...->tail"
     # to "prev->next->...->tail->node"
+    # next's key points to node now points to prev
+    # node's key points to prev now points to tail
     def kick(self, prev):    #将数据移动至尾部
         node = prev.next
+        #if there is only one node
         if node == self.tail:
             return
         prev.next = node.next
