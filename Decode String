@@ -32,6 +32,7 @@ class Solution:
         word = []
         i = 0
         while i < len(s):
+        # there are total 4 situations.
             if s[i].isdigit():
                 rep = 0
                 while s[i].isdigit():
