@@ -43,19 +43,19 @@ class MinStack:
     
     def __init__(self):
         self.stack = []
-    
+        self.tmpMin = sys.maxsize
+        
     def push(self, num):
         if len(self.stack) == 0:
-            self.stack.append((num, num))
             self.tmpMin = num
         else:
-        # There are two items in the list: actual num and smallest num comparing to the previous min_val
-        # Not the min_val of the whole list
+        # should use minium of num and last item of stack
             self.tmpMin = min(num, self.stack[-1][1])
-            self.stack.append((num, self.tmpMin))
+        self.stack.append((num, self.tmpMin))
+        print(self.stack)
         
     def pop(self):
-        val, _ = self.stack.pop()
+        val, min_val = self.stack.pop()
         return val
         
     def min(self):
