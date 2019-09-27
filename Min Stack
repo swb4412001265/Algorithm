@@ -1,3 +1,67 @@
+12. Min Stack
+中文English
+Implement a stack with following functions:
+
+push(val) push val into the stack
+pop() pop the top element and return it
+min() return the smallest number in the stack
+All above should be in O(1) cost.
+
+Example
+Example 1:
+
+Input:
+  push(1)
+  pop()
+  push(2)
+  push(3)
+  min()
+  push(1)
+  min()
+Output:
+  1
+  2
+  1
+Example 2:
+
+Input:
+  push(1)
+  min()
+  push(2)
+  min()
+  push(3)
+  min()
+Output:
+  1
+  1
+  1
+Notice
+min() will never be called when there is no number in the stack.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class MinStack:
+    
+    def __init__(self):
+        self.stack = []
+    
+    def push(self, num):
+        if len(self.stack) == 0:
+            self.stack.append((num, num))
+            self.tmpMin = num
+        else:
+        # There are two items in the list: actual num and smallest num comparing to the previous min_val
+        # Not the min_val of the whole list
+            self.tmpMin = min(num, self.stack[-1][1])
+            self.stack.append((num, self.tmpMin))
+        
+    def pop(self):
+        val, _ = self.stack.pop()
+        return val
+        
+    def min(self):
+        _, min_val = self.stack[-1]
+        return min_val
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MinStack(object):
 
     def __init__(self):
