@@ -40,7 +40,7 @@ class ConnectingGraph:
         a_root = self.find(a)
         b_root = self.find(b)
         if a_root != b_root:
-            father[b_root] = a_root
+            self.father[b_root] = a_root
 
     """
     @return: An integer
@@ -48,4 +48,56 @@ class ConnectingGraph:
     def query(self, a, b):
         # write your code here
         return self.find(a) == self.find(b)
-        
+
+
+///////////////////////////////////////////////////////////II////////////////////////////////////////////////////////////
+Connecting Graph2
+中文English
+Given n nodes in a graph labeled from 1 to n. There is no edges in the graph at beginning.
+
+You need to support the following method:
+
+connect(a, b), an edge to connect node a and node b
+query(a), Returns the number of connected component in the graph
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class ConnectingGraph2:
+    """
+    @param: n: An integer
+    """
+    def __init__(self, n):
+        self.father = {}
+        self.count = {}
+        for i in range(1, n + 1):
+            self.father[i] = i
+            self.count[i] = 1
+
+    """
+    @param: a: An integer
+    @param: b: An integer
+    @return: nothing
+    """
+    def connect(self, a, b):
+        root_a = self.find(a)
+        root_b = self.find(b)
+        if root_a != root_b:
+            self.father[root_a] = root_b
+            self.count[root_b] += self.count[root_a]
+
+    """
+    @param: a: An integer
+    @return: An integer
+    """
+    def query(self, a):
+        return self.count[self.find(a)]
+
+    def find(self, node):
+        path = []
+        while node != self.father[node]:
+            path.append(node)
+            node = self.father[node]
+            
+        for n in path:
+            self.father[n] = node
+            
+        return node
