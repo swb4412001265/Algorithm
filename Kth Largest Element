@@ -128,4 +128,6 @@ class Solution:
         for _ in range(len(nums) - n):
             heapq.heappop(h)
         return heapq.heappop(h)
+       # or by using heapd.nlargest()
+       # return heapq.nlargest(n, h)[-1]
             
