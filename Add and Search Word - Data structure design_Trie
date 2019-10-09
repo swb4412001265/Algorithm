@@ -1,0 +1,94 @@
+473. Add and Search Word - Data structure design
+中文English
+Design a data structure that supports the following two operations: addWord(word) and search(word)
+
+search(word) can search a literal word or a regular expression string containing only letters a-z or ..
+
+A . means it can represent any one letter.
+
+Example
+Example 1:
+
+Input:
+  addWord("a")
+  search(".")
+Output:
+  true
+Example 2:
+
+Input:
+  addWord("bad")
+  addWord("dad")
+  addWord("mad")
+  search("pad")  
+  search("bad")  
+  search(".ad")  
+  search("b..")  
+Output:
+  false
+  true
+  true
+  true
+Notice
+You may assume that all words are consist of lowercase letters a-z.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isWord = False
+
+
+class WordDictionary:
+    """
+    @param: word: Adds a word into the data structure.
+    @return: nothing
+    """
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def find(self, word):
+        node = self.root
+        for i in word:
+            node = node.children.get(i)
+            if not node:
+                return False
+        return node
+    
+    
+    def addWord(self, word):
+        # write your code here
+        node = self.root
+        for i in word:
+            if i not in node.children:
+                node.children[i] = TrieNode()
+            node = node.children[i]
+            
+        node.isWord = True
+                
+
+    """
+    @param: word: A word could contain the dot character '.' to represent any one letter.
+    @return: if the word is in the data structure.
+    """
+    def search(self, word):
+        if word is None:
+            return False
+        return self.search_helper(self.root, word, 0)
+        
+    def search_helper(self, node, word, index):
+        if node is None:
+            return False
+            
+        if index >= len(word):
+            return node.isWord
+        
+        char = word[index]
+        if char != '.':
+            return self.search_helper(node.children.get(char), word, index + 1)
+            
+        for child in node.children:
+            if self.search_helper(node.children[child], word, index + 1):
+                return True
+                
+        return False
