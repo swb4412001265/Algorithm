@@ -106,3 +106,26 @@ class Solution:
         if start + k - 1 >= left:
             self.helper(nums, left, end, k - (left - start))
         return nums[right + 1]
+
+
+
+///////////////////////////////////////////////Heap sort klog(n)///////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: An integer
+    @param nums: An array
+    @return: the Kth largest element
+    """
+    def kthLargestElement(self, n, nums):
+        # write your code here
+        import heapq
+        # kth largest = (len(nums) - kth + 1)th smallest
+        if not nums:
+            return None
+        h = []
+        for i in nums:
+            heapq.heappush(h, i)
+        for _ in range(len(nums) - n):
+            heapq.heappop(h)
+        return heapq.heappop(h)
+            
