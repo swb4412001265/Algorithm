@@ -24,7 +24,7 @@ Explanation：
 [ z ]
 (0,0)z
 
-////////////////////////////////////////////////////To be Done//////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # class TrieNode:
 #     def __init__(self):
 #         self.children = {}
@@ -75,7 +75,7 @@ class Solution:
             for i in range(4):
                 tmp_x = x + dx[i]
                 tmp_y = y + dy[i]
-                if tmp_x >= 0 and tmp_x < n and tmp_y >= 0 and tmp_y < m and visited[tmp_x][tmp_y] == False and word[0] == board[tmp_x][tmp_y]:
+                if tmp_x >= 0 and tmp_x < m and tmp_y >= 0 and tmp_y < n and visited[tmp_x][tmp_y] == False and word[0] == board[tmp_x][tmp_y]:
                     q.append((tmp_x, tmp_y))
                     visited[tmp_x][tmp_y] = True
                     if self.dfs(board, word[1:], q, visited, m, n):
