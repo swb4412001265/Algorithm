@@ -63,3 +63,44 @@ class Solution:
                     continue
                 words.append(left + j + right)
         return words        
+
+
+/////////////////////////////////Add dict in buildAllwords, it is a little faster///////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: An integer
+    """
+    def ladderLength(self, start, end, dict):
+        # write your code here
+        res = 0
+        dict.add(end)
+        visited = [start]
+        from queue import Queue
+        q = Queue()
+        q.put(start)
+        while not q.empty():
+            res += 1
+            for i in range(q.qsize()):
+                tmp = q.get()
+                if tmp == end:
+                    return res
+                for x in self.buildAllwords(tmp, dict):
+                    if x in visited:
+                        continue
+                    q.put(x)
+                    visited.append(x)
+        return 0
+        
+        
+    def buildAllwords(self, word, dict):
+        words = []
+        for i in range(len(word)):
+            left, right = word[:i], word[i + 1:]
+            for j in "abcdefghijklmnopqrstuvwxyz":
+                if j == word[i] or left + j + right not in dict:
+                    continue
+                words.append(left + j + right)
+        return words 
