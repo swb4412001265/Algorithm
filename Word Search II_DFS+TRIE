@@ -68,16 +68,15 @@ class Solution:
             return None
         m = len(board)
         n = len(board[0])
-        self.trie = Trie()
+        trie = Trie()
         for i in words:
-            self.trie.add(i)
+            trie.add(i)
         self.res = set()
         # visited = [[False for _ in range(n)] for _ in range(m)]
         visited = []
         for i in range(m):
             for j in range(n):
-                visited.append((i, j))
-                self.search(board, self.trie.root.children.get(board[i][j]), i, j, visited, m, n)
+                self.search(board, trie.root.children.get(board[i][j]), i, j, [(i, j)], m, n)
         return list(self.res)
                 
     def search(self, board, tmp, _x, _y, visited, m, n):
@@ -94,6 +93,7 @@ class Solution:
                 visited.append((tmp_x, tmp_y))
                 self.search(board, tmp.children.get(board[tmp_x][tmp_y]) , tmp_x, tmp_y, visited, m, n)
                 visited.pop()
+    
     
     
     
