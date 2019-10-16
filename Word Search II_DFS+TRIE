@@ -1,0 +1,99 @@
+132. Word Search II
+中文English
+Given a matrix of lower alphabets and a dictionary. Find all words in the dictionary that can be found in the matrix. A word can start from any position in the matrix and go left/right/up/down to the adjacent position. One character only be used once in one word. No same word in dictionary
+
+Example
+Example 1:
+
+Input：["doaf","agai","dcan"]，["dog","dad","dgdg","can","again"]
+Output：["again","can","dad","dog"]
+Explanation：
+  d o a f
+  a g a i
+  d c a n
+search in Matrix，so return ["again","can","dad","dog"].
+Example 2:
+
+Input：["a"]，["b"]
+Output：[]
+Explanation：
+ a
+search in Matrix，return [].
+Challenge
+Using trie to implement your algorithm.
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
+        self.word = None
+    
+        
+class Trie:
+    
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def add(self, word):
+        node = self.root
+        for i in word:
+            if i not in node.children:
+                node.children[i] = TrieNode()
+            node = node.children[i]
+        node.word = word
+        node.is_word = True
+
+    def find(self, word):
+        node = self.root
+        for i in word:
+            node = node.children.get(i)
+            if node == None:
+                return None
+        return node
+
+class Solution:
+    """
+    @param board: A list of lists of character
+    @param words: A list of string
+    @return: A list of string
+    """
+    def wordSearchII(self, board, words):
+        # write your code here
+        if not board:
+            return None
+        m = len(board)
+        n = len(board[0])
+        self.trie = Trie()
+        for i in words:
+            self.trie.add(i)
+        self.res = set()
+        # visited = [[False for _ in range(n)] for _ in range(m)]
+        visited = []
+        for i in range(m):
+            for j in range(n):
+                visited.append((i, j))
+                self.search(board, self.trie.root.children.get(board[i][j]), i, j, visited, m, n)
+        return list(self.res)
+                
+    def search(self, board, tmp, _x, _y, visited, m, n):
+        if tmp == None:
+            return
+        if tmp.is_word:
+            self.res.add(tmp.word)
+        dx = [-1, 0, 0, 1]
+        dy = [0, -1, 1, 0]
+        for i in range(4):
+            tmp_x = dx[i] + _x
+            tmp_y = dy[i] + _y
+            if 0 <= tmp_x < m and 0 <= tmp_y < n and (tmp_x, tmp_y) not in visited:
+                visited.append((tmp_x, tmp_y))
+                self.search(board, tmp.children.get(board[tmp_x][tmp_y]) , tmp_x, tmp_y, visited, m, n)
+                visited.pop()
+    
+    
+    
