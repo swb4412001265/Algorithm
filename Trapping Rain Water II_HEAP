@@ -62,3 +62,50 @@ class Solution:
                     heapq.heappush(h, (max_height, tmpX, tmpY))
                     visited.append((tmpX, tmpY))
         return res                
+
+
+///////////////////////////////////////Use visited[][] is better than check if (i, j) in visit[]//////////////////////////////////////
+
+class Solution:
+    """
+    @param heights: a matrix of integers
+    @return: an integer
+    """
+    def trapRainWater(self, heights):
+        # write your code here
+        if not heights:
+            return 0
+            
+        x = len(heights)
+        y = len(heights[0])
+        visited = [[False for _ in range(y)] for _ in range(x)]
+        h = []
+        import heapq
+        for i in range(y):
+            if not visited[0][i]:
+                visited[0][i] = True
+                heapq.heappush(h, (heights[0][i], 0, i))
+            if not visited[x - 1][i]:
+                visited[x - 1][i] = True
+                heapq.heappush(h, (heights[x - 1][i], x - 1, i))
+        for i in range(x):
+            if not visited[i][0]:
+                visited[i][0] = True
+                heapq.heappush(h, (heights[i][0], i, 0))
+            if not visited[i][y - 1]:
+                visited[i][y - 1] = True
+                heapq.heappush(h, (heights[i][y - 1], i, y - 1))
+        dx = [-1, 0, 0, 1]
+        dy = [0, -1, 1, 0]
+        res = 0
+        while len(h):
+            curHeight, curX, curY = heapq.heappop(h)
+            for i in range(4):
+                tmpX = dx[i] + curX
+                tmpY = dy[i] + curY
+                if 0 <= tmpX < x and 0 <= tmpY < y and visited[tmpX][tmpY] == False:
+                    max_height = max(curHeight, heights[tmpX][tmpY])
+                    res += max_height - heights[tmpX][tmpY]
+                    heapq.heappush(h, (max_height, tmpX, tmpY))
+                    visited[tmpX][tmpY] = True
+        return res                
