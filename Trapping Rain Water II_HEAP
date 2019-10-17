@@ -1,0 +1,64 @@
+364. Trapping Rain Water II
+中文English
+Given n x m non-negative integers representing an elevation map 2d where the area of each cell is 1 x 1, compute how much water it is able to trap after raining.
+
+
+
+Example
+Example 1:
+
+Given `5*4` matrix 
+Input:
+[[12,13,0,12],[13,4,13,12],[13,8,10,12],[12,13,12,12],[13,13,13,13]]
+Output:
+14
+Example 2:
+
+Input:
+[[2,2,2,2],[2,2,3,4],[3,3,3,1],[2,3,4,5]]
+Output:
+0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param heights: a matrix of integers
+    @return: an integer
+    """
+    def trapRainWater(self, heights):
+        # write your code here
+        if not heights:
+            return 0
+            
+        x = len(heights)
+        y = len(heights[0])
+        visited = []
+        h = []
+        import heapq
+        for i in range(y):
+            if (0, i) not in visited:
+                visited.append((0, i))
+                heapq.heappush(h, (heights[0][i], 0, i))
+            if (x - 1, i) not in visited:
+                visited.append((x - 1, i))
+                heapq.heappush(h, (heights[x - 1][i], x - 1, i))
+        for i in range(x):
+            if (i, 0) not in visited:
+                visited.append((i, 0))
+                heapq.heappush(h, (heights[i][0], i, 0))
+            if (i, y - 1) not in visited:
+                visited.append((i, y - 1))
+                heapq.heappush(h, (heights[i][y - 1], i, y - 1))
+        dx = [-1, 0, 0, 1]
+        dy = [0, -1, 1, 0]
+        res = 0
+        while len(h):
+            curHeight, curX, curY = heapq.heappop(h)
+            for i in range(4):
+                tmpX = dx[i] + curX
+                tmpY = dy[i] + curY
+                if 0 <= tmpX < x and 0 <= tmpY < y and (tmpX, tmpY) not in visited:
+                    max_height = max(curHeight, heights[tmpX][tmpY])
+                    res += max_height - heights[tmpX][tmpY]
+                    heapq.heappush(h, (max_height, tmpX, tmpY))
+                    visited.append((tmpX, tmpY))
+        return res                
