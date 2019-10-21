@@ -65,8 +65,8 @@ class Solution:
             heapq.heappush(self.minHeap, num)
         
     def remove(self, num):
-        if num in self.maxHeap:
-            self.maxHeap.remove(num)
+        if -num in self.maxHeap:
+            self.maxHeap.remove(-num)
         else:
             self.minHeap.remove(num)
         
