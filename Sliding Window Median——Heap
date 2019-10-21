@@ -53,22 +53,25 @@ class Solution:
         for i in range(len(nums)):
             self.add(nums[i])
             self.adjust()
-            if i >= k - 1:
-                self.remove(nums[i + 1 - k])
+            if i >= k:
+                self.remove(nums[i - k])
                 self.adjust()
+            if i >= k - 1:
                 self.res.append(-self.maxHeap[0])
-    
+        return self.res
     def add(self, num):
         if self.maxHeap and num < -self.maxHeap[0]:
             heapq.heappush(self.maxHeap, -num)
         else:
             heapq.heappush(self.minHeap, num)
-        
+      
     def remove(self, num):
         if -num in self.maxHeap:
             self.maxHeap.remove(-num)
+            heapq.heapify(self.maxHeap)
         else:
             self.minHeap.remove(num)
+            heapq.heapify(self.minHeap)
         
     def adjust(self):
         if len(self.maxHeap) > len(self.minHeap) + 1:
