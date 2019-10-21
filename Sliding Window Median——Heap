@@ -1,0 +1,78 @@
+360. Sliding Window Median
+中文English
+Given an array of n integer, and a moving window(size k), move the window at each iteration from the start of the array, find the median of the element inside the window at each moving. (If there are even numbers in the array, return the N/2-th number after sorting the element in the window. )
+
+Example
+Example 1:
+
+Input:
+[1,2,7,8,5]
+3
+Output:
+[2,7,7]
+
+Explanation:
+At first the window is at the start of the array like this `[ | 1,2,7 | ,8,5]` , return the median `2`;
+then the window move one step forward.`[1, | 2,7,8 | ,5]`, return the median `7`;
+then the window move one step forward again.`[1,2, | 7,8,5 | ]`, return the median `7`;
+Example 2:
+
+Input:
+[1,2,3,4,5,6,7]
+4
+Output:
+[2,3,4,5]
+
+Explanation:
+At first the window is at the start of the array like this `[ | 1,2,3,4, | 5,6,7]` , return the median `2`;
+then the window move one step forward.`[1,| 2,3,4,5 | 6,7]`, return the median `3`;
+then the window move one step forward again.`[1,2, | 3,4,5,6 | 7 ]`, return the median `4`;
+then the window move one step forward again.`[1,2,3,| 4,5,6,7 ]`, return the median `5`;
+Challenge
+O(nlog(n)) time
+////////////////////////////////////////////////////////Continued/////////////////////////////////////////////////////////////////////////
+import heapq
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer
+    @return: The median of the element inside the window at each moving
+    """
+    def medianSlidingWindow(self, nums, k):
+        # write your code here
+        if not nums:
+            return []
+        if k == 0:
+            return []
+        if k == 1:
+            return nums
+            
+        self.maxHeap = []
+        self.minHeap = []
+        self.res = []
+        for i in range(len(nums)):
+            self.add(nums[i])
+            self.adjust()
+            if i >= k - 1:
+                self.remove(nums[i + 1 - k])
+                self.adjust()
+                self.res.append(-self.maxHeap[0])
+    
+    def add(self, num):
+        if self.maxHeap and num < -self.maxHeap[0]:
+            heapq.heappush(self.maxHeap, -num)
+        else:
+            heapq.heappush(self.minHeap, num)
+        
+    def remove(self, num):
+        if num in self.maxHeap:
+            self.maxHeap.remove(num)
+        else:
+            self.minHeap.remove(num)
+        
+    def adjust(self):
+        if len(self.maxHeap) > len(self.minHeap) + 1:
+            heapq.heappush(self.minHeap, -heapq.heappop(self.maxHeap))
+        elif len(self.minHeap) > len(self.maxHeap):
+            heapq.heappush(self.maxHeap, -heapq.heappop(self.minHeap))
+        
