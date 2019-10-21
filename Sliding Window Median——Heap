@@ -68,6 +68,7 @@ class Solution:
     def remove(self, num):
         if -num in self.maxHeap:
             self.maxHeap.remove(-num)
+            # since heap's structure is changed, so need to use heapify
             heapq.heapify(self.maxHeap)
         else:
             self.minHeap.remove(num)
