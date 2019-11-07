@@ -78,3 +78,34 @@ class Solution:
                 return 0
 
         return dp[len(s)]
+
+////////////////////////////////////////////////////////DFS Time Limit Exceeded//////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: a string,  encoded message
+    @return: an integer, the number of ways decoding
+    """
+    def numDecodings(self, s):
+        # write your code here
+        if not s:
+            return 0
+        self.res = []
+        self.DFS(s, [])
+        return len(self.res)
+        
+    def DFS(self, s, tmpString):
+        if len(s) == 0:
+            self.res.append(tmpString[:])
+        for i in range(1, len(s) + 1):
+            preString = s[:i]
+            if self.isDecodable(preString[:]):
+                tmpString.append(preString[:])
+                self.DFS(s[i:], tmpString)
+                tmpString.pop()
+            
+    def isDecodable(self, s):
+        if int(s[0]) == 0:
+            return False
+        if int(s) > 26:
+            return False
+        return True
