@@ -38,3 +38,49 @@ public:
         return f[n];
     }
 };
+
+
+/////////////////////////////////////////////////////python//////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: a positive integer
+    @return: An integer
+    """
+    def numSquares(self, n):
+        # write your code here
+        #define f[n] as there is the least number of square number
+        f = [n + 1 for _ in range(n + 1)]
+        
+        # f[0] = 0
+        # f[1] = 1
+        # f[2] = 2
+        # f[3] = 3
+        # f[4] = 1
+        
+        if n == 0:
+            return 0
+        else:
+            f[0] = 0
+        if n == 1:
+            return 1
+        else:
+            f[1] = 1
+        if n == 2:
+            return 2
+        else:
+            f[2] = 2
+        if n == 3:
+            return 3
+        else:
+            f[3] = 3
+        if n == 4:
+            return 1
+        else:
+            f[4] = 1
+        
+        for i in range(5, n + 1):
+            j = 1
+            while i >= j * j:
+                f[i] = min(f[i - j*j] + 1, f[i])
+                j += 1
+        return f[n]
