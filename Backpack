@@ -65,7 +65,8 @@ class Solution:
         #bp[n][0] also should be 0 since the backpack's size is 0
         #bp[i][j] should be considered as twp cases:
         #1. we do not need ith pick, so it should be bp[i][j] = bp[i-1][j]
-        #2. we do need ith pick, so bp[i][j] = bp[i-1][j-A[i-1]] + A[i-1] here also j should be greater than A[i-1]
+        #2. we do need ith pick and item is A[i - 1] but A[i], 
+        #so bp[i][j] = bp[i-1][j-A[i-1]] + A[i-1] here also j should be greater than A[i-1]
         #we need to pick the max(bp[i-1][j], bp[i-1][j-A[i-1]] + A[i-1])
         
         for i in range(1, n+1):
