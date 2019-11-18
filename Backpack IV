@@ -36,3 +36,25 @@ class Solution:
                 if j >= coins[i-1]:
                     f[i][j] = f[i - 1][j] + f[i - 1][j - coins[i-1]]
         return f[n][m] 
+
+
+///////////////////////////////////////////////////////////////////DFS//////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: an integer array and all positive numbers
+    @param target: An integer
+    @return: An integer
+    """
+    def backPackV(self, nums, target):
+        # write your code here
+        self.count = 0
+        nums.sort()
+        self.DFS(nums, target, 0)
+        return self.count
+    def DFS(self, nums, target, index):
+        if target == 0:
+            self.count += 1
+        for i in range(index, len(nums)):
+            if nums[i] > target:
+                break
+            self.DFS(nums, target - nums[i], i + 1)
