@@ -1,0 +1,66 @@
+651. Binary Tree Vertical Order Traversal
+中文English
+Given a binary tree, return the vertical order traversal of its nodes' values. (ie, from top to bottom, column by column).
+
+If two nodes are in the same row and column, the order should be from left to right.
+
+Example
+Example1
+
+Inpurt:  {3,9,20,#,#,15,7}
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+   3
+  /\
+ /  \
+ 9  20
+    /\
+   /  \
+  15   7
+Example2
+
+Input: {3,9,8,4,0,1,7}
+Output: [[4],[9],[3,0,1],[8],[7]]
+Explanation:
+     3
+    /\
+   /  \
+   9   8
+  /\  /\
+ /  \/  \
+ 4  01   7
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of tree
+    @return: the vertical order traversal
+    """
+    def verticalOrder(self, root):
+        # write your code here
+        from queue import Queue
+        if not root:
+            return []
+        q = Queue()
+        q.put((root, 0))
+        res = {}
+        while not q.empty():
+            root, tmp = q.get()
+            if root:
+                if tmp not in res:
+                    res[tmp] = []
+                res[tmp].append(root.val)
+                q.put((root.left, tmp - 1))
+                q.put((root.right, tmp + 1))
+        resList = []
+        for key in sorted(res.keys()):
+            resList.append(res[key])
+        return resList
