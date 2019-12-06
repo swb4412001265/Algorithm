@@ -1,0 +1,46 @@
+1814. Sum of all Subarrays
+中文English
+Given a list of nums, return the sum of all subarrays.
+
+Example
+Example1:
+Input: nums = [1, 2, 3]
+Output: 20
+Explanation : {1} + {2} + {3} + {2 + 3} + {1 + 2} + {1 + 2 + 3} = 20
+Example2
+Input : [1, 2]
+Output : 6
+Explanation :{1} + {2} + {1, 2} = 6 
+Notice
+if nums = [2, 4, 1], subarrays is {[2], [4], [1], [2, 4], [4, 1], [2, 4, 1]}
+Guaranteed that the result returned is the type of int
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: a Integer list
+    @return: return the sum of subarrays
+    """
+    def SubArraySum(self, nums):
+        # write your code here
+        if not nums:
+            return 0
+    #     self.res = 0
+    #     self.helper(nums, 0, [])
+    #     return self.res
+        
+    # def helper(self, nums, index, tmp):    
+    #     for i in range(index, len(nums)):
+    #         tmp.append(nums[i])
+    #         print(tmp)
+    #         self.res += sum(tmp[:])
+    #         self.helper(nums, i + 1, tmp[:])
+    #         tmp.pop()
+    
+ 
+        # write your code here
+        result, n = 0, len(nums)
+
+        for i in range(n):
+            result += (nums[i] * (i + 1) * (n - i))
+        return result
+            
