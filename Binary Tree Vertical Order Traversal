@@ -64,3 +64,42 @@ class Solution:
         for key in sorted(res.keys()):
             resList.append(res[key])
         return resList
+
+
+/////////////////////////////////////////////DFS does not pass///////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of tree
+    @return: the vertical order traversal
+    """
+    def verticalOrder(self, root):
+        # write your code here
+        if not root:
+            return []
+        self.dic = {}    
+        self.helper(root, 0)
+        # print(self.dic)
+        res = []
+        for i in sorted(self.dic):
+            res.append(self.dic[i])
+        return res
+        
+    def helper(self, root, level):
+        if not root:
+            return 
+        if level not in self.dic:
+            self.dic[level] = [root.val]
+        else:
+            self.dic[level].append(root.val)
+        
+        self.helper(root.left, level - 1)
+        self.helper(root.right, level + 1)
+        
