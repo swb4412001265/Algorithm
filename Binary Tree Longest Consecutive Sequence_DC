@@ -102,9 +102,9 @@ class Solution:
         # At least root is there and length should be 1
         subLongest = 1
         if root.left != None and root.val + 1 == root.left.val:
-            subLongest = max(subLongest, left + 1)
+            subLongest = left + 1
         if root.right != None and root.val + 1 == root.right.val:
-            subLongest = max(subLongest, right + 1)
+            subLongest = right + 1
         if subLongest > self.longest:
             self.longest = subLongest
             
