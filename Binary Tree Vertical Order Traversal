@@ -103,3 +103,44 @@ class Solution:
         self.helper(root.left, level - 1)
         self.helper(root.right, level + 1)
         
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of tree
+    @return: the vertical order traversal
+    """
+    def verticalOrder(self, root):
+        # write your code here
+        if not root:
+            return []
+        from queue import Queue
+        q= Queue()
+        q.put((root, 0))
+        tmpRes = {}
+        while not q.empty():
+            node, level = q.get()
+            if level not in tmpRes:
+                tmpRes[level] = [node.val]
+            else:
+                tmpRes[level].append(node.val)
+                
+            if node.left != None:
+                q.put((node.left, level - 1))
+            
+            if node.right != None:
+                q.put((node.right, level + 1))
+        print(tmpRes)
+            
+        res = []
+        for i in sorted(tmpRes):
+            res.append(tmpRes[i])
+        return res
