@@ -2,7 +2,8 @@
 cat-only-icon
 CAT Only
 中文English
-Give n integers and an integer k, you can choose k integers in the n integers and add them up, now let you calculate how many ways that the sum of the k integers is a prime number.
+Give n integers and an integer k, you can choose k integers in the n integers and add them up, 
+now let you calculate how many ways that the sum of the k integers is a prime number.
 
 Example
 Give a=[3,7,12,19], k=3, return 1
