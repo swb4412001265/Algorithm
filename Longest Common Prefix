@@ -1,3 +1,17 @@
+78. Longest Common Prefix
+Given k strings, find the longest common prefix (LCP).
+
+Example
+Example 1:
+	Input:  "ABCD", "ABEF", "ACEF"
+	Output:  "A"
+	
+
+Example 2:
+	Input: "ABCDEFG", "ABCEFG" and "ABCEFA"
+	Output:  "ABC"
+
+
 //////////////////////Using dict///////////////////////
 class Solution:
     def longestCommonPrefix(self, strs):
