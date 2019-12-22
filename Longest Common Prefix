@@ -56,3 +56,32 @@ class Solution:
                     return res
             res += tmp
         return res
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param strs: A list of strings
+    @return: The longest common prefix
+    """
+    def longestCommonPrefix(self, strs):
+        # write your code here
+        if not strs:
+            return ""
+        if len(strs) == 1:
+            return strs[0]
+        res = self.commonPrefix(strs[0], strs[1])
+        
+        for i in range(2, len(strs)):
+            res = self.commonPrefix(res, strs[i])
+        return res
+            
+    def commonPrefix(self, a, b):
+        i = 0
+        tmp = ""
+        while i < len(a) and i < len(b):
+            if a[i] == b[i]:
+                tmp += a[i]
+            else:
+                break
+            i += 1
+        return tmp
