@@ -57,3 +57,25 @@ public:
         return p[m-1][n-1]; 
     }
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        # write your code here
+        # define dp[i][j] as when reach (i, j), there are how many unique paths
+        # dp[0][0] = 0
+        dp = [[1 for _ in range(n)] for _ in range(m)] 
+        for i in range(m):
+            for j in range(n):
+                if i == 0:
+                    dp[i][j] = dp[i][j - 1]
+                if j == 0:
+                    dp[i][j] = dp[i - 1][j]
+                if i != 0 and j != 0:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        return dp[m - 1][n - 1]
