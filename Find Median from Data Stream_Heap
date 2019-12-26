@@ -42,11 +42,13 @@ class Solution:
         maxHeap = []
         res = []
         for i in range(len(nums)):
-        # If num[i] is equal or smaller then put into manHeap, otherwise put into minHeap
+        # heap[0] is the smallest in the heap.
+        # Create two heaps: maxHeap and minHeap. leftHeap is maxHeap and right heap is minHeap
+        # If num[i] is equal or smaller than -maxHeap[0],then put into manHeap, otherwise put into minHeap
             if maxHeap and nums[i] <= -maxHeap[0]:
                 heapq.heappush(maxHeap, -nums[i])
             else:
-                heapq.heappush(minHeap, nums[i]
+                heapq.heappush(minHeap, nums[i])
         # When ajust two heaps, there are 4 cases:
         # 1. len(maxHeap) == len(minHeap), then do not mvoe anything but append -maxHeap[0] into res
         # 2. len(maxHeap) > len(minHeap) only by one, then same as step 1 since we pick the smaller index when even number
