@@ -160,12 +160,14 @@ class Solution:
         while True:
             prev = curt
             curt = curt.next
+            # This condition is for x in the middle of prev and curt
             if prev.val <= x and curt.val >= x:
                 break
-            
+            # This condition is for x is either the biggest or smallest
+            # and should insert x into middle of prev and curt
             if (prev.val > curt.val) and (prev.val <= x or curt.val >= x):
                 break
-            
+            # This is for all the nodes are the same like 2->2->2
             if curt is node:
                 break
             
