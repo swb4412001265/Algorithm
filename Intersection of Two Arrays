@@ -136,3 +136,82 @@ class Solution:
         return res
    
 
+
+////////////////////////////////////////////////////////////////////////////following up/////////////////////////////////////////////////////
+
+
+548. Intersection of Two Arrays II
+中文English
+Given two arrays, write a function to compute their intersection.
+
+Example
+Example1
+
+Input: 
+nums1 = [1, 2, 2, 1], nums2 = [2, 2]
+Output: 
+[2, 2]
+Example2
+
+Input: 
+nums1 = [1, 1, 2], nums2 = [1]
+Output: 
+[1]
+Challenge
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to num2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+Notice
+Each element in the result should appear as many times as it shows in both arrays.
+The result can be in any order.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums1: an integer array
+    @param nums2: an integer array
+    @return: an integer array
+    """
+    def intersection(self, nums1, nums2):
+        # write your code here
+        if not nums1 or not nums2:
+            return []
+        nums1.sort()
+        nums2.sort()
+        res = []
+        i = 0
+        j = 0
+        while i < len(nums1) and j <len(nums2):
+            if nums1[i] == nums2[j]:
+                res.append(nums1[i])
+                i += 1
+                j += 1
+            elif nums1[i] > nums2[j]:
+                j += 1
+            else:
+                i += 1
+        return res
+        
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ class Solution:
+    """
+    @param nums1: an integer array
+    @param nums2: an integer array
+    @return: an integer array
+    """
+    def intersection(self, nums1, nums2):
+        # write your code here
+        if not nums1 or not nums2:
+            return []
+        res = []
+        hash = {}
+        for i in nums1:
+            if i not in hash:
+                hash[i] = 1
+            else:
+                hash[i] += 1
+        for i in nums2:
+            if i in hash and hash[i] != 0:
+                res.append(i)
+                hash[i] -= 1
+        return res
