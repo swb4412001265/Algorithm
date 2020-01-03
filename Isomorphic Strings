@@ -38,6 +38,7 @@ class Solution:
     def isIsomorphic(self, s, t):
         # write your code here
         # both s can convert to t and t can convert to s
+        # if there is only one side, this case will be true as well: "egg" "ddd"
         if len(s) != len(t):
             return False
         hash = {}
