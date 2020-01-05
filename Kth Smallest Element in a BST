@@ -46,4 +46,42 @@ class Solution:
         self.tmp.append(root.val)
         self.helper(root.left)
         self.helper(root.right)
+
+
+/////////////////////////////////////////////////////////O(n) by using stack////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the given BST
+    @param k: the given k
+    @return: the kth smallest element in BST
+    """
+    def kthSmallest(self, root, k):
+        # write your code here
+        stack = []
+        if not root:
+            return None
+        # Since BST, the left node is the smallest 
+        # So keep a stack list to store the smallest element in the last
         
+        while root:
+            stack.append(root)
+            root = root.left
+        # When there is right node existing, append right node to the stack
+        # Then append all the left node to stack since they are smaller the right node
+        # We only try k - 1 times so the kth smallest node is the last node of stack
+        # ie stack[-1]
+        for i in range(k - 1):
+            tmp = stack.pop().right
+            while tmp:
+                stack.append(tmp)
+                tmp = tmp.left
+                
+        return stack[-1].val
