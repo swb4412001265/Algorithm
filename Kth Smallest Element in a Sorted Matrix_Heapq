@@ -44,6 +44,10 @@ class Solution:
         visited = [[False for _ in range(n)] for _ in range(m)]
         heapq.heappush(h, (matrix[0][0], 0, 0))
         visited[0][0] = True
+        # When mvoing to right and down in the matrix, there two nodes will be the smallest comparing to 
+        # the rest unvisited node.
+        # Every heappop will take one smallest in the current list and heappush always pushes in the smallest
+        # nodes in current unvisited nodes
         for _ in range(k - 1):
             val, x, y = heapq.heappop(h)
             for i in range(2):
