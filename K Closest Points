@@ -72,6 +72,7 @@ class Solution:
         res = []
         for i in range(len(points)):
             tmpDict[i] = abs(points[i].x - origin.x)**2 + abs(points[i].y - origin.y)**2 
+        # sorted dictionary by values will return a list.    
         tmpDict = sorted(tmpDict.items(), key = lambda x: x[1])
         print(tmpDict)
         
@@ -101,14 +102,14 @@ class Solution:
         self.heap = []
         for point in points:
             dist = self.getDistance(point, origin)
-            heapq.heappush(self.heap, (dist, point.x, point.y))
+            heapq.heappush(self.heap, [dist, [point.x, point.y]])
 
         self.heap = heapq.nsmallest(k, self.heap)
         print(self.heap)
 
         ret = []
         for i in self.heap:
-            ret.append(Point(i[1], i[2]))
+            ret.append(i[1])
         return ret
 
     def getDistance(self, a, b):
