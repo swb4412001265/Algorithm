@@ -35,7 +35,7 @@ class Solution:
                 res += i
         return res
             
-            /////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
             class Solution:
     def longestCommonPrefix(self, strs):
@@ -85,3 +85,27 @@ class Solution:
                 break
             i += 1
         return tmp
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param strs: A list of strings
+    @return: The longest common prefix
+    """
+    def longestCommonPrefix(self, strs):
+        # write your code here
+        if not strs:
+            return ""
+        res = ""
+        s = set()
+        for i in range(len(strs[0])):
+            for str in strs:
+                if i < len(str):
+                    s.add(str[i])
+                    if len(s) > 1:
+                        return res
+                else:
+                    return res
+            s = set()
+            res += str[i]
+        return res
