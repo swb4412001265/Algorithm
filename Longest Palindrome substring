@@ -24,8 +24,43 @@ class Solution:
         else:
             return count + 1
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class Solution:
+    """
+    @param s: a string which consists of lowercase or uppercase letters
+    @return: the length of the longest palindromes that can be built
+    """
+    def longestPalindrome(self, s):
+        # write your code here
+        if not s:
+            return 0
+        tmp = {}
+        res = 0
+        tmpOdd = 0
+        flag = False
+        for i in s:
+            if i not in tmp:
+                tmp[i] = 1
+            else:
+                tmp[i] += 1
+        # print(tmp)        
+        for i in tmp.values():
+            # When values is odd number, we will keep the even part and minus 1
+            if i > 1:
+                if i % 2 == 0:
+                    res += i
+                else:
+                    res += i - 1
+                    flag = True
+            else:
+                flag = True
+        if flag:
+            return res + 1
+        return res
+            
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
 
