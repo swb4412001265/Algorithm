@@ -33,3 +33,29 @@ class Solution:
             max_one = max(num_of_one, max_one)
         return max_one
             
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: a binary array
+    @return:  the maximum number of consecutive 1s
+    """
+    def findMaxConsecutiveOnes(self, nums):
+        # Write your code here
+        if not nums:
+            return 0
+        res = 0
+        count = 0
+        i = 0
+        while i < len(nums):
+            if nums[i]:
+                count = 0
+                while i < len(nums):
+                    if nums[i]:
+                        count += 1
+                        i += 1
+                    else:
+                        break
+                res = max(res, count)
+            else:
+                i += 1
+        return res
