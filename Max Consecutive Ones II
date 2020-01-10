@@ -45,3 +45,27 @@ class Solution:
             max_ones = max(max_ones, can_still_flip, no_more_flips)
 
         return max_ones
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: a list of integer
+    @return: return a integer, denote  the maximum number of consecutive 1s
+    """
+    def findMaxConsecutiveOnes(self, nums):
+        # write your code here
+        if not nums:
+            return 0
+        res = 0
+        count = 0
+        tmp = []
+        for i in nums:
+            if i:
+                count += 1
+            else:
+                tmp.append(count)
+                count = 0
+        for i in range(len(tmp) - 1):
+            res = max(res, tmp[i] + tmp[i + 1])
+        return res + 1
+            
