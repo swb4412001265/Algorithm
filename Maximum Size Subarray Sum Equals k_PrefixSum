@@ -61,6 +61,8 @@ class Solution:
             prefix_sum += nums[i]
             if prefix_sum - k in tmpDict:
                 res = max(res, i - tmpDict[prefix_sum - k])
+            # This condition is necessary, we only keep the first prefix_sum number
+            # and ignore the latter one since we are trying to get the maxium length
             if prefix_sum not in tmpDict:
                 tmpDict[prefix_sum] = i
         return res
