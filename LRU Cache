@@ -68,11 +68,10 @@ class LRUCache:
     # to "prev->next->...->tail->node"
     # next's key points to node now points to prev
     # node's key points to prev now points to tail
-    def kick(self, prev):    #将数据移动至尾部
-        node = prev.next
-        #if there is only one node
+    def kick(self, node):    #将数据移动至尾部
         if node == self.tail:
             return
+        prev = self.key_to_prev[node.key]
         prev.next = node.next
         if node.next is not None:
             self.key_to_prev[node.next.key] = prev
@@ -84,7 +83,7 @@ class LRUCache:
     def get(self, key):		#获取数据
         if key not in self.key_to_prev:
             return -1
-        self.kick(self.key_to_prev[key])
+        self.kick(self.key_to_prev[key].next)
         return self.key_to_prev[key].next.value
 
     # @param key, an integer
@@ -92,13 +91,12 @@ class LRUCache:
     # @return nothing
     def set(self, key, value):     #数据放入缓存
         if key in self.key_to_prev:	   
-            self.kick(self.key_to_prev[key])
+            self.kick(self.key_to_prev[key].next)
             self.key_to_prev[key].next.value = value
         else:
             self.push_back(LinkedNode(key, value))  #如果key不存在，则存入新节点
             if len(self.key_to_prev) > self.capacity:		#如果缓存超出上限
                 self.pop_front()					#删除头部
-
 
 //////////////////////////////////////////////////////Use orderedDict/////////////////////////////////////////////////////////////////
 from collections import OrderedDict
