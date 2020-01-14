@@ -76,6 +76,7 @@ class LRUCache:
         prev.next = node.next
         if node.next is not None:
             self.key_to_prev[node.next.key] = prev
+            # Need to add node.next to be None otherwise it points back.
             node.next = None
         self.push_back(node)
 
