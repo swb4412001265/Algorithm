@@ -104,4 +104,41 @@ class Solution:
         tmp = heapq.nsmallest(k, nums)
         return tmp[-1]
                     
+ //////////////////////////////////////////////////quick sort partition///////////////////////////////////////////////////////////////
+ class Solution:
+    """
+    @param nums: A list of integers
+    @return: An integer denotes the middle number of the array
+    """
+    def median(self, nums):
+        # write your code here
+
+        mid = (len(nums) + 1) // 2
+        # here mid is the midth number in the array.
+        # in the nums, it should be nums[mid - 1], so we have mid - 1.
         
+        return self.helper(nums, 0, len(nums) - 1, mid - 1)
+        
+    
+    def helper(self, nums, start, end, mid):
+        if start == end:
+            return nums[mid]
+        
+        left, right = start, end
+        pivot = nums[(left + right) // 2]
+        
+        while left <= right:
+            while left <= right and pivot > nums[left]:
+                left += 1
+            while left <= right and pivot < nums[right]:
+                right -= 1
+            if left <= right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+                
+            if right >= mid:
+                self.helper(nums, start, right, mid)
+            if left <= mid:
+                self.helper(nums, left, end, mid)
+        return nums[mid]
