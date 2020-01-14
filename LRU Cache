@@ -35,6 +35,9 @@ Explanation：
 cache cap is 1，set(2,1)，get(2) and return 1，set(3,2) and delete (2,1)，get(2) and return -1，get(3) and return 2.
 
 //////////////////////////////////////////////////////Python/////////////////////////////////////////////////////////////////////
+# create a linked list to track the sequence of input data.
+# create a hashmap to track the date mapping, key maps to prev linkedNode
+
 class LinkedNode:
     # Need a singel linkedList and hashMap
     def __init__(self, key=None, value=None, next=None):
