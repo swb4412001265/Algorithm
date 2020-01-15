@@ -1,0 +1,78 @@
+944. Maximum Submatrix
+中文English
+Given an n x n matrix of positive and negative integers, find the submatrix with the largest possible sum.
+
+Example
+Example1
+
+Input:  
+matrix = [
+    [1,3,-1],
+    [2,3,-2],
+    [-1,-2,-3]
+]
+Output: 9
+Explanation:
+the submatrix with the largest possible sum is:
+[
+    [1,3],
+    [2,3]
+]
+Example2
+
+Input:  
+matrix = [
+    [1,1,1],
+    [1,1,1],
+    [1,1,1]
+]
+Output: 9
+Explanation:
+the submatrix with the largest possible sum is:
+[
+    [1,1,1],
+    [1,1,1],
+    [1,1,1]
+]
+///////////////////////////////////////////////////////My version for understanding subarray///////////////////////////////////
+class Solution:
+    """
+    @param matrix: the given matrix
+    @return: the largest possible sum
+    """
+    def maxSubmatrix(self, matrix):
+        # write your code here
+        if not matrix or not matrix[0]:
+            return 0
+            
+        from queue import Queue
+        q = Queue()
+        dx = [0, 1, 1]
+        dy = [1, 0, 1]
+        visited = [[0 for _ in range(len(matrix))] for _ in range(len(matrix))]
+        q.put((matrix[0][0], 0, 0))
+        visited[0][0] = 1
+        tmpList = []
+        while not q.empty():
+            # tmp = q.get()
+            tmpSum = 0
+            for i in range(q.qsize()):
+                val, q_x, q_y = q.get()
+                tmpSum += val
+                for j in range(3):
+                    tmp_x = dx[j] + q_x
+                    tmp_y = dy[j] + q_y
+                    if tmp_x < len(matrix) and tmp_y < len(matrix) and \
+                    not visited[tmp_x][tmp_y]:
+                        q.put((matrix[tmp_x][tmp_y], tmp_x, tmp_y))
+                        visited[tmp_x][tmp_y] = True
+            tmpList.append(tmpSum)
+        res = -sys.maxsize
+        preSum = 0
+        for i in range(len(tmpList)):
+            preSum += tmpList[i]
+            res = max(res, preSum)
+        return res
+            
+ ////////////////////////////////////////////Answer/////////////////////////////////////////////////////////////////////////
+ 
