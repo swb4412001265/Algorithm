@@ -1,3 +1,39 @@
+Lint596. Minimum Subtree
+Posted on 02-05-2019   |   0 Comments   |   visitors
+Description
+Given a binary tree, find the subtree with minimum sum. Return the root of the subtree.
+
+Example
+
+Example 1:
+
+1
+2
+3
+4
+5
+6
+Input:
+     1
+   /   \
+ -5     2
+ / \   /  \
+0   2 -4  -5
+Output:1
+
+Example 2:
+
+1
+2
+Input:
+   1
+Output:1
+
+
+Thoughts
+Since it is a tree type problem, we can use BFS or DFS to solve it. Since it is looking for sum of subtree, 
+hence, DFS is more appropriated. Lets use divide and conquer approch and recursive dfs to solve it first.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * Definition of TreeNode:
  * class TreeNode {
