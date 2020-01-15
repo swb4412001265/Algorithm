@@ -113,3 +113,33 @@ class Solution:
             return max(left, right) + 1
         
         
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree
+    @return: An integer
+    """
+    def minDepth(self, root):
+        # write your code here
+        if not root:
+            return 0
+        self.res = sys.maxsize
+        self.helper(root, 1)
+        return self.res
+        
+        
+    def helper(self, root, depth):
+        if not root:
+            return
+        if not root.left and not root.right:
+            self.res = min(self.res, depth)
+        self.helper(root.left, depth + 1)
+        self.helper(root.right, depth + 1)
