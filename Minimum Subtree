@@ -1,18 +1,10 @@
 Lint596. Minimum Subtree
-Posted on 02-05-2019   |   0 Comments   |   visitors
+
 Description
 Given a binary tree, find the subtree with minimum sum. Return the root of the subtree.
 
-Example
-
 Example 1:
 
-1
-2
-3
-4
-5
-6
 Input:
      1
    /   \
