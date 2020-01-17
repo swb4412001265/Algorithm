@@ -67,3 +67,85 @@ class Solution:
                     dp[j][i] = 1
                 ans += dp[j][i]
         return ans
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+input: abc
+['a', 'b', 'c', 'bc', 'ab', 'c', 'abc']
+class Solution:
+    """
+    @param str: s string
+    @return: return an integer, denote the number of the palindromic substrings
+    """
+    def countPalindromicSubstrings(self, str):
+        # write your code here
+        if not str:
+            return
+        self.tmpSet = []
+        self.combination(str)
+        return len(self.tmpSet)
+        
+    def combination(self, str):
+        if len(str) == 0:
+            return
+        for i in range(1, len(str) + 1):
+            preString = str[:i]
+            # print(preString)
+            # if self.isPalindrome(preString):
+            self.tmpSet.append(preString[:])
+            print(self.tmpSet)
+            self.combination(str[i:])
+                
+    def isPalindrome(self, s):
+        if not s:
+            return False
+        
+        if len(s) == 1:
+            return True
+        i = 0
+        j = len(s) - 1
+        while i < j:
+            if s[i] != s[j]:
+                return False
+            i += 1
+            j -= 1
+        return True
+        
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+input : abc
+stdout:
+['a', 'ab', 'b', 'abc', 'bc', 'c']
+ 
+class Solution:
+    """
+    @param str: s string
+    @return: return an integer, denote the number of the palindromic substrings
+    """
+    def countPalindromicSubstrings(self, str):
+        # write your code here
+        if not str:
+            return
+        self.tmpSet = []
+        count = 0
+        
+        for i in range(1, len(str) + 1):
+            for j in range(i):
+                # if self.isPalindrome(str[j:i]):
+                #     count += 1
+                self.tmpSet.append(str[j:i])
+                print(self.tmpSet)
+        return count
+                
+    def isPalindrome(self, s):
+        if not s:
+            return False
+        
+        if len(s) == 1:
+            return True
+        i = 0
+        j = len(s) - 1
+        while i < j:
+            if s[i] != s[j]:
+                return False
+            i += 1
+            j -= 1
+        return True
