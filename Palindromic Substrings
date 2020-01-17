@@ -149,3 +149,29 @@ class Solution:
             i += 1
             j -= 1
         return True
+        
+///////////////////////////////////////////////////////////////////////////中心法//////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param str: s string
+    @return: return an integer, denote the number of the palindromic substrings
+    """
+    def countPalindromicSubstrings(self, str):
+        # write your code here
+        if not str:
+            return
+        res = 0
+        for i in range(len(str)):
+            res += self.isP(str, i, i)
+            res += self.isP(str, i, i + 1)
+        return res
+            
+    
+    def isP(self, str, left, right):
+        count = 0
+        while left >= 0 and right < len(str) and str[left] == str[right]:
+            left -= 1
+            right += 1
+            count += 1
+        return count
+        
