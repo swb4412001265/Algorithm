@@ -1,6 +1,5 @@
-
 388. Permutation Sequence
-中文English
+
 Given n and k, find the kth permutation of the dictionary order in the full permutation of n.
 
 Example
