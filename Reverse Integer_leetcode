@@ -1,3 +1,17 @@
+413. Reverse Integer
+
+Reverse digits of an integer. Returns 0 when the reversed integer overflows (signed 32-bit integer).
+
+Example
+Example 1:
+
+Input: 123
+Output: 321
+Example 2:
+
+Input: -123
+Output: -321
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution:
     def reverse(self, x):
         """
@@ -32,3 +46,33 @@ class Solution:
             return res
             
             
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: the integer to be reversed
+    @return: the reversed integer
+    """
+    def reverseInteger(self, n):
+        # write your code here
+        if 0 <=n <= 9:
+            return n
+        res = 0
+        tmp = []
+        flag = False
+        if n < 0:
+            flag = True
+            n = -n
+        while n != 0:
+            tmp1 = n % 10
+            n //= 10
+            tmp.append(tmp1)
+        for i in range(len(tmp)):
+            res += tmp[i] * 10**(len(tmp) - 1 - i)
+            
+        if res > 2147483647 and flag == False or res > 2147483648 and flag == True :
+            return 0
+        if flag:
+            return -res
+        return res
+            
+        
