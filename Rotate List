@@ -1,4 +1,3 @@
-
 170. Rotate List
 中文English
 Given a list, rotate the list to the right by k places, where k is non-negative.
@@ -42,8 +41,11 @@ class Solution:
             count += 1
             head = head.next
         k %= count
+        
+        # Need to consider this corner case
         if k == 0:
             return dummy.next
+        # Need to consider this corner case
         if count == 1:
             return dummy.next
         for _ in range(count - k - 1):
