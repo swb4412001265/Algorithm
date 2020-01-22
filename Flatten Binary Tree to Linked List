@@ -95,4 +95,35 @@ class Solution:
         
         return root
         
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        this.val = val
+        this.left, this.right = None, None
+"""
 
+
+class Solution:
+    """
+    @param: root: a TreeNode, the root of the binary tree
+    @return: 
+    """
+    x = []
+    def flatten(self, root):
+        # write your code here
+        if root is None:
+            return
+        self.helper(root)
+        for i in range(len(self.x) - 1):
+            self.x[i].left = None
+            self.x[i].right = self.x[i + 1]
+        self.x[-1].left = self.x[-1].right = None
+        
+    def helper(self, root):
+        if root is None:
+            return
+        self.x.append(root)
+        self.helper(root.left)
+        self.helper(root.right)
