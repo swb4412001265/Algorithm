@@ -135,3 +135,46 @@ class Solution:
             return end
         return -1
         
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param A: an integer rotated sorted array
+    @param target: an integer to be searched
+    @return: an integer
+    """
+    def search(self, A, target):
+        # write your code here
+        if not A:
+            return -1
+        
+        start = 0
+        end = len(A) - 1
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if target < A[-1]:
+                if target > A[mid]:
+                    start = mid
+                elif target < A[mid]:
+                    if A[mid] > A[-1]:
+                        start = mid
+                    elif A[mid] <= A[-1]:
+                        end = mid
+                else:
+                    return mid
+            elif target > A[-1]:
+                if target < A[mid]:
+                    end = mid
+                elif target > A[mid]:
+                    if A[mid] > A[-1]:
+                        start = mid
+                    elif A[mid] <= A[-1]:
+                        end = mid
+                else:
+                    return mid
+            else:
+                return len(A) - 1
+        if A[start] == target:
+            return start
+        if A[end] == target:
+            return end
+        return -1
