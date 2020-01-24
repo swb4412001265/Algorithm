@@ -1,6 +1,5 @@
-
 148. Sort Colors
-中文English
+
 Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.
 
 Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
@@ -49,8 +48,7 @@ public:
     }
 };
 
-//nlogn
-
+/////////////////////////////////////////////////////////////nlogn///////////////////////////////////////////////////////////////////////
 class Solution{
 public:
     /**
@@ -80,7 +78,7 @@ public:
     }
 };
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution:
     """
     @param nums: A list of integer which is 0, 1 or 2 
@@ -103,7 +101,7 @@ class Solution:
                 end -= 1
         return start
         
-        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    class Solution:
     """
     @param nums: A list of integer which is 0, 1 or 2 
