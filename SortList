@@ -90,6 +90,7 @@ class Solution:
     """
     def sortList(self, head):
         # write your code here
+        # there is a key that head,next == None not just head == None
         if head == None or head.next == None:
             return head
         
