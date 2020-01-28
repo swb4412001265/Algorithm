@@ -1,0 +1,66 @@
+
+647. Find All Anagrams in a String
+中文English
+Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 40,000.
+
+The order of output does not matter.
+
+Example
+Example 1:
+
+Input : s =  "cbaebabacd", p = "abc"
+Output : [0, 6]
+Explanation : 
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+
+////////////////////////////////////////Time Limit Exceeded///////////////////////////////////////////
+
+class Solution:
+    """
+    @param: s: a string
+    @param: p: a string
+    @return: a list of index
+    """
+    def findAnagrams(self, s, p):
+        # write your code here
+        lenP = len(p)
+        result = []
+        for i in range(len(s) - lenP + 1):
+            if s[i] in p:
+                if self.equals(s[i:i + lenP], p) == 1:
+                    result.append(i)
+        return result            
+    
+    def equals(self, a, b):
+        tmpA = list(a)
+        tmpB = list(b)
+        for i in range(len(tmpA) - 1, -1, -1):
+            if tmpA[i] in tmpB:
+                tmp = tmpA.pop(i)
+                tmpB.remove(tmp)
+        if tmpA == [] and tmpB == []:
+            return 1
+        else:
+            return -1
+/////////////////////////////////////////////////////Time Limit Exceeded///////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: a string
+    @param p: a string
+    @return: a list of index
+    """
+    def findAnagrams(self, s, p):
+        # write your code here
+        if not s:
+            return []
+        p = sorted(list(p))
+        res = []
+        for i in range(len(s) - len(p) + 1):
+            if s[i] in p:
+                tmpA = s[i: i + len(p)]
+                if sorted(list(tmpA)) == p:
+                    res.append(i)
+        return res    
