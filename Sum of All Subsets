@@ -1,0 +1,38 @@
+730. Sum of All Subsets
+
+Given a number n, we need to find the sum of all the elements from all possible subsets of a set formed by first n natural numbers.
+
+Example
+Example 1:
+
+Input : n = 2
+Output : 6
+Explanation : 
+Possible subsets are {{1}, {2}, {1, 2}}. Sum of elements in subsets
+is 1 + 2 + 1 + 2 = 6
+Example 2:
+
+Input : n = 3
+Output : 24
+Explanation : 
+Possible subsets are {{1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}}
+Sum of subsets is : 
+1 + 2 + 3 + (1 + 2) + (1 + 3) + 
+(2 + 3) + (1 + 2 + 3) = 24
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: the given number
+    @return: Sum of elements in subsets
+    """
+    def subSum(self, n):
+        # write your code here
+        if not n:
+            return 0
+        res = 0
+        sum = 0
+        for i in range(1, n + 1):
+            sum += i
+        res = sum * 2**(n - 1)
+        return res
