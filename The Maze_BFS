@@ -63,6 +63,9 @@ class Solution:
         visited[start[0]][start[1]] = 1
         while not q.empty():
             x, y = q.get()
+            
+            # Only stops at destination counts, go through destination does not count
+            
             if x == destination[0] and y == destination[1]:
                 return True
             for i in range(4):
@@ -74,9 +77,12 @@ class Solution:
                     tmp_y += dy[i]
                 tmp_x -= dx[i]
                 tmp_y -= dy[i]
-                if tmp_x >= 0 and tmp_x < len(maze) and tmp_y >= 0 and \
-                tmp_y < len(maze[0]) and maze[tmp_x][tmp_y] == 0 and \
-                visited[tmp_x][tmp_y] == 0:
+                
+                # Do not need to check "tmp_x >= 0 and tmp_x < len(maze) and tmp_y >= 0 and \
+                # tmp_y < len(maze[0]) and maze[tmp_x][tmp_y] == 0" again since while loop is 
+                # efficient enough to get that result
+                
+                if visited[tmp_x][tmp_y] == 0:
                     q.put([tmp_x, tmp_y])
                     visited[tmp_x][tmp_y] = 1
         return False
