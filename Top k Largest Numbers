@@ -67,3 +67,47 @@ class Solution:
             self.quick_select(nums, left, j, k)
         if i - left + 1 <= k:
             self.quick_select(nums, i, right, k - (i - left))
+
+
+///////////////////////////////////////////////////////////quick sort//////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: an integer array
+    @param k: An integer
+    @return: the top k largest numbers in array
+    """
+    def topk(self, nums, k):
+        # write your code here
+        if not nums:
+            return []
+        self.quickSort(nums, 0, len(nums) - 1, k)
+        res= []
+        for i in nums[:k]:
+            res.append(i)
+        return res
+        
+    def quickSort(self, nums, start, end, k):
+        if start >= k:
+            return
+        
+        if start >= end:
+            return
+        
+        left, right = start, end
+        pivot = nums[(start + end) // 2]
+        
+        # since we are looking for top K largest, so we use nums[left] > pivot.
+        while left <= right:
+            while left <= right and nums[left] > pivot:
+                left += 1
+            while left <= right and nums[right] < pivot:
+                right -= 1
+            
+            if left <= right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+            
+        self.quickSort(nums, start, right, k)
+        self.quickSort(nums, left, end, k)
+        
