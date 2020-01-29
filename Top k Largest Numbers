@@ -23,13 +23,10 @@ class Solution:
         # write your code here
         if not nums:
             return []
-        if k >= len(nums):
-            nums.sort()
-            return nums[::-1]
         import heapq
         heapq.heapify(nums)
-        topK = heapq.nlargest(k, nums)
-        return topK
+        res = heapq.nlargest(k, nums)
+        return res
 
 ////////////////////////////////////////////////////O(n)//////////////////////////////////////////////////////////////////
 class Solution:
