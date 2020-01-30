@@ -1,0 +1,94 @@
+363. Trapping Rain Water
+
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+
+Trapping Rain Water
+
+Example
+Example 1:
+
+Input: [0,1,0]
+Output: 0
+Example 2:
+
+Input: [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+Challenge
+O(n) time and O(1) memory
+
+O(n) time and O(n) memory is also acceptable.
+
+//////////////////////////////////////////////////O(n)time O(n) space/////iterate from left nd right////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param heights: a list of integers
+    @return: a integer
+    """
+    def trapRainWater(self, heights):
+        # write your code here
+        # Current water height will be min(max_left, max_right) - cur_height
+        # Iterate from left to right and save all max_left for each current position
+        # Iterate from right to left and save all max right for each current position
+        # Then use accumulate all position by min(max_left, max_right) - cur_height
+        
+        if not heights:
+            return 0
+            
+        # from left to right
+        
+        max_left = -sys.maxsize
+        left_records = []
+        for i in heights:
+            max_left = max(i, max_left)
+            left_records.append(max_left)
+            
+        #from right to left
+        max_right = -sys.maxsize
+        right_records = []
+        for i in reversed(heights):
+            max_right = max(i, max_right)
+            right_records.append(max_right)
+        
+        # accumulate all position by using min(max_left, max_right) - cur_height
+        right_records = right_records[::-1]
+        
+        res = 0
+        n = len(heights)
+        for i in range(n):
+            res += min(left_records[i], right_records[i]) - heights[i]
+        
+        return res
+        
+///////////////////////////////////////////O(n) time and O(1) space///////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param heights: a list of integers
+    @return: a integer
+    """
+    def trapRainWater(self, heights):
+        # write your code here
+        # Prepare for two pointers: left and right
+        # Two max value: max_left and max_right which mean from 0 to left or 
+        # end to right, the max height of water
+        # When max_left < max_right,move pointer left since left size will hold 
+        # lowest height of water and current water height will be
+        # max(max_left, cur_height) - cur_height then left += 1
+        # the same logic for max_left >= max_right
+        if not heights:
+            return 0
+        left = 0
+        right = len(heights) - 1
+        max_left = heights[0]
+        max_right = heights[-1]
+        water = 0
+        while left <= right:
+            if max_left < max_right:
+                max_left = max(max_left, heights[left])
+                water += max_left - heights[left]
+                left += 1
+            else:
+                max_right = max(max_right, heights[right])
+                water += max_right - heights[right]
+                right -= 1
+        return water
+                
