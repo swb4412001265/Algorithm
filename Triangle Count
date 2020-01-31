@@ -45,3 +45,22 @@ class Solution:
                     left += 1
         return count
         
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param S: A list of integers
+    @return: An integer
+    """
+    def triangleCount(self, S):
+        # write your code here
+        if not S:
+            return 0
+        S.sort()
+        count = 0
+        for i in range(len(S) - 2):
+            for j in range(i + 1, len(S) - 1):
+                for z in range(j + 1, len(S)):
+                    if S[i] + S[j] <= S[z]:
+                        break
+                    count += 1
+        return count
