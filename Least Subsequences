@@ -1,5 +1,6 @@
-中文
-English
+1645. Least Subsequences
+https://www.lintcode.com/problem/least-subsequences/description
+
 Given an array with n integers. Splitting it into subsequences of strictly descending order.
 Output the minimum number of subsequences you can get by splitting.
 
