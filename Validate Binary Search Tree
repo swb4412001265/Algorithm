@@ -111,6 +111,9 @@ class Solution:
             return False, sys.maxsize, -sys.maxsize - 1
         if leftMax >= root.val or rightMin <= root.val:
             return False, sys.maxsize, -sys.maxsize - 1
+	    
+	# calculate the min and max values of subtree    
+	
         leftMin = min(leftMin, root.val)
         rightMax = max(rightMax, root.val)
         
