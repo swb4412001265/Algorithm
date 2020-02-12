@@ -1,0 +1,40 @@
+Given a binary tree, find the maximum path sum from root.
+
+The path may end at any node in the tree and contain at least one node in it.
+
+在线评测地址: http://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii/
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of binary tree.
+    @return: An integer
+    """
+    def maxPathSum2(self, root):
+        # write your code here
+        if not root:
+            return -1
+        
+        max_len = self.helper(root)
+        
+        return max_len
+    
+    def helper(self, root):
+        if not root:
+            return -sys.maxsize -1
+        
+        l_max = self.helper(root.left)
+        r_max = self.helper(root.right)
+        
+        max_len = max(l_max + root.val, r_max + root.val, root.val)
+        
+        return max_len
