@@ -1,5 +1,4 @@
 246. Binary Tree Path Sum II
-中文English
 Your are given a binary tree in which each node contains a value. Design an algorithm to get all paths which sum to a given value. 
 The path does not need to start or end at the root or a leaf, but it must go in a straight line down.
 
@@ -61,7 +60,6 @@ class Solution:
     def helper(self, root, target,tmp, level):
         if not root:
             return 
-        
         tmp.append(root.val)
         tmpVal = target
         for i in range(level, -1, -1):
@@ -102,7 +100,6 @@ class Solution:
             return 
         
         tmp.append(root.val)
-        level += 1
         tmpVal = target
         for i in range(level, -1, -1):
             tmpVal -= tmp[i]
