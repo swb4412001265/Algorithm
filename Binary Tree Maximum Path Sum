@@ -100,3 +100,25 @@ public:
         
     }
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    
+    def maxPathSum(self, root):
+        self.maxSum = -sys.maxsize
+        
+        self.helper(root)
+        
+        return self.maxSum 
+        
+    def helper(self, root):
+        
+        if not root: 
+            return 0 
+        
+        leftSum = self.helper(root.left)
+        rightSum = self.helper(root.right)
+        
+        self.maxSum = max(self.maxSum, root.val + leftSum + rightSum, leftSum + root.val, rightSum + root.val, root.val)
+        
+        return max(root.val + leftSum, root.val + rightSum)
