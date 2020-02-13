@@ -253,3 +253,59 @@ class Solution:
         for i in nodes:
             for j in i.neighbors:
                 hash[i].neighbors.append(hash[j])
+
+////////////////////////////////////////////////////Use set///////////////////////////////////////////////////////////////////////////////
+"""
+class UndirectedGraphNode:
+     def __init__(self, x):
+         self.label = x
+         self.neighbors = []
+"""
+
+class Solution:
+    """
+    @param node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        # write your code here
+        if not node:
+            return None
+        
+        allNodes = self.allNodes(node)
+        tmpDict = self.cloneNodes(allNodes)
+        self.connectNodes(allNodes, tmpDict)
+        return tmpDict[node]
+
+
+    def allNodes(self, node):
+        allNodes = set()
+        from queue import Queue
+        q = Queue()
+        q.put(node)
+        allNodes.add(node)
+        while not q.empty():
+            tmp = q.get()
+            # if tmp not in allNodes:
+            #     allNodes.add(tmp)
+            for i in tmp.neighbors:
+                if i not in allNodes:
+                    allNodes.add(i)
+                    q.put(i)
+        return allNodes
+        
+        
+    def cloneNodes(self, allNodes):
+        tmpDict = {}
+        
+        for i in allNodes:
+            tmpDict[i] = UndirectedGraphNode(i.label)
+        return tmpDict
+        
+    def connectNodes(self, allNodes, tmpDict):
+        for i in allNodes:
+            tmp = tmpDict[i]
+            for j in i.neighbors:
+                tmp.neighbors.append(tmpDict[j])
+        
+                
