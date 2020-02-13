@@ -1,5 +1,5 @@
 651. Binary Tree Vertical Order Traversal
-中文English
+
 Given a binary tree, return the vertical order traversal of its nodes' values. (ie, from top to bottom, column by column).
 
 If two nodes are in the same row and column, the order should be from left to right.
@@ -139,8 +139,21 @@ class Solution:
             if node.right != None:
                 q.put((node.right, level + 1))
         print(tmpRes)
-            
+        # print out a list with sorted keys
+        print(sorted(tmpRes))    
         res = []
         for i in sorted(tmpRes):
             res.append(tmpRes[i])
         return res
+######################################################################
+Input
+Show Difference
+{3,9,20,#,#,15,7}
+Your stdout
+{0: [3, 15], -1: [9], 1: [20], 2: [7]}
+[-1, 0, 1, 2]
+Output
+[[9],[3,15],[20],[7]]
+Expected
+[[9],[3,15],[20],[7]]
+###################################################
