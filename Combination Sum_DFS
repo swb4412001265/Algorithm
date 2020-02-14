@@ -1,6 +1,6 @@
 35. Combination Sum
-中文English
-Given a set of candidtate numbers candidates and a target number target. Find all unique combinations in candidates where the numbers sums to target.
+Given a set of candidtate numbers candidates and a target number target. 
+Find all unique combinations in candidates where the numbers sums to target.
 
 The same repeated number may be chosen from candidates unlimited number of times.
 
@@ -139,3 +139,32 @@ public:
         }
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param num: Given the candidate numbers
+    @param target: Given the target number
+    @return: All the combinations that sum to target
+    """
+    def combinationSum2(self, num, target):
+        # write your code here
+        if not num:
+            return []
+        self.res = []
+        self.helper(sorted(num), target, 0, [])                         
+        return self.res
+        
+    def helper(self, num, target, index, tmpList):
+        if not num:
+            return
+        if target == 0:
+            self.res.append(tmpList[:])
+        for i in range(index, len(num)):
+            if num[i] > target:
+                break
+            if i != index and num[i] == num[i - 1]:
+                continue
+            tmpList.append(num[i])
+            self.helper(num, target - num[i], i + 1, tmpList)
+            tmpList.pop()
