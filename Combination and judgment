@@ -1,7 +1,4 @@
 1666. Combination and judgment prime number
-cat-only-icon
-CAT Only
-中文English
 Give n integers and an integer k, you can choose k integers in the n integers and add them up, 
 now let you calculate how many ways that the sum of the k integers is a prime number.
 
