@@ -115,6 +115,8 @@ class Solution:
         # write your code here
         if not obstacleGrid:
             return 0
+	if len(obstacleGrid[0]) == 0:
+           return 0
         dp = [[1 for _ in range(len(obstacleGrid[0]))] for _ in range(len(obstacleGrid))]
         for i in range(len(obstacleGrid)):
             for j in range(len(obstacleGrid[0])):
