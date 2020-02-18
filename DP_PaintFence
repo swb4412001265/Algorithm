@@ -60,3 +60,28 @@ public:
         return p[n];
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param n: non-negative integer, n posts
+    @param k: non-negative integer, k colors
+    @return: an integer, the total number of ways
+    """
+    def numWays(self, n, k):
+        # write your code here
+        # define there are dp[i] ways when there are i posts
+        dp = [0 for i in range(n + 1)]
+        if n == 0:
+            return 0
+        if n == 1:
+            return k
+        if n == 2:
+            return k * k 
+        dp[0] = 0
+        dp[1] = k
+        dp[2] = k * k
+        for i in range(3, n + 1):
+            dp[i] = (k- 1) * (dp[i - 1] + dp[i - 2])
+            
+        return dp[n]
