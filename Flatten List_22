@@ -74,3 +74,27 @@ class Solution(object):
                 flatten_list.append(top)
                 
         return flatten_list
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution(object):
+
+    # @param nestedList a list, each element in the list 
+    # can be a list or integer, for example [1,2,[1,2]]
+    # @return {int[]} a list of integer
+    def flatten(self, nestedList):
+        # Write your code here
+        if not nestedList:
+            return []
+        res = []
+        stack = [nestedList]
+        
+        while stack:
+            tmp = stack.pop()
+            if type(tmp) == list:
+                for i in tmp:
+                    stack.append(i)
+            else:
+                res.append(tmp)
+             
+        return res[::-1]
+                
