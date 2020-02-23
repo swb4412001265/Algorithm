@@ -25,12 +25,14 @@ class MyStack:
         from queue import Queue
         self.q1 = Queue()
         self.q2 = Queue()
+        self.tmp = None
         
     def push(self, x: int) -> None:
         """
         Push element x onto stack.
         """
         self.q1.put(x)
+        self.tmp = x
         
 
     def pop(self) -> int:
@@ -38,8 +40,8 @@ class MyStack:
         Removes the element on top of the stack and returns that element.
         """
         while self.q1.qsize() > 1:
-            tmp = self.q1.get()
-            self.q2.put(tmp)
+            self.tmp = self.q1.get()
+            self.q2.put(self.tmp)
         tmp = self.q1.get()
         self.q1, self.q2 = self.q2, self.q1
         return tmp
@@ -48,11 +50,8 @@ class MyStack:
         """
         Get the top element.
         """
-        while self.q1.qsize() > 0:
-            tmp = self.q1.get()
-            self.q2.put(tmp)
-        self.q1, self.q2 = self.q2, self.q1
-        return tmp
+        
+        return self.tmp
 
     def empty(self) -> bool:
         """
