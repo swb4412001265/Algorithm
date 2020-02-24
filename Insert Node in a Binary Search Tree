@@ -52,6 +52,8 @@ class Solution:
         if root == None:
             return node
         tmpNode = root
+	# make sure tmpNode is not equal node
+	# only add node to the end of tree
         while tmpNode != node:
             if tmpNode.val > node.val:
                 if tmpNode.left == None:
