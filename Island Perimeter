@@ -85,3 +85,50 @@ class Solution:
                     visited[tmpX][tmpY] = 1
                     print(tmpX, tmpY)
         return count
+        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param grid: a 2D array
+    @return: the perimeter of the island
+    """
+    def islandPerimeter(self, grid):
+        # Write your code here
+        if not grid:
+            return 0
+        if not grid[0]:
+            return 0
+            
+        from queue import Queue
+        q = Queue()
+        
+        dx = [0, -1, 1, 0]
+        dy = [1, 0, 0, -1]
+        
+        res = 0
+        
+        m = len(grid)
+        n = len(grid[0])
+        visited = [[False for i in range(n)] for i in range(m)]
+        
+        for i in range(m):
+            if not q.empty():
+                break
+            for j in range(n):
+                if grid[i][j]:
+                    q.put((i, j))
+                    visited[i][j] = True
+                    break
+        while not q.empty():
+            x, y = q.get()
+            res += 4
+            for i in range(4):
+                tmp_x = x + dx[i]
+                tmp_y = y + dy[i]
+                if 0 <= tmp_x < m and 0 <= tmp_y < n and grid[tmp_x][tmp_y]:
+                    res -= 1
+                    if visited[tmp_x][tmp_y] == False:
+                        q.put((tmp_x, tmp_y))
+                        visited[tmp_x][tmp_y] = True
+        return res
+                
