@@ -109,3 +109,30 @@ class Solution:
             s = set()
             res += str[i]
         return res
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param strs: A list of strings
+    @return: The longest common prefix
+    """
+    def longestCommonPrefix(self, strs):
+        # write your code here
+        if not strs:
+            return ""
+        # s = set()
+        j = 0
+        resStr = ""
+        while j < len(strs[0]):
+            s = set()
+            for i in strs:
+                if i:
+                    s.add(i[j])
+                else:
+                    return resStr
+            if len(s) == 1:
+                resStr += i[j]
+                j += 1
+            else:
+                return resStr
+        return resStr
