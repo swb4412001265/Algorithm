@@ -1,5 +1,5 @@
 452. Remove Linked List Elements
-中文English
+
 Remove all elements from a linked list of integers that have value val.
 
 Example
@@ -34,6 +34,38 @@ class Solution:
         while head != None and head.next != None:
             if head.next.val == val:
                 head.next = head.next.next
+            else:
+                head = head.next
+        return dummy.next
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: a ListNode
+    @param val: An integer
+    @return: a ListNode
+    """
+    def removeElements(self, head, val):
+        # write your code here
+        if not head:
+            return head
+        dummy = ListNode(-1)
+        dummy.next = head
+        head = dummy
+        while head.next != None:
+            if head.next.val == val:
+                tmpNode1 = head
+                while head.next != None and head.next.val == val:
+                    head = head.next
+                tmpNode1.next = head.next
             else:
                 head = head.next
         return dummy.next
