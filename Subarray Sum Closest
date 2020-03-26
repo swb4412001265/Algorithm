@@ -148,3 +148,33 @@ class Solution:
                 tmp.append(min(tmpDict[i + 1][1], tmpDict[i][1]) + 1)
                 tmp.append(max(tmpDict[i + 1][1], tmpDict[i][1]))
         return tmp
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySumClosest(self, nums):
+        # write your code here
+        if not nums:
+            return []
+        tmp_dict = {0: -1}
+        preSum = 0
+        diff = sys.maxsize
+        for i in range(len(nums)):
+            preSum += nums[i]
+            if preSum not in tmp_dict:
+                tmp_dict[preSum] = i
+            else:
+                return [tmp_dict[preSum] + 1, i]
+                
+        tmp_keys = sorted(tmp_dict)
+        print(tmp_keys)
+        # tmp_keys = tmp_dict.keys()
+        for i in range(len(tmp_keys) - 1):
+            if diff > tmp_keys[i + 1] - tmp_keys[i]:
+                diff = tmp_keys[i + 1] - tmp_keys[i]
+                first = min(tmp_dict[tmp_keys[i + 1]], tmp_dict[tmp_keys[i]]) + 1
+                second = max(tmp_dict[tmp_keys[i + 1]], tmp_dict[tmp_keys[i]])
+        return [first, second]
