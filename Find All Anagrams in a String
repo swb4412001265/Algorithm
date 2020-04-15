@@ -99,3 +99,41 @@ class Solution:
                 ans.append(window_start)
                 
         return ans
+ 
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ class Solution:
+    """
+    @param s: a string
+    @param p: a string
+    @return: a list of index
+    """
+    def findAnagrams(self, s, p):
+        # write your code here
+        dict_a = {}
+        dict_b = {}
+        for i in p:
+            if i in dict_a:
+                dict_a[i] += 1
+            else:
+                dict_a[i] = 1
+        for i in s[:len(p)]:
+            if i in dict_b:
+                dict_b[i] += 1
+            else:
+                dict_b[i] = 1
+        res = []
+        if dict_a == dict_b:
+            res.append(0)
+
+        for i in range(len(p), len(s)):
+            start_index = i - len(p)
+            dict_b[s[start_index]] -= 1
+            if dict_b[s[start_index]] == 0:
+                del dict_b[s[start_index]]
+            if s[i] not in dict_b:
+                dict_b[s[i]] = 1
+            else:
+                dict_b[s[i]] += 1
+            if dict_b == dict_a:
+                res.append(start_index + 1)
+        return res
