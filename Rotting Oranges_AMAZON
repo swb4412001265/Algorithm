@@ -1,0 +1,53 @@
+leetcode
+https://leetcode.com/problems/rotting-oranges/
+994. Rotting Oranges
+
+In a given grid, each cell can have one of three values:
+
+the value 0 representing an empty cell;
+the value 1 representing a fresh orange;
+the value 2 representing a rotten orange.
+Every minute, any fresh orange that is adjacent (4-directionally) to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange.  If this is impossible, return -1 instead.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        if not grid:
+            return -1
+        if not grid[0]:
+            return -1
+        dx = [0, -1, 1, 0]
+        dy = [1, 0, 0, -1]
+        m = len(grid)
+        n = len(grid[0])
+        visited = [[False for _ in range(n)] for _ in range(m)]
+        from queue import Queue
+        q = Queue()
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 2:
+                    q.put((i, j))
+                    visited[i][j] = True
+        print(q.qsize())
+        day = -1
+        while not q.empty():
+            day += 1
+            for _ in range(q.qsize()):
+                tmp_x, tmp_y = q.get()
+                for i in range(4):
+                    x = tmp_x + dx[i]
+                    y = tmp_y + dy[i]
+                    if 0 <= x < m and 0 <= y < n and visited[x][y] == False and grid[x][y] == 1:
+                        grid[x][y] = 2
+                        q.put((x, y))
+                        visited[x][y] = True
+        print(grid)            
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    return -1
+        if day == -1:
+            return 0
+        return day
