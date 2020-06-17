@@ -1,0 +1,41 @@
+188. Insert five
+Given a number, insert a 5 at any position of the number to make the number after insertion the largest
+
+Example
+Example 1:
+
+Input:  a = 234
+Output: 5234
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////class Solution:
+    """
+    @param a: A number
+    @return: Returns the maximum number after insertion
+    """
+    def InsertFive(self, a):
+        # write your code here
+        b = False
+        if a < 0:
+            b = True
+            a = -a 
+        a = list(str(a))
+        flag = False
+        
+        for i in range(len(a)):
+            if not b:
+                if int(a[i]) < 5:
+                    a.insert(i, "5")
+                    flag = True
+                    break
+            else:
+                if int(a[i]) > 5:
+                    a.insert(i, "5")
+                    flag = True
+                    break
+        if not flag:
+            a.append("5")
+            
+        a = int("".join(a))
+        if b:
+            a = -a
+        return a
