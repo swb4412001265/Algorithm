@@ -1,0 +1,866 @@
+This page give instructions how to set up your development SBC with TLS to execute REST API testing. The TLS setup is used to allow the REST clients to connect over HTTPS which is a requirement for the REST API. TLS over signaling interfaces may require additional configuration which is out of scope of this document.
+
+Background
+The REST API on the SBC requires HTTPS. It is needed to provide the necessary encrypted interface. HTTPS stands for HTTP Secure which means running HTTP over TLS. PKI (public key infrastructure) provides infrastructure for management of digital certificates and public-key encryption. Digital certificates (aka SSL/TLS certificates) bind public keys to entities (ie. people and organizations). In normal customer situations, certificates are issued and signed by a CA (certificate authority) which is a known trusted entity. The CA is responsible for authenticating the entity. For our purposes in development and QA, this is not a feasible process to use a public known CA because of time and cost. We therefore will act as our own CA and create and sign our own certificates (aka self-signed certificates). We will then install the self-signed certificates onto our SBC to complete the TLS configuration. This will enable REST clients to connect to the SBC, as the REST API will no longer allow requests over plain unencrypted HTTP after REST MMI Sprint 10.
+
+
+
+Postman Settings
+If you are using Postman to execute testing, you must change the setting to disable SSL certificate verfication.
+
+From the Postman menu:
+
+Select File > Settings > General.
+Turn off "SSL certificate verification" setting
+Configure the SBC with certificate-records
+The SBC requires some configuration done to be able to support TLS. The configuration elements that need to be configured are:
+
+certificate-record (2 records, 1 for local certificate and 1 for master CA (certificate authority) certificate)
+tls-profile
+tls-global
+web-server-config
+Configure the "certificate-record" elements in the SBC
+From the SBC command line, execute "configure terminal" command to configure the attributes.
+
+SBCStandAloneVm8# conf t
+SBCStandAloneVm8(configure)# security
+SBCStandAloneVm8(security)# certificate-record
+SBCStandAloneVm8(certificate-record)#
+Configure the local certificate-record. Example, these are known working values at the time of writing:
+
+name = local
+country = US
+state = MA
+locality = Burlington
+organization = Engineering
+common-name = Acme
+key-size = 2048
+key-algor = ecdsa
+SBCStandAloneVm8(certificate-record)# name         local
+SBCStandAloneVm8(certificate-record)# country      US
+SBCStandAloneVm8(certificate-record)# state        MA
+SBCStandAloneVm8(certificate-record)# locality     Burlington
+SBCStandAloneVm8(certificate-record)# organization Engineering
+SBCStandAloneVm8(certificate-record)# common-name  Acme
+SBCStandAloneVm8(certificate-record)# key-size     2048
+SBCStandAloneVm8(certificate-record)# key-algor    ecdsa
+SBCStandAloneVm8(certificate-record)# done
+certificate-record
+        name                                    local
+        country                                 US
+        state                                   MA
+        locality                                Burlington
+        organization                            Engineering
+        unit
+        common-name                             Acme
+        key-size                                2048
+        alternate-name
+        trusted                                 enabled
+        key-usage-list                          digitalSignature
+                                                keyEncipherment
+        extended-key-usage-list                 serverAuth
+        key-algor                               ecdsa
+        digest-algor                            sha256
+        ecdsa-key-size                          p256
+        options
+        last-modified-by                        admin@10.75.10.215
+        last-modified-date                      2018-06-01 15:39:37
+SBCStandAloneVm8(certificate-record)#
+
+
+Configure the master (root) CA certificate-record.
+
+SBCStandAloneVm8(certificate-record)# name         masterca
+SBCStandAloneVm8(certificate-record)# country      US
+SBCStandAloneVm8(certificate-record)# state        MA
+SBCStandAloneVm8(certificate-record)# locality     Burlington
+SBCStandAloneVm8(certificate-record)# organization Engineering
+SBCStandAloneVm8(certificate-record)# common-name  Acme
+SBCStandAloneVm8(certificate-record)# key-size     2048
+SBCStandAloneVm8(certificate-record)# key-algor    ecdsa
+SBCStandAloneVm8(certificate-record)# done
+certificate-record
+        name                                    masterca
+        country                                 US
+        state                                   MA
+        locality                                Burlington
+        organization                            Engineering
+        unit
+        common-name                             Acme
+        key-size                                2048
+        alternate-name
+        trusted                                 enabled
+        key-usage-list                          digitalSignature
+                                                keyEncipherment
+        extended-key-usage-list                 serverAuth
+        key-algor                               ecdsa
+        digest-algor                            sha256
+        ecdsa-key-size                          p256
+        options
+        last-modified-by                        admin@10.75.10.215
+        last-modified-date                      2018-06-01 15:40:14
+SBCStandAloneVm8(certificate-record)# exit
+SBCStandAloneVm8(security)# exit
+SBCStandAloneVm8(configure)# exit
+
+
+
+Generate a certificate request on the SBC
+We must generate a certificate request on the SBC. This is not the certificate, but a request for a certificate.
+
+SBCStandAloneVm8# generate-certificate-request local
+Generating Certificate Signing Request. This can take several minutes....
+-----BEGIN CERTIFICATE REQUEST-----
+MIICzDCCAbQCAQAwVDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAk1BMRMwEQYDVQQH
+EwpCdXJsaW5ndG9uMRQwEgYDVQQKEwtFbmdpbmVlcmluZzENMAsGA1UEAxMEQWNt
+ZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8pu02mJNnEIgjfHR87
+CAWpH0r/pTg51gXjDl5Oi/aoaLiDZJHR5REy1OylyY3Ih/jc6E/x8QGJGU5V+sVO
+IGOx4nqIAnUYImTHejJIJCwDArLSlmV4xnm+h8HxMPWGbX+TZNQqnHU9zr6k0ZiT
+kBolk627qjjEgzFryhP8CrCC1RMhHL0YrQwh4j4FWZS/03nyRgIeKdsVlFRovxrF
+Ps/TLAH3ps1PICT991fEMEdifcfzJfAgdx7+88saFgPCVIzPiwJzDwiza2aQQL9O
+FQJSm34JVe0JOsq+WGE6925+9er7rS9067ddq5wj0CuGyDFO85USrUpprojPaWWI
+9nsCAwEAAaAzMDEGCSqGSIb3DQEJDjEkMCIwCwYDVR0PBAQDAgWgMBMGA1UdJQQM
+MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQCnXoghpGFCxEeCccRZ7tmR
+/Cu5dH+IeDRZGlAUgkfHf9R1laUCNMvgt8bPUyXBXprnW3WqlFGwTJPwOKYUQ2UJ
+Bd0WH3fWraUf3PWralTF9xORElk+kqDzZIg3mkSTzCh+cggfpKx7udDh4OhQ3FRi
+LaDoX0VeKIvus5QtPjwCLnajfIUIR3gMWmXny0jOYXAd2sf3KFYSZTZYc84VpdGC
+CoAeZtTCpKj1/OJY7ukwGE09WTbEHPURghcXDd/LixUSn2mchvy6SQU2gk3LS6Wm
+vCnHyFNmcjlnXXZ/TREmbIn1wLDkwZk0stNokBBS9Qtcf4C60JmpjXyza1RXXnBz
+-----END CERTIFICATE REQUEST-----
+WARNING: Configuration changed, run "save-config" command.
+SBCStandAloneVm8#
+
+Save this certificate request output. You will need it later in this procedure.
+
+Act as a CA (certificate authority) and create and self-sign certificates
+The Acme dev VM has OpenSSL installed which can allow one to execute the OpenSSL commands to create and self-sign certificates. Follow these instructions to do this.
+
+Prepare OpenSSL on Acme dev VM
+Execute the commands from your own home directory instead of /home/dyeam
+
+[dyeam@acme31 ~]$ pwd
+/home/dyeam
+[dyeam@acme31 ~]$ mkdir root-ca
+[dyeam@acme31 ~]$ cd root-ca/
+[dyeam@acme31 root-ca]$ mkdir {conf,private,public}
+[dyeam@acme31 root-ca]$ ll
+total 0
+drwxr-xr-x 2 dyeam src 6 Jun  1 15:52 conf
+drwxr-xr-x 2 dyeam src 6 Jun  1 15:52 private
+drwxr-xr-x 2 dyeam src 6 Jun  1 15:52 public
+[dyeam@acme31 root-ca]$ chmod 700 private/
+[dyeam@acme31 root-ca]$ mkdir signed-keys
+[dyeam@acme31 root-ca]$ echo "01" > conf/serial
+[dyeam@acme31 root-ca]$ touch conf/index
+[dyeam@acme31 root-ca]$ cd conf
+[dyeam@acme31 conf]$ ll
+total 4
+-rw-r--r-- 1 dyeam src 0 Jun  1 15:53 index
+-rw-r--r-- 1 dyeam src 3 Jun  1 15:53 serial
+[dyeam@acme31 conf]$ cat serial
+01
+[dyeam@acme31 conf]$
+
+
+Create an openssl.cnf configuration file
+[dyeam@acme31 conf]$ vi openssl.cnf
+
+
+Insert the following contents into the configuration file and save it:
+
+[ req ]
+default_bits            = 2048
+default_keyfile         = ./private/root.pem
+default_md              = sha1
+prompt                  = no
+distinguished_name      = root_ca_distinguished_name
+x509_extensions         = v3_ca
+string_mask             = utf8only
+[ root_ca_distinguished_name ]
+countryName             = US
+stateOrProvinceName     = MA
+localityName            = Burlington
+0.organizationName      = Engineering
+commonName              = Acme Packet MA
+emailAddress            = larry.e@oracle.com
+[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
+keyUsage=digitalSignature, keyEncipherment, keyCertSign
+basicConstraints = CA:true
+[ ca ]
+default_ca              = CA_default
+[ CA_default ]
+dir                     = .
+new_certs_dir           = ./signed-keys/
+database                = ./conf/index
+certificate             = ./public/root.pem
+serial                  = ./conf/serial
+private_key             = ./private/root.pem
+x509_extensions         = usr_cert
+name_opt                = ca_default
+cert_opt                = ca_default
+default_crl_days        = 1826
+default_days            = 1826
+default_md              = sha1
+preserve                = no
+policy                  = policy_match
+unique_subject          = no
+[ policy_match ]
+countryName             = match
+stateOrProvinceName     = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+[ usr_cert ]
+basicConstraints=CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+keyUsage=digitalSignature, keyEncipherment
+
+
+
+Create new public and private keys
+Create a new public/private key pair. 
+
+[dyeam@acme31 conf]$ cd ..
+[dyeam@acme31 root-ca]$ openssl req -nodes -config conf/openssl.cnf -days 1826 -x509 -newkey rsa:2048 -out public/root.pem -outform PEM
+Generating a 2048 bit RSA private key
+............................................+++
+...........................................................................................................................................................................................+++
+writing new private key to './private/root.pem'
+-----
+
+
+Verify the keys were created correctly.
+Verify the public key is valid. You will get an error from the command if it fails.
+
+[dyeam@acme31 root-ca]$ openssl x509 -in public/root.pem -text -noout
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            de:c4:04:80:39:f4:c0:af
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=US, ST=MA, L=Burlington, O=Engineering, CN=Acme Packet MA/emailAddress=larry.e@oracle.com
+        Validity
+            Not Before: Jun  1 20:18:20 2018 GMT
+            Not After : Jun  1 20:18:20 2023 GMT
+        Subject: C=US, ST=MA, L=Burlington, O=Engineering, CN=Acme Packet MA/emailAddress=larry.e@oracle.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:d4:71:6d:2d:dd:ce:5f:be:5d:b6:46:ee:e6:56:
+                    9d:75:2f:33:58:41:34:5a:f2:fe:01:45:6a:e6:fe:
+                    0e:dd:4e:0b:2e:ce:9c:8c:b5:21:20:4b:9e:e8:82:
+                    5e:12:c2:dc:31:62:a1:27:b1:c8:29:a8:92:55:0c:
+                    8b:66:78:af:5e:66:18:02:0c:d4:e1:51:56:63:ee:
+                    07:37:b5:60:88:42:5a:51:04:86:b8:aa:41:4c:22:
+                    d9:3e:59:56:b3:53:a1:28:6c:3f:89:8b:f0:d1:0a:
+                    7b:b9:06:6d:a5:b4:b7:fb:a7:ac:3b:7c:44:ae:9a:
+                    43:d8:5b:ca:dc:50:32:0b:a2:1d:a2:4f:36:a6:d0:
+                    ef:97:21:67:cb:97:3a:be:f6:77:34:e8:00:59:11:
+                    72:78:57:d2:07:67:0b:06:cf:19:fa:53:a8:fb:e7:
+                    bc:e5:ca:d2:21:b4:16:f3:f4:d6:e7:24:8f:8c:6e:
+                    4c:d4:d5:f5:b2:8a:24:cb:c0:a5:38:6c:bf:66:0b:
+                    27:dc:9d:e9:d2:4c:33:34:71:a3:1c:f0:cb:bf:58:
+                    9c:5b:d7:11:70:ad:c4:f2:6f:48:6d:ca:4e:74:af:
+                    55:eb:75:fe:d1:d3:b1:1c:1e:57:d3:0c:b9:39:29:
+                    1d:72:f8:99:af:97:5d:dc:a7:d4:25:1f:e5:b7:59:
+                    a4:71
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier:
+                62:65:DD:07:CE:26:C5:E7:6E:2D:D0:49:96:41:07:F0:24:D6:97:53
+            X509v3 Authority Key Identifier:
+                keyid:62:65:DD:07:CE:26:C5:E7:6E:2D:D0:49:96:41:07:F0:24:D6:97:53
+                DirName:/C=US/ST=MA/L=Burlington/O=Engineering/CN=Acme Packet MA/emailAddress=larry.e@oracle.com
+                serial:DE:C4:04:80:39:F4:C0:AF
+            X509v3 Key Usage:
+                Digital Signature, Key Encipherment, Certificate Sign
+            X509v3 Basic Constraints:
+                CA:TRUE
+    Signature Algorithm: sha1WithRSAEncryption
+         01:d3:4d:d4:64:30:aa:1f:fc:8d:1b:41:c2:61:db:05:5a:5b:
+         fd:db:0d:d9:a1:4b:49:45:53:ec:b6:9b:08:ae:a0:ee:0e:07:
+         44:8e:1b:2b:cb:ed:a3:33:b1:fd:76:51:5f:61:1d:b4:f7:2a:
+         6b:9d:3d:91:56:b6:8f:ef:b0:8d:3a:3a:45:a4:28:31:4f:e7:
+         9e:f5:33:11:bb:21:d9:7f:c3:7d:78:09:2c:7b:06:72:c0:8c:
+         d7:c3:a5:77:53:c4:b2:71:22:6d:45:6e:d1:f0:83:b4:37:23:
+         a5:2f:fc:ac:69:61:18:0f:5b:a4:8a:a2:a2:99:94:f8:b7:d5:
+         95:f8:7f:93:40:3f:1d:9c:e2:0f:4d:65:4e:a2:0d:bf:c2:f4:
+         6a:21:f9:72:4e:f7:28:17:3e:69:42:17:3c:ad:ee:48:26:9a:
+         9b:7f:a6:ef:2a:5d:25:e1:ad:c7:1f:08:81:a7:80:7c:05:7f:
+         82:6b:e3:0e:22:c9:e6:d0:f1:86:d6:c9:90:20:a4:2c:fb:8b:
+         51:d4:d5:27:71:79:80:5d:af:87:5e:3e:3e:08:ee:ed:85:52:
+         cd:9b:1e:34:08:5b:18:cc:b4:e6:3a:4a:41:10:af:90:54:27:
+         6d:3b:0e:a3:7d:be:3d:e4:f0:f8:d0:d7:5d:16:6b:48:23:cb:
+         8a:64:91:a3
+[dyeam@acme31 root-ca]$
+
+
+Verify the private key is valid. You will get an error from the command if it fails.
+
+[dyeam@acme31 root-ca]$ openssl rsa -in private/root.pem -text -noout
+Private-Key: (2048 bit)
+modulus:
+    00:d4:71:6d:2d:dd:ce:5f:be:5d:b6:46:ee:e6:56:
+    9d:75:2f:33:58:41:34:5a:f2:fe:01:45:6a:e6:fe:
+    0e:dd:4e:0b:2e:ce:9c:8c:b5:21:20:4b:9e:e8:82:
+    5e:12:c2:dc:31:62:a1:27:b1:c8:29:a8:92:55:0c:
+    8b:66:78:af:5e:66:18:02:0c:d4:e1:51:56:63:ee:
+    07:37:b5:60:88:42:5a:51:04:86:b8:aa:41:4c:22:
+    d9:3e:59:56:b3:53:a1:28:6c:3f:89:8b:f0:d1:0a:
+    7b:b9:06:6d:a5:b4:b7:fb:a7:ac:3b:7c:44:ae:9a:
+    43:d8:5b:ca:dc:50:32:0b:a2:1d:a2:4f:36:a6:d0:
+    ef:97:21:67:cb:97:3a:be:f6:77:34:e8:00:59:11:
+    72:78:57:d2:07:67:0b:06:cf:19:fa:53:a8:fb:e7:
+    bc:e5:ca:d2:21:b4:16:f3:f4:d6:e7:24:8f:8c:6e:
+    4c:d4:d5:f5:b2:8a:24:cb:c0:a5:38:6c:bf:66:0b:
+    27:dc:9d:e9:d2:4c:33:34:71:a3:1c:f0:cb:bf:58:
+    9c:5b:d7:11:70:ad:c4:f2:6f:48:6d:ca:4e:74:af:
+    55:eb:75:fe:d1:d3:b1:1c:1e:57:d3:0c:b9:39:29:
+    1d:72:f8:99:af:97:5d:dc:a7:d4:25:1f:e5:b7:59:
+    a4:71
+publicExponent: 65537 (0x10001)
+privateExponent:
+    00:c7:92:f3:0d:36:a5:4c:7e:aa:cc:b5:20:73:55:
+    05:40:f4:21:99:14:50:59:ec:92:c0:a0:f5:07:a1:
+    be:57:1a:9d:18:d0:d2:72:c1:2a:28:8b:c1:f2:0d:
+    9e:d0:a3:2c:76:5c:80:a6:a8:b6:30:a4:83:2b:d0:
+    c8:18:70:e1:d6:9d:b4:8a:20:81:d0:56:38:01:52:
+    b8:87:16:26:64:7b:69:1b:59:54:32:a1:07:0c:be:
+    64:35:d5:79:c4:a7:98:eb:3f:9e:04:da:69:56:08:
+    32:28:a4:a8:57:16:4a:0c:e8:fc:bd:39:45:d0:7d:
+    6d:a5:10:be:a7:6f:d3:43:e6:c5:7f:2f:2b:f1:7a:
+    72:f1:82:ea:1e:78:02:47:78:0f:ba:66:14:03:e3:
+    2a:fd:7c:c7:fd:51:b4:c1:e7:92:8a:57:22:b6:27:
+    8b:82:31:82:2d:f3:17:1a:ff:60:6c:5f:c6:9f:82:
+    ba:20:c2:ff:b6:3f:ae:74:d0:25:27:3f:89:ee:2c:
+    51:26:4a:de:8b:f1:ad:21:50:8a:ca:50:f6:35:eb:
+    1a:9f:f9:eb:5f:e6:cb:14:45:26:79:cd:f2:0a:00:
+    ce:8f:df:a3:34:e5:9a:42:d3:21:57:56:c7:b5:11:
+    26:27:87:14:d6:be:3f:8e:e0:f6:c2:6a:c4:81:ff:
+    f0:0d
+prime1:
+    00:fe:49:4a:48:f3:47:70:96:e3:39:6f:0b:71:cf:
+    14:01:70:5d:e3:39:15:48:e2:c8:90:16:e8:df:4f:
+    59:c6:97:8a:fa:ac:cf:0f:4b:0d:59:05:b0:73:e8:
+    e4:d9:99:2e:ae:30:eb:23:ff:3d:51:7c:b4:7d:bb:
+    1e:1c:4c:34:38:19:05:73:86:6e:cc:5e:58:49:bf:
+    8d:e5:af:6c:b2:91:8a:c2:51:51:28:99:b0:46:72:
+    f5:7f:79:43:76:95:c6:ef:82:04:e9:25:80:ff:13:
+    49:45:67:1e:99:e9:e0:84:27:01:51:ea:6a:5e:7a:
+    55:92:f5:ba:f6:4c:57:5a:e3
+prime2:
+    00:d5:df:f2:26:6f:7d:16:2f:37:9b:d5:68:7e:03:
+    d2:36:b0:18:56:c1:86:7c:40:95:00:86:33:8a:97:
+    cd:31:37:17:9d:04:bc:8d:a5:87:be:be:25:05:95:
+    c1:d0:e3:98:9e:71:d0:95:95:21:05:23:58:9d:cf:
+    ab:bc:9f:60:74:1d:e1:96:09:d5:5d:1e:32:1e:db:
+    d7:36:14:38:f2:84:86:06:ef:7b:1a:fb:94:9e:8c:
+    50:9c:e1:3b:45:5c:7d:93:ab:6f:04:8c:48:1e:ed:
+    af:d1:b0:e2:09:eb:d4:d8:72:5c:4f:c8:96:d4:ec:
+    eb:8e:50:d6:f1:09:55:7f:9b
+exponent1:
+    00:9b:25:b8:6f:3e:0f:ce:80:21:6f:3f:73:6a:23:
+    00:7f:c8:41:60:8b:c9:92:c8:db:ba:1e:60:43:2f:
+    b5:04:d8:1d:71:c8:d2:24:f0:93:da:47:00:5c:18:
+    32:d9:18:ff:44:44:90:93:4b:fd:eb:a3:fc:b3:e1:
+    e1:03:3e:f3:75:6e:be:c6:b7:b5:0e:78:59:c1:d5:
+    60:0c:4d:b6:32:55:5e:a6:24:db:31:bc:63:b2:f8:
+    1d:15:83:b5:47:bb:26:bf:a7:42:bb:c5:a8:28:f9:
+    69:71:30:f3:98:d0:fb:ad:65:e7:06:45:d2:54:86:
+    ab:83:98:ee:53:ac:4c:78:25
+exponent2:
+    4c:61:5f:0c:64:f2:8a:32:b0:ac:61:89:a0:bf:62:
+    9a:8f:47:11:ec:a9:47:c4:94:b2:0c:3b:69:fa:8e:
+    98:4d:f1:8b:ec:fe:1d:a4:09:17:90:b6:8e:09:0e:
+    9f:b8:38:70:15:7b:85:80:2d:bb:b5:04:d7:cf:2b:
+    a9:00:4e:25:09:ea:df:77:81:90:70:d1:3b:7e:0d:
+    9c:cd:9a:0c:da:51:37:36:dd:83:24:67:ce:3b:94:
+    2a:82:b1:75:32:f3:d2:01:fe:72:e4:5a:79:59:2f:
+    5a:36:ce:72:f6:9b:1b:f5:b3:8b:f6:ba:0f:2e:d1:
+    6d:10:e7:c2:4b:30:12:93
+coefficient:
+    7b:14:c7:0f:51:9c:52:38:df:ce:e2:95:5f:e7:4c:
+    2c:80:52:f2:bc:1b:b7:87:21:01:25:4d:e9:9d:55:
+    79:12:ad:15:f4:1f:78:71:57:15:40:63:aa:17:7d:
+    03:8f:71:b3:e8:cf:7a:c7:6d:74:b8:c9:a0:b3:38:
+    ac:b5:8d:14:80:3f:4c:8d:55:a9:d9:68:1f:43:ef:
+    f8:a1:8f:3e:12:33:cf:16:dc:55:67:3b:7e:5e:b2:
+    7a:db:29:8a:04:ad:e4:08:07:a7:7a:ca:60:f5:e1:
+    9a:6c:f0:ae:d3:9e:de:77:a2:b2:11:c9:aa:7e:d9:
+    c1:1c:fe:07:ad:a7:7d:99
+[dyeam@acme31 root-ca]$
+
+
+Prepare your certificate request
+Go and get the output of the "generate-certificate-request" command you executed on the SBC earlier in the procedure. Create a new file to hold the contents of the certificate request output.
+
+[dyeam@acme31 root-ca]$ vi request.csr
+Paste the certificate request string into the file and save it.
+
+-----BEGIN CERTIFICATE REQUEST-----
+MIICzDCCAbQCAQAwVDELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAk1BMRMwEQYDVQQH
+EwpCdXJsaW5ndG9uMRQwEgYDVQQKEwtFbmdpbmVlcmluZzENMAsGA1UEAxMEQWNt
+ZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8pu02mJNnEIgjfHR87
+CAWpH0r/pTg51gXjDl5Oi/aoaLiDZJHR5REy1OylyY3Ih/jc6E/x8QGJGU5V+sVO
+IGOx4nqIAnUYImTHejJIJCwDArLSlmV4xnm+h8HxMPWGbX+TZNQqnHU9zr6k0ZiT
+kBolk627qjjEgzFryhP8CrCC1RMhHL0YrQwh4j4FWZS/03nyRgIeKdsVlFRovxrF
+Ps/TLAH3ps1PICT991fEMEdifcfzJfAgdx7+88saFgPCVIzPiwJzDwiza2aQQL9O
+FQJSm34JVe0JOsq+WGE6925+9er7rS9067ddq5wj0CuGyDFO85USrUpprojPaWWI
+9nsCAwEAAaAzMDEGCSqGSIb3DQEJDjEkMCIwCwYDVR0PBAQDAgWgMBMGA1UdJQQM
+MAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQCnXoghpGFCxEeCccRZ7tmR
+/Cu5dH+IeDRZGlAUgkfHf9R1laUCNMvgt8bPUyXBXprnW3WqlFGwTJPwOKYUQ2UJ
+Bd0WH3fWraUf3PWralTF9xORElk+kqDzZIg3mkSTzCh+cggfpKx7udDh4OhQ3FRi
+LaDoX0VeKIvus5QtPjwCLnajfIUIR3gMWmXny0jOYXAd2sf3KFYSZTZYc84VpdGC
+CoAeZtTCpKj1/OJY7ukwGE09WTbEHPURghcXDd/LixUSn2mchvy6SQU2gk3LS6Wm
+vCnHyFNmcjlnXXZ/TREmbIn1wLDkwZk0stNokBBS9Qtcf4C60JmpjXyza1RXXnBz
+-----END CERTIFICATE REQUEST-----
+
+
+Verify the certificate request is valid.
+
+[dyeam@acme31 root-ca]$ openssl req -in request.csr -noout -text
+Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=US, ST=MA, L=Burlington, O=Engineering, CN=Acme
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:bf:29:bb:4d:a6:24:d9:c4:22:08:df:1d:1f:3b:
+                    08:05:a9:1f:4a:ff:a5:38:39:d6:05:e3:0e:5e:4e:
+                    8b:f6:a8:68:b8:83:64:91:d1:e5:11:32:d4:ec:a5:
+                    c9:8d:c8:87:f8:dc:e8:4f:f1:f1:01:89:19:4e:55:
+                    fa:c5:4e:20:63:b1:e2:7a:88:02:75:18:22:64:c7:
+                    7a:32:48:24:2c:03:02:b2:d2:96:65:78:c6:79:be:
+                    87:c1:f1:30:f5:86:6d:7f:93:64:d4:2a:9c:75:3d:
+                    ce:be:a4:d1:98:93:90:1a:25:93:ad:bb:aa:38:c4:
+                    83:31:6b:ca:13:fc:0a:b0:82:d5:13:21:1c:bd:18:
+                    ad:0c:21:e2:3e:05:59:94:bf:d3:79:f2:46:02:1e:
+                    29:db:15:94:54:68:bf:1a:c5:3e:cf:d3:2c:01:f7:
+                    a6:cd:4f:20:24:fd:f7:57:c4:30:47:62:7d:c7:f3:
+                    25:f0:20:77:1e:fe:f3:cb:1a:16:03:c2:54:8c:cf:
+                    8b:02:73:0f:08:b3:6b:66:90:40:bf:4e:15:02:52:
+                    9b:7e:09:55:ed:09:3a:ca:be:58:61:3a:f7:6e:7e:
+                    f5:ea:fb:ad:2f:74:eb:b7:5d:ab:9c:23:d0:2b:86:
+                    c8:31:4e:f3:95:12:ad:4a:69:ae:88:cf:69:65:88:
+                    f6:7b
+                Exponent: 65537 (0x10001)
+        Attributes:
+        Requested Extensions:
+            X509v3 Key Usage:
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication
+    Signature Algorithm: sha256WithRSAEncryption
+         a7:5e:88:21:a4:61:42:c4:47:82:71:c4:59:ee:d9:91:fc:2b:
+         b9:74:7f:88:78:34:59:1a:50:14:82:47:c7:7f:d4:75:95:a5:
+         02:34:cb:e0:b7:c6:cf:53:25:c1:5e:9a:e7:5b:75:aa:94:51:
+         b0:4c:93:f0:38:a6:14:43:65:09:05:dd:16:1f:77:d6:ad:a5:
+         1f:dc:f5:ab:6a:54:c5:f7:13:91:12:59:3e:92:a0:f3:64:88:
+         37:9a:44:93:cc:28:7e:72:08:1f:a4:ac:7b:b9:d0:e1:e0:e8:
+         50:dc:54:62:2d:a0:e8:5f:45:5e:28:8b:ee:b3:94:2d:3e:3c:
+         02:2e:76:a3:7c:85:08:47:78:0c:5a:65:e7:cb:48:ce:61:70:
+         1d:da:c7:f7:28:56:12:65:36:58:73:ce:15:a5:d1:82:0a:80:
+         1e:66:d4:c2:a4:a8:f5:fc:e2:58:ee:e9:30:18:4d:3d:59:36:
+         c4:1c:f5:11:82:17:17:0d:df:cb:8b:15:12:9f:69:9c:86:fc:
+         ba:49:05:36:82:4d:cb:4b:a5:a6:bc:29:c7:c8:53:66:72:39:
+         67:5d:76:7f:4d:11:26:6c:89:f5:c0:b0:e4:c1:99:34:b2:d3:
+         68:90:10:52:f5:0b:5c:7f:80:ba:d0:99:a9:8d:7c:b3:6b:54:
+         57:5e:70:73
+[dyeam@acme31 root-ca]$
+
+
+Create your certificate
+Now for the first big exciting step. You will create your certificate.
+
+[dyeam@acme31 root-ca]$ openssl ca -batch -config conf/openssl.cnf -in request.csr -out request.cert
+Using configuration from conf/openssl.cnf
+Check that the request matches the signature
+Signature ok
+Certificate Details:
+        Serial Number: 1 (0x1)
+        Validity
+            Not Before: Jun  1 20:55:30 2018 GMT
+            Not After : Jun  1 20:55:30 2023 GMT
+        Subject:
+            countryName               = US
+            stateOrProvinceName       = MA
+            organizationName          = Engineering
+            commonName                = Acme
+        X509v3 extensions:
+            X509v3 Basic Constraints:
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                C1:DC:4C:4C:B9:2A:EB:83:10:CB:16:76:D9:AB:D6:92:59:6B:4E:19
+            X509v3 Authority Key Identifier:
+                keyid:62:65:DD:07:CE:26:C5:E7:6E:2D:D0:49:96:41:07:F0:24:D6:97:53
+                DirName:/C=US/ST=MA/L=Burlington/O=Engineering/CN=Acme Packet MA/emailAddress=larry.e@oracle.com
+                serial:DE:C4:04:80:39:F4:C0:AF
+            X509v3 Key Usage:
+                Digital Signature, Key Encipherment
+Certificate is to be certified until Jun  1 20:55:30 2023 GMT (1826 days)
+Write out database with 1 new entries
+Data Base Updated
+[dyeam@acme31 root-ca]$
+
+
+The certificate output file "request.cert" contains more data than just the certificate. Open the "request.cert" file
+
+[dyeam@acme31 root-ca]$ vi request.cert
+
+
+Notice that the actual certificate is only the final portion of the file. It starts from "-----BEGIN CERTIFICATE-----" to "-----END CERTIFICATE-----" inclusive. Take note of this portion. You will need it in a couple of steps.
+
+-----BEGIN CERTIFICATE-----
+MIIEMDCCAxigAwIBAgIBATANBgkqhkiG9w0BAQUFADCBgTELMAkGA1UEBhMCVVMx
+CzAJBgNVBAgMAk1BMRMwEQYDVQQHDApCdXJsaW5ndG9uMRQwEgYDVQQKDAtFbmdp
+bmVlcmluZzEXMBUGA1UEAwwOQWNtZSBQYWNrZXQgTUExITAfBgkqhkiG9w0BCQEW
+EmxhcnJ5LmVAb3JhY2xlLmNvbTAeFw0xODA2MDEyMDU1MzBaFw0yMzA2MDEyMDU1
+MzBaMD8xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJNQTEUMBIGA1UEChMLRW5naW5l
+ZXJpbmcxDTALBgNVBAMTBEFjbWUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQC/KbtNpiTZxCII3x0fOwgFqR9K/6U4OdYF4w5eTov2qGi4g2SR0eURMtTs
+pcmNyIf43OhP8fEBiRlOVfrFTiBjseJ6iAJ1GCJkx3oySCQsAwKy0pZleMZ5vofB
+8TD1hm1/k2TUKpx1Pc6+pNGYk5AaJZOtu6o4xIMxa8oT/AqwgtUTIRy9GK0MIeI+
+BVmUv9N58kYCHinbFZRUaL8axT7P0ywB96bNTyAk/fdXxDBHYn3H8yXwIHce/vPL
+GhYDwlSMz4sCcw8Is2tmkEC/ThUCUpt+CVXtCTrKvlhhOvdufvXq+60vdOu3Xauc
+I9ArhsgxTvOVEq1Kaa6Iz2lliPZ7AgMBAAGjgfMwgfAwCQYDVR0TBAIwADAdBgNV
+HQ4EFgQUwdxMTLkq64MQyxZ22avWkllrThkwgbYGA1UdIwSBrjCBq4AUYmXdB84m
+xeduLdBJlkEH8CTWl1OhgYekgYQwgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJN
+QTETMBEGA1UEBwwKQnVybGluZ3RvbjEUMBIGA1UECgwLRW5naW5lZXJpbmcxFzAV
+BgNVBAMMDkFjbWUgUGFja2V0IE1BMSEwHwYJKoZIhvcNAQkBFhJsYXJyeS5lQG9y
+YWNsZS5jb22CCQDexASAOfTArzALBgNVHQ8EBAMCBaAwDQYJKoZIhvcNAQEFBQAD
+ggEBAEuDEmz53QDOQcCgniC0/5ROgBJ2w6SEkDzigeBu1xuhooO18lmF7KD19nqt
+L72ohfzBzl68FMFKRMoc4uVzfPWDoBMjSuzRb6pUdlSDV2cVgFdeUePLFqf7WeN2
+OcDuA+9hJpjKqCn51lmH39iHt0oeuwGKrrE919q4SDcEoSCb48gi8zR1hRy2Rfzx
+9bsRJ+uFLWpwE88QaZUFviR+CmIBUl1o9Yk3bLOQFmf0DWgHiyy7DOuswVqoF/Xg
+rQNY6LB1Nm5e2yQ6ocLQ36S9HNIqewT6iPcf1RWbbf/Ond0QJYJMJV8RZeMD6JcB
+ehJMI7/fN6t9A4m3JaknJqYv3qg=
+-----END CERTIFICATE-----
+
+
+Open the file "public/root.pem".
+
+[dyeam@acme31 root-ca]$ vi public/root.pem
+It contains the root certificate. It is the public key certificate that identifies a root CA (certificate authority). In this case, it is us, as we are acting as the CA. This certificate was generated when we generated the public/private key pair earlier in the procedure. You will also need this in a couple of steps.
+
+-----BEGIN CERTIFICATE-----
+MIIEfjCCA2agAwIBAgIJAN7EBIA59MCvMA0GCSqGSIb3DQEBBQUAMIGBMQswCQYD
+VQQGEwJVUzELMAkGA1UECAwCTUExEzARBgNVBAcMCkJ1cmxpbmd0b24xFDASBgNV
+BAoMC0VuZ2luZWVyaW5nMRcwFQYDVQQDDA5BY21lIFBhY2tldCBNQTEhMB8GCSqG
+SIb3DQEJARYSbGFycnkuZUBvcmFjbGUuY29tMB4XDTE4MDYwMTIwMTgyMFoXDTIz
+MDYwMTIwMTgyMFowgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTETMBEGA1UE
+BwwKQnVybGluZ3RvbjEUMBIGA1UECgwLRW5naW5lZXJpbmcxFzAVBgNVBAMMDkFj
+bWUgUGFja2V0IE1BMSEwHwYJKoZIhvcNAQkBFhJsYXJyeS5lQG9yYWNsZS5jb20w
+ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDUcW0t3c5fvl22Ru7mVp11
+LzNYQTRa8v4BRWrm/g7dTgsuzpyMtSEgS57ogl4SwtwxYqEnscgpqJJVDItmeK9e
+ZhgCDNThUVZj7gc3tWCIQlpRBIa4qkFMItk+WVazU6EobD+Ji/DRCnu5Bm2ltLf7
+p6w7fESumkPYW8rcUDILoh2iTzam0O+XIWfLlzq+9nc06ABZEXJ4V9IHZwsGzxn6
+U6j757zlytIhtBbz9NbnJI+MbkzU1fWyiiTLwKU4bL9mCyfcnenSTDM0caMc8Mu/
+WJxb1xFwrcTyb0htyk50r1Xrdf7R07EcHlfTDLk5KR1y+Jmvl13cp9QlH+W3WaRx
+AgMBAAGjgfYwgfMwHQYDVR0OBBYEFGJl3QfOJsXnbi3QSZZBB/Ak1pdTMIG2BgNV
+HSMEga4wgauAFGJl3QfOJsXnbi3QSZZBB/Ak1pdToYGHpIGEMIGBMQswCQYDVQQG
+EwJVUzELMAkGA1UECAwCTUExEzARBgNVBAcMCkJ1cmxpbmd0b24xFDASBgNVBAoM
+C0VuZ2luZWVyaW5nMRcwFQYDVQQDDA5BY21lIFBhY2tldCBNQTEhMB8GCSqGSIb3
+DQEJARYSbGFycnkuZUBvcmFjbGUuY29tggkA3sQEgDn0wK8wCwYDVR0PBAQDAgKk
+MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAHTTdRkMKof/I0bQcJh
+2wVaW/3bDdmhS0lFU+y2mwiuoO4OB0SOGyvL7aMzsf12UV9hHbT3KmudPZFWto/v
+sI06OkWkKDFP5571MxG7Idl/w314CSx7BnLAjNfDpXdTxLJxIm1FbtHwg7Q3I6Uv
+/KxpYRgPW6SKoqKZlPi31ZX4f5NAPx2c4g9NZU6iDb/C9Goh+XJO9ygXPmlCFzyt
+7kgmmpt/pu8qXSXhrccfCIGngHwFf4Jr4w4iyebQ8YbWyZAgpCz7i1HU1SdxeYBd
+r4dePj4I7u2FUs2bHjQIWxjMtOY6SkEQr5BUJ207DqN9vj3k8PjQ110Wa0gjy4pk
+kaM=
+-----END CERTIFICATE-----
+
+
+Import certificates into the SBC
+The certificates that you created must now be imported into the SBC. The certificate created from the certificate request needs to be imported and the certificate for the root CA must also be imported.
+
+Execute import-certificate command from ACLI for the local certificate (the SBC's new certificate)
+Import the certificate you created from the certificate request. This is the portion at the end of the "request.cert" file a couple of steps earlier in the procedure.
+
+SBCStandAloneVm8# import-certificate try-all local
+
+IMPORTANT:
+        Please enter the certificate in the PEM format.
+        Terminate the certificate with ";" to exit.......
+ 
+Paste the certificate and then type semi-colon ";" to terminate the certificate and complete the import command.
+
+SBCStandAloneVm8# import-certificate try-all local
+
+IMPORTANT:
+        Please enter the certificate in the PEM format.
+        Terminate the certificate with ";" to exit.......
+-----BEGIN CERTIFICATE-----
+MIIEMDCCAxigAwIBAgIBATANBgkqhkiG9w0BAQUFADCBgTELMAkGA1UEBhMCVVMx
+CzAJBgNVBAgMAk1BMRMwEQYDVQQHDApCdXJsaW5ndG9uMRQwEgYDVQQKDAtFbmdp
+bmVlcmluZzEXMBUGA1UEAwwOQWNtZSBQYWNrZXQgTUExITAfBgkqhkiG9w0BCQEW
+EmxhcnJ5LmVAb3JhY2xlLmNvbTAeFw0xODA2MDEyMDU1MzBaFw0yMzA2MDEyMDU1
+MzBaMD8xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJNQTEUMBIGA1UEChMLRW5naW5l
+ZXJpbmcxDTALBgNVBAMTBEFjbWUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQC/KbtNpiTZxCII3x0fOwgFqR9K/6U4OdYF4w5eTov2qGi4g2SR0eURMtTs
+pcmNyIf43OhP8fEBiRlOVfrFTiBjseJ6iAJ1GCJkx3oySCQsAwKy0pZleMZ5vofB
+8TD1hm1/k2TUKpx1Pc6+pNGYk5AaJZOtu6o4xIMxa8oT/AqwgtUTIRy9GK0MIeI+
+BVmUv9N58kYCHinbFZRUaL8axT7P0ywB96bNTyAk/fdXxDBHYn3H8yXwIHce/vPL
+GhYDwlSMz4sCcw8Is2tmkEC/ThUCUpt+CVXtCTrKvlhhOvdufvXq+60vdOu3Xauc
+I9ArhsgxTvOVEq1Kaa6Iz2lliPZ7AgMBAAGjgfMwgfAwCQYDVR0TBAIwADAdBgNV
+HQ4EFgQUwdxMTLkq64MQyxZ22avWkllrThkwgbYGA1UdIwSBrjCBq4AUYmXdB84m
+xeduLdBJlkEH8CTWl1OhgYekgYQwgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJN
+QTETMBEGA1UEBwwKQnVybGluZ3RvbjEUMBIGA1UECgwLRW5naW5lZXJpbmcxFzAV
+BgNVBAMMDkFjbWUgUGFja2V0IE1BMSEwHwYJKoZIhvcNAQkBFhJsYXJyeS5lQG9y
+YWNsZS5jb22CCQDexASAOfTArzALBgNVHQ8EBAMCBaAwDQYJKoZIhvcNAQEFBQAD
+ggEBAEuDEmz53QDOQcCgniC0/5ROgBJ2w6SEkDzigeBu1xuhooO18lmF7KD19nqt
+L72ohfzBzl68FMFKRMoc4uVzfPWDoBMjSuzRb6pUdlSDV2cVgFdeUePLFqf7WeN2
+OcDuA+9hJpjKqCn51lmH39iHt0oeuwGKrrE919q4SDcEoSCb48gi8zR1hRy2Rfzx
+9bsRJ+uFLWpwE88QaZUFviR+CmIBUl1o9Yk3bLOQFmf0DWgHiyy7DOuswVqoF/Xg
+rQNY6LB1Nm5e2yQ6ocLQ36S9HNIqewT6iPcf1RWbbf/Ond0QJYJMJV8RZeMD6JcB
+ehJMI7/fN6t9A4m3JaknJqYv3qg=
+-----END CERTIFICATE-----;
+Certificate imported successfully....
+WARNING: Configuration changed, run "save-config" command.
+SBCStandAloneVm8#
+
+
+Execute import-certificate command from ACLI for the root CA certificate (the certificate authority's certificate, which is also us)
+Import the certificate from the key generation step. This is the contents of the "public/root.pem" file a couple of steps earlier in the procedure.
+
+SBCStandAloneVm8# import-certificate try-all masterca
+
+IMPORTANT:
+        Please enter the certificate in the PEM format.
+        Terminate the certificate with ";" to exit.......
+ 
+Paste the certificate and then type semi-colon ";" to terminate the certificate and complete the import command.
+
+SBCStandAloneVm8# import-certificate try-all masterca
+
+IMPORTANT:
+        Please enter the certificate in the PEM format.
+        Terminate the certificate with ";" to exit.......
+-----BEGIN CERTIFICATE-----
+MIIEfjCCA2agAwIBAgIJAN7EBIA59MCvMA0GCSqGSIb3DQEBBQUAMIGBMQswCQYD
+VQQGEwJVUzELMAkGA1UECAwCTUExEzARBgNVBAcMCkJ1cmxpbmd0b24xFDASBgNV
+BAoMC0VuZ2luZWVyaW5nMRcwFQYDVQQDDA5BY21lIFBhY2tldCBNQTEhMB8GCSqG
+SIb3DQEJARYSbGFycnkuZUBvcmFjbGUuY29tMB4XDTE4MDYwMTIwMTgyMFoXDTIz
+MDYwMTIwMTgyMFowgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTETMBEGA1UE
+BwwKQnVybGluZ3RvbjEUMBIGA1UECgwLRW5naW5lZXJpbmcxFzAVBgNVBAMMDkFj
+bWUgUGFja2V0IE1BMSEwHwYJKoZIhvcNAQkBFhJsYXJyeS5lQG9yYWNsZS5jb20w
+ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDUcW0t3c5fvl22Ru7mVp11
+LzNYQTRa8v4BRWrm/g7dTgsuzpyMtSEgS57ogl4SwtwxYqEnscgpqJJVDItmeK9e
+ZhgCDNThUVZj7gc3tWCIQlpRBIa4qkFMItk+WVazU6EobD+Ji/DRCnu5Bm2ltLf7
+p6w7fESumkPYW8rcUDILoh2iTzam0O+XIWfLlzq+9nc06ABZEXJ4V9IHZwsGzxn6
+U6j757zlytIhtBbz9NbnJI+MbkzU1fWyiiTLwKU4bL9mCyfcnenSTDM0caMc8Mu/
+WJxb1xFwrcTyb0htyk50r1Xrdf7R07EcHlfTDLk5KR1y+Jmvl13cp9QlH+W3WaRx
+AgMBAAGjgfYwgfMwHQYDVR0OBBYEFGJl3QfOJsXnbi3QSZZBB/Ak1pdTMIG2BgNV
+HSMEga4wgauAFGJl3QfOJsXnbi3QSZZBB/Ak1pdToYGHpIGEMIGBMQswCQYDVQQG
+EwJVUzELMAkGA1UECAwCTUExEzARBgNVBAcMCkJ1cmxpbmd0b24xFDASBgNVBAoM
+C0VuZ2luZWVyaW5nMRcwFQYDVQQDDA5BY21lIFBhY2tldCBNQTEhMB8GCSqGSIb3
+DQEJARYSbGFycnkuZUBvcmFjbGUuY29tggkA3sQEgDn0wK8wCwYDVR0PBAQDAgKk
+MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAAHTTdRkMKof/I0bQcJh
+2wVaW/3bDdmhS0lFU+y2mwiuoO4OB0SOGyvL7aMzsf12UV9hHbT3KmudPZFWto/v
+sI06OkWkKDFP5571MxG7Idl/w314CSx7BnLAjNfDpXdTxLJxIm1FbtHwg7Q3I6Uv
+/KxpYRgPW6SKoqKZlPi31ZX4f5NAPx2c4g9NZU6iDb/C9Goh+XJO9ygXPmlCFzyt
+7kgmmpt/pu8qXSXhrccfCIGngHwFf4Jr4w4iyebQ8YbWyZAgpCz7i1HU1SdxeYBd
+r4dePj4I7u2FUs2bHjQIWxjMtOY6SkEQr5BUJ207DqN9vj3k8PjQ110Wa0gjy4pk
+kaM=
+-----END CERTIFICATE-----;
+Certificate imported successfully....
+WARNING: Configuration changed, run "save-config" command.
+SBCStandAloneVm8#
+
+
+Configure TLS and create TLS profile on SBC
+Configure tls-global on the SBC
+SBCStandAloneVm8# conf t
+SBCStandAloneVm8(configure)# security tls-global
+SBCStandAloneVm8(tls-global)# sel
+SBCStandAloneVm8(tls-global)# show
+tls-global
+        session-caching                         disabled
+        session-cache-timeout                   12
+        last-modified-by
+        last-modified-date
+SBCStandAloneVm8(tls-global)# exit
+Save Changes [y/n]?: y
+tls-global
+        session-caching                         disabled
+        session-cache-timeout                   12
+        last-modified-by                        admin@10.75.10.215
+        last-modified-date                      2018-06-01 17:08:06
+SBCStandAloneVm8(security)#
+This may possibly be an unnecessary step but it was documented in the procedure which was used to create this confluence page procedure and therefore testing was performed with these tls-global settings.
+
+Configure a tls-profile on the SBC
+Configure a tls-profile to relate all the certificates
+
+SBCStandAloneVm8(security)# tls-profile
+SBCStandAloneVm8(tls-profile)# name restlesspeople
+SBCStandAloneVm8(tls-profile)# end-entity-certificate local
+SBCStandAloneVm8(tls-profile)# trusted-ca-certificates masterca
+SBCStandAloneVm8(tls-profile)# tls-version compatibility
+SBCStandAloneVm8(tls-profile)# done
+tls-profile
+        name                                    restlesspeople
+        end-entity-certificate                  local
+        trusted-ca-certificates                 masterca
+        cipher-list                             DEFAULT
+        verify-depth                            10
+        mutual-authenticate                     disabled
+        tls-version                             compatibility
+        options
+        cert-status-check                       disabled
+        cert-status-profile-list
+        ignore-dead-responder                   disabled
+        allow-self-signed-cert                  disabled
+        last-modified-by                        admin@10.75.10.215
+        last-modified-date                      2018-06-01 17:11:07
+SBCStandAloneVm8(tls-profile)#
+SBCStandAloneVm8(tls-profile)# exit
+SBCStandAloneVm8(security)# exit
+SBCStandAloneVm8(configure)# exit
+SBCStandAloneVm8#
+
+
+Enable HTTPS in the SBC web server
+Enable https-state and configure tls-profile in web-server-config
+Assuming that the web server is already enable on the system and you only need to enable HTTPS, change the https-state to "enabled" and configure the tls-profile with the profile created in the previous step.
+
+SBCStandAloneVm8# conf t
+SBCStandAloneVm8(configure)# system web-server-config
+SBCStandAloneVm8(web-server-config)# sel
+SBCStandAloneVm8(web-server-config)# show
+web-server-config
+        state                                   enabled
+        inactivity-timeout                      5
+        http-state                              enabled
+        http-port                               80
+        https-state                             disabled
+        https-port                              443
+        tls-profile
+        last-modified-by                        admin@10.138.222.66
+        last-modified-date                      2018-03-08 23:38:10
+SBCStandAloneVm8(web-server-config)# https-state
+<enabled/disabled>  HTTPS connection state
+                    Default: disabled
+SBCStandAloneVm8(web-server-config)# https-state enabled
+SBCStandAloneVm8(web-server-config)# tls-profile restlesspeople
+SBCStandAloneVm8(web-server-config)# done
+web-server-config
+        state                                   enabled
+        inactivity-timeout                      5
+        http-state                              enabled
+        http-port                               80
+        https-state                             enabled
+        https-port                              443
+        tls-profile                             restlesspeople
+        last-modified-by                        admin@10.75.10.215
+        last-modified-date                      2018-06-01 17:16:56
+SBCStandAloneVm8(web-server-config)# exit
+SBCStandAloneVm8(system)# exit
+SBCStandAloneVm8(configure)# exit
+SBCStandAloneVm8#
+
+
+Save, activate and reboot your SBC
+Execute a save-config. Execute activate-config. Execute reboot.
+
+Once your SBC reboots, you must use HTTPS in your REST client's request URLs.
+
+Breathe...Your SBC REST API is now secure.
+
+
+
+This procedure was created using an old Acme document for TLS config. If needed for reference, download Setting up TLS.doc or find the file in this Confluence page's attachments.
+Related articles
+Related articles appear here based on the labels you select. Click to edit the macro and add or change labels.
+
+
+
+
+###############################################################################################################################################################################
+CGBU Session Delivery Engineering Portal Dashboard…  8.4 vs 8.3 Security Comparison
+GUI 2FA Test
+I have divided the testing into three steps:
+
+Create a TLS profile and access the Web GUI using https
+Enable mutual authentication and access Web GUI using https
+Enable two factor authentication and access the web GUI using https
+ 1. Create a TLS profile and access the Web GUI using https
+
+I followed the steps that are mentioned in the link : https://gbuconfluence.us.oracle.com/display/SBCAD/How+To+Set+Up+TLS+On+SBC+For+REST+API+Testing
+
+I imported the CA pub key in the browser
+
+              1. Open Web Browser (Firefox) form your dev machine.
+
+              2. Go to Settings > Preferences > Advanced > Certificates > View Certificates > Authorities > Import
+
+Added the common name and ip in the /etc/hosts
+
+I was successfully able to access web GUI through https
+
+2. Enable mutual authentication and access Web GUI using https
+
+Go to the configured tls-profile and enabled mutual auth through ACLI
+
+For mutual authentication to work you need to create a client certificate(PKCS12) and import it to the browser. Please follow the steps mentioned below.
+
+Steps to create PKCS12 client certificate to be imported in browser for mutual auth to work
+
+
+
+1. I already had ca intstalled on my dev machine (followed the steps mentioned in the link from step1). So I created a generate certificate request(client.csr) and pub/pri key for the client  on my local dev machine using the command:
+
+    openssl req -new -newkey rsa:2048 -nodes -keyout client.key -out client.csr
+
+
+
+2. Generated the client certificate(client.cert) with the request and using the openssl.cnf file that was already present on my machine
+
+    openssl ca -batch -config conf/openssl.cnf -in client.csr -out client.cert
+
+
+
+3. Exported the certificate as pkcs12 format
+
+    openssl pkcs12 -export -out browsercertificate1.pfx -inkey client.key -in client.cert
+
+
+
+
+setting up a password is optional. You may leave it blank.
+
+
+
+4. Imported browsercertificate1.pfx in the browser (Settings > Preferences > Advanced > Certificates >My Certificates > Import)
+
+Certificate after Import
+
+
+
+
+
+
+
+After importing the certificate, was able to logged in through GUI successfully.
+
+3. Enable two factor authentication and access the web GUI using https
+
+configuration:
+
+
+
+common-list-name should have the common name given to the client certificate that was created in step 2.
+
+Go to your web browser and clear history with cache. Try to access the web GUI. Click on Ok if prompted to accept the certificate.
+
+Login was successful.	
+
+
