@@ -1,0 +1,43 @@
+ipsec restart
+ipsec up/down [conn name from ipsec.conf]
+ipsec statusall
+
+cat ipsec.conf
+conn wensu-radius
+    left=192.168.52.191
+    leftsubnet=192.168.52.191/32
+    #leftsourceip=%config
+    leftfirewall=no
+    leftauth=psk
+    leftid=192.168.52.191
+    keyingtries=2
+    right=192.168.52.128
+    rightauth=psk
+    rightsubnet=192.168.52.128/32
+    auto=add
+    ike=any
+    lifetime=10h
+    ikelifetime=10h
+    keyexchange=ikev2
+    esp=any
+    reauth=no
+    mobike=no
+    rekey=no
+
+cat ipsec.secrets                                  
+192.168.52.191 192.168.52.128 : PSK abc123                                   
+192.168.52.128 192.168.52.191 : PSK abc123                                   
+
+
+# PSK
+: PSK abc123
+include /etc/ipsec.d/*.secrets
+include /tmp/*-ipsec.secrets
+
+
+
+
+VM:
+ssh-keygen -t rsa -b 2048 -f clientssh  # generate pri/pub key
+
+ssh-keygen -e -f clientssh.pub    # transfer pub key to RFC version
