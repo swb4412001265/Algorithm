@@ -1,0 +1,74 @@
+193. Longest Valid Parentheses
+
+Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
+
+Example
+Example 1:
+
+Input: "(()"
+Output: 2
+Explanation: The longest valid parentheses substring is "()"
+Example 2:
+
+Input: ")()())"
+Output: 4
+Explanation: The longest valid parentheses substring is "()()"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+考点：
+
+dp
+题解： 一般对于最长XX问题容易想到利用DP求解，在这题中利用逆向DP，设状态dpi为从i到len - 1中，以i开头的最长合法子串长度：
+
+初始化：dplen - 1 = 0
+如果si = ')'，则跳过，因为不可能有由'('开头的串
+如果si = '('，则需要找到右括号和它匹配，可以跳过以i + 1开头的合法子串，则需要看j = i + dpi + 1 + 1是否为右括号。
+如果没越界且为右括号，那么有dpi = dpi + 1 + 2，此外在这个基础上还要将j + 1开头的子串加进来（只要不越界）
+
+class Solution:
+    """
+    @param s: a string
+    @return: return a integer
+    """
+    def longestValidParentheses(self, s):
+        # write your code here
+        if len(s) <= 1  :
+            return 0
+        res = 0
+        dp = [0 for i in range(len(s))]		#初始化
+        for i in range(len(s) - 2, -1, -1) :
+            if s[i] == '(' :		#如果s[i] = '('，则需要找到右括号和它匹配
+                j = i + dp[i + 1] + 1
+                if j < len(s) and s[j] == ')' :	#如果没越界且为右括号，那么有dp[i] = dp[i + 1] + 2
+                    dp[i] = dp[i + 1] + 2
+                    if j + 1 < len(s):			#还要将j + 1开头的子串加进来
+                        dp[i] += dp[j + 1]
+                res = max(res, dp[i])
+        return res
+        
+ /////////////////////////////////////////////////////My version does not Pass/////////////////////////////////////////////////////////////////
+ class Solution:
+    """
+    @param s: a string
+    @return: return a integer
+    """
+    def longestValidParentheses(self, s):
+        # write your code here
+        res = 0
+        tmp = 0
+        tmpList = []
+        for i in s:
+            if i == ")":
+                if not tmpList:
+                    # res = max(res, tmp)
+                    tmp = 0
+                else:
+                    tmpList.pop()
+                    tmp += 2
+                    # print(tmp)
+            else:
+                tmpList.append(i)
+            res = max(res, tmp)
+        return res
+            
+            
