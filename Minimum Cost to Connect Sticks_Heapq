@@ -1,0 +1,47 @@
+1872. Minimum Cost to Connect Sticks
+
+You have some sticks with positive integer lengths.
+You can connect any two sticks of lengths X and Y into one stick by paying a cost of X + Y. You perform this action until there is one stick remaining.
+Return the minimum cost of connecting all the given sticks into one stick in this way.
+
+Example
+Example 1:
+
+Input:
+ [2,4,3]
+Output: 14
+Explanation: First connect 2 and 3 to 5 and cost 5; then connect 5 and 4 to 9; total cost is 14
+Example 2:
+
+Input:
+ [1,8,3,5]
+Output: 30
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param sticks: the length of sticks
+    @return: Minimum Cost to Connect Sticks
+    """
+    def MinimumCost(self, sticks):
+        # write your code here
+        if not len(sticks):
+            return 0 
+        if len(sticks) == 1:
+            return sticks[0]
+        import heapq
+        heapq.heapify(sticks)
+        
+        res = 0
+        while len(sticks) >= 2:
+            tmp = 0
+            tmp += heapq.heappop(sticks)
+            tmp += heapq.heappop(sticks)
+            res += tmp
+            if not len(sticks):
+                return res
+            else:
+                heapq.heappush(sticks, tmp)
+        if len(sticks) == 1:
+            res += sticks[0]
+        return res
+        
