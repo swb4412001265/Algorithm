@@ -36,7 +36,20 @@ class Solution:
                     return True
         return False
          
-        
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+动态规划 dpi = s0:i能否分割成dict里的单词。i往右移动，j从0向i找，如果dpj is True and sj:i存在于dict，说明dpi is True。 一旦找到就可以break。
+def wordBreak(self, s, dict):
+        n = len(s)
+        dp = [False for _ in range(n + 1)]
+        dp[0] = True 
+        for i in range(1, n + 1):
+            for j in range(i):
+                if not dp[j]:
+                    continue
+                if s[j:i] in dict:
+                    dp[i] = True
+                    break 
+        return dp[-1]
 //////////////////////////////////////////////////////////////////////////////DP////////////////////////////////////////////////////////////////////////////////////////////////
 class Solution {
 public:
