@@ -1,0 +1,80 @@
+107. Word Break
+
+Given a string s and a dictionary of words dict, determine if s can be broken into a space-separated sequence of one or more dictionary words.
+
+Example
+Example 1:
+	Input:  "lintcode", ["lint", "code"]
+	Output:  true
+
+Example 2:
+	Input: "a", ["a"]
+	Output:  true
+	
+////////////////////////////////////////////////////////////////////////DFS//////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param: s: A string
+    @param: dict: A dictionary of words dict
+    @return: A boolean
+    """
+    def wordBreak(self, s, dict):
+        # write your code here
+        if len(s) == 0:
+            return True
+        return self.dfs(0, s, dict)
+        
+    def dfs(self, index, s, dict):
+        if index == len(s):
+            return True
+        
+        for word in dict:
+            if index + len(word) > len(s):
+                continue
+            if s[index: index + len(word)] == word:
+                if self.dfs(index + len(word), s, dict):
+                    return True
+        return False
+         
+        
+//////////////////////////////////////////////////////////////////////////////DP////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution {
+public:
+    /**
+     * @param s: A string s
+     * @param dict: A dictionary of words dict
+     */
+    bool wordBreak(string s, unordered_set<string> &dict) {
+        // write your code here
+        int m = s.length();
+        if(m==0){
+            return true;
+        }
+        
+        //f[i] defines from 0 to i if can break into dictionary word
+        
+        vector<bool> f(m+1);
+       
+        f[0] = true;
+        for(int i = 1; i < m+1; ++i){
+            for(int j = 0;j < i; ++j){
+                if(f[j] == false){
+                    continue;
+                }
+                else {
+                    string temp;
+                    temp.assign(s.begin()+j,s.begin()+i);
+                    unordered_set<string>::const_iterator x = dict.find(temp);
+                    if(x == dict.end()){
+                        continue;
+                    } else {
+                        f[i] = true;
+                        break;
+                    }
+                    
+                }
+            }
+        }
+        return f[m];
+    }
+};
