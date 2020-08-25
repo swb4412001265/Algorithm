@@ -98,6 +98,7 @@ class Solution:
     @return: nothing
     """
     def mostCommonWord(self, paragraph, banned):
+    #re.findall(r"w+", string): This expression matches the alphanumeric character in the string
         words = re.findall(r'\w+', paragraph.lower())
         hashmap = {}
         count = 0
