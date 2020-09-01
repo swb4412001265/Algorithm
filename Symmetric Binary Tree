@@ -1,0 +1,110 @@
+468. Symmetric Binary Tree
+Given a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+Example
+Example 1:
+
+Input: {1,2,2,3,4,4,3}
+Output: true
+Explanation:
+         1
+        / \
+       2   2
+      / \ / \
+      3 4 4 3
+
+is a symmetric binary tree.
+Example 2:
+
+Input: {1,2,2,#,3,#,3}
+Output: false
+Explanation:
+         1
+        / \
+        2  2
+        \   \
+         3   3
+
+is not a symmetric binary tree.
+Challenge
+Can you solve it both recursively and iteratively?
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of binary tree.
+    @return: true if it is a mirror of itself, or false.
+    """
+    def isSymmetric(self, root):
+        # write your code here
+        if not root:
+            return True
+            
+        from queue import Queue
+        q = Queue()
+        leftList = []
+        q.put(root)
+        while not q.empty():
+            tmp = q.get()
+            leftList.append(tmp.val)
+            if tmp.left:
+                q.put(tmp.left)
+            else:
+                leftList.append("#")
+            if tmp.right:
+                q.put(tmp.right)
+            else:
+                leftList.append("#")
+        rightList = []
+        q = Queue()
+        q.put(root)
+        while not q.empty():
+            tmp = q.get()
+            rightList.append(tmp.val)
+            if tmp.right:
+                q.put(tmp.right)
+            else:
+                rightList.append("#")
+            if tmp.left:
+                q.put(tmp.left)
+            else:
+                rightList.append("#")
+        print(leftList)
+        print(rightList)
+        if leftList == rightList:
+            return True
+        return False
+        
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        """
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the root of binary tree.
+    @return: true if it is a mirror of itself, or false.
+    """
+    def isSymmetric(self, root):
+        # write your code here
+        if not root:
+            return True
+        return self.hepler(root.left, root.right)    
+    def hepler(self, leftTree, rightTree):
+        if not leftTree and not rightTree:
+            return True
+        if leftTree and rightTree and leftTree.val == rightTree.val:
+            return self.hepler(leftTree.left, rightTree.right) and \
+            self.hepler(leftTree.right, rightTree.left)
+        return False
