@@ -1,0 +1,49 @@
+277. Word Spacing
+
+You are given a series of word called words, and two different words wordA and wordB, please find the spacing of the closest wordA and wordB.
+If no wordA or wordB in words, return -1−1.
+
+Example
+Input：
+["hello","world","say","hello"]
+"hello"
+"world"
+Output：
+1
+Clarification
+In the example, the spacing between the first "hello" and the first "world" is 1,
+but the spacing between the first "world" and the second "hello" is 2, the answer should be 1。
+
+Notice
+words contains tt words, each word is of length kk, 1 \le t \le 10^41≤t≤10
+​4
+​​ , 1 \le k \le 201≤k≤20.
+wordA and wordB are of length n, mn,m, 1 \le n, m \le 201≤n,m≤20.
+The words only consist of uppercase or lowercase English character.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param words: the words given.
+    @param wordA: the first word you need to find.
+    @param wordB: the second word you need to find.
+    @return: return the spacing of the closest wordA and wordB.
+    """
+    def wordSpacing(self, words, wordA, wordB):
+        # write your code here.
+        if not words or not wordA or not wordB:
+            return -1
+        res = sys.maxsize
+        indexA = -1
+        indexB = -1
+        for i in range(len(words)):
+            if words[i] == wordA:
+                indexA = i
+            if words[i] == wordB:
+                indexB = i
+            if indexA != -1 and indexB != -1:
+                diff = abs(indexA - indexB)
+                res = min(diff, res)
+        if res == sys.maxsize:
+            return -1
+        return res
