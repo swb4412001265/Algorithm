@@ -1,0 +1,89 @@
+860. Number of Distinct Islands
+中文English
+Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical). You may assume all four edges of the grid are surrounded by water.
+
+Count the number of distinct islands. An island is considered to be the same as another if and only if one island has the same shape as another island (and not rotated or reflected).
+
+Notice that:
+
+11
+1
+and
+
+ 1
+11
+are considered different island, because we do not consider reflection / rotation.
+
+Example
+Example 1:
+
+Input: 
+  [
+    [1,1,0,0,1],
+    [1,0,0,0,0],
+    [1,1,0,0,1],
+    [0,1,0,1,1]
+  ]
+Output: 3
+Explanation:
+  11   1    1
+  1        11   
+  11
+   1
+Example 2:
+
+Input:
+  [
+    [1,1,0,0,0],
+    [1,1,0,0,0],
+    [0,0,0,1,1],
+    [0,0,0,1,1]
+  ]
+Output: 1
+Notice
+The length of each dimension in the given grid does not exceed 50.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param grid: a list of lists of integers
+    @return: return an integer, denote the number of distinct islands
+    """
+    def numberofDistinctIslands(self, grid):
+        # write your code here
+        from queue import Queue
+        q = Queue()
+        check = set()
+        res = 0
+        if not grid:
+            return 0
+        if not grid[0]:
+            return 0
+        visited = [[False for i in range(len(grid[0]))] for i in range(len(grid))]  
+        # print(visited)
+        dx = [0, 1, 0, -1]
+        dy = [1, 0, -1, 0]
+        from queue import Queue
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    q.put((i, j))
+                    grid[i][j] = 0
+                    visited[i][j] = True
+                    path = ""
+                    while not q.empty():
+                        tmp_x, tmp_y = q.get()
+                        for z in range(4):
+                            # print(i)
+                            new_x = tmp_x + dx[z]
+                            new_y = tmp_y + dy[z]
+                            if 0<= new_x < len(grid) and 0 <= new_y < len(grid[0]) \
+                            and visited[new_x][new_y] == False and grid[new_x][new_y] == 1:
+                                q.put((new_x, new_y))
+                                grid[new_x][new_y] = 0
+                                visited[new_x][new_y] = True
+                                path += str(new_x - i) + str(new_y - j)
+                    if path not in check:
+                        res += 1
+                        check.add(path)
+        print(check)
+        return res
