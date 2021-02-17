@@ -40,3 +40,31 @@ class Solution:
                 head = head.next
         head.next = tmp
         return dummyNode
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+"""
+Definition of ListNode
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+"""
+
+class Solution:
+    """
+    @param head: The head of linked list.
+    @param val: An integer.
+    @return: The head of new linked list.
+    """
+    def insertNode(self, head, val):
+        # write your code here
+        dummy = ListNode(-1)
+        dummy.next = head
+        head = dummy
+        
+        while head.next != None and head.next.val < val:
+            head = head.next
+        tmp = ListNode(val)
+        tmp.next = head.next
+        head.next = tmp
+        return dummy.next
+                
