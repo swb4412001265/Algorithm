@@ -1,0 +1,147 @@
+LintCode-Logo
+Home
+Algorithms
+AI
+CAT
+VIP
+ENG
+avatar
+Back
+1080. Max Area of Island
+Description
+Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+Find the maximum area of an island in the given 2D array. (If there is no island, the maximum area is 0.)
+
+The length of each dimension in the given grid does not exceed 50.
+
+Have you met this question in a real interview?  
+Example
+Example 1:
+
+input:
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,1,1,0,1,0,0,0,0,0,0,0,0],
+ [0,1,0,0,1,1,0,0,1,0,1,0,0],
+ [0,1,0,0,1,1,0,0,1,1,1,0,0],
+ [0,0,0,0,0,0,0,0,0,0,1,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+output : 6.
+Explanation : Note the answer is not 11, because the island must be connected 4-directionally.
+Example 2:
+
+input: [[0,0,0,0,0,0,0,0]]
+output : 0
+Related Problems
+Intuit
+
+2 - Hard
+
+0%
+DifficultyEasy
+Total Accepted1145
+Total Submitted2519
+Accepted Rate45%
+ Show Tags
+ Company
+Leaderboard - Python3
+
+NS
+101ms
+
+助教-菠萝
+122ms
+
+crystalx0
+151ms
+
+delux2558
+151ms
+
+stephan
+Gold IV
+151ms
+Note
+1. BFS 2. DFS tips: 可以直接在grid上面改，访问过的点把gird对应的点变为0， 省去了vistied记录
+avatarcrystalx0
+Created at a month ago
+from collections import deque DIRECTIONS = [(1, 0), (-1, 0), (0, 1), (0, -1)] class Solution: """ @param grid: a 2D array @return: the maximum area of an island in the given 2D array """ def maxAreaOfIsland(self, grid): # Write your code here if not grid or not grid[0]: return 0 max_area = 0 visited = set() for i in range(len(grid)): for j in range(len(grid[0])): if grid[i][j] == 1 and (i, j) not in visited: area = self.bfs(grid, i, j, visited) max_area = max(max_area, area) return max_area def bfs(self, grid, x, y, visited): queue = deque([(x, y)]) visited.add((x, y)) area = 0 while queue: x, y = queue.popleft() area += 1 for dx, dy in DIRECTIONS: nx, ny = x + dx, y + dy if 0 <= nx <= len(grid) - 1 and 0 <= ny <= len(grid[0]) - 1 and grid[nx][ny] == 1 and (nx, ny) not in visited: visited.add((nx, ny)) queue.append((nx, ny)) return area
+avatarFuzhongDeng
+Created at 4 months ago
+#### C++语言AC代码 ##### 套一个DFS就可以了 ``` class Solution { public: /** * @param grid: a 2D array * @return: the maximum area of an island in the given 2D array */ int maxAreaOfIsland(vector<vector<int>> &grid) { int res = 0; for(int i = 0; i < grid.size(); ++i) { for(int j = 0; j < grid[0].size(); ++j) { if (grid[i][j] == 1) res = max(res, dfs(grid, i, j)); } } return res; } private: int dfs(vector<vector<int>> &grid, const int& i, const int& j) { if(i >= 0 && i < grid.size() && j >= 0 && j < grid[0].size() && grid[i][j] == 1) { grid[i][j] = 0; int u = dfs(grid, i + 1, j); int d = dfs(grid, i - 1, j); int l = dfs(grid, i, j - 1); int r = dfs(grid, i, j + 1); return 1 + u + d + l + r; } else return 0; } }; ```
+avatarvegetablebird
+Created at 6 months ago
+Discuss
+No topic
+  
+1080. Max Area of Island
+中文English
+Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+Find the maximum area of an island in the given 2D array. (If there is no island, the maximum area is 0.)
+
+Example
+Example 1:
+
+input:
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,1,1,0,1,0,0,0,0,0,0,0,0],
+ [0,1,0,0,1,1,0,0,1,0,1,0,0],
+ [0,1,0,0,1,1,0,0,1,1,1,0,0],
+ [0,0,0,0,0,0,0,0,0,0,1,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+output : 6.
+Explanation : Note the answer is not 11, because the island must be connected 4-directionally.
+Example 2:
+
+input: [[0,0,0,0,0,0,0,0]]
+output : 0
+Notice
+The length of each dimension in the given grid does not exceed 50.
+
+[[0,1,1],[1,1,1]]
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param grid: a 2D array
+    @return: the maximum area of an island in the given 2D array
+    """
+    def maxAreaOfIsland(self, grid):
+        # Write your code here
+        if not grid:
+            return 0
+        if not grid[0]:
+            return 0
+        from queue import Queue
+        q = Queue()
+        row = len(grid)
+        col = len(grid[0])
+        dx = [-1, 0, 0, 1]
+        dy = [0, 1, -1, 0]
+        res = 0
+        for i in range(row):
+            for j in range(col):
+                if grid[i][j]:
+                    q.put((i, j))
+                    tmpSize = 1
+                    while not q.empty():
+                        tmpX, tmpY = q.get()
+                        grid[tmpX][tmpY] = 0
+                        for z in range(4):
+                            x = tmpX + dx[z]
+                            y = tmpY + dy[z]
+                            if 0 <= x < row and 0 <= y < col and grid[x][y]:
+                                # In case to remove dupilate check
+                                grid[x][y] = 0
+                                tmpSize += 1
+                                q.put((x, y))
+                    res = max(res, tmpSize)
+        return res
+    
+    
+
+        
