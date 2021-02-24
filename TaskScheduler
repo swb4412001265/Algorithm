@@ -1,0 +1,31 @@
+class Solution:
+    """
+    @param tasks: the given char array representing tasks CPU need to do
+    @param n: the non-negative cooling interval
+    @return: the least number of intervals the CPU will take to finish all the given tasks
+    """
+    def leastInterval(self, tasks, n):
+        # write your code here
+        if not tasks:
+            return 0
+        if n == 0:
+            return len(tasks)
+        tmpDict = {}
+        tmpMax = 0
+        for i in tasks:
+            if i not in tmpDict:
+                tmpDict[i] = 1
+            else:
+                tmpDict[i] += 1
+            tmpMax = max(tmpMax, tmpDict[i])
+        count = 0
+        for i in tmpDict.values():
+            if i == int(tmpMax):
+                count += 1
+        
+        tmp = collections.Counter(tasks)
+        countList = list(tmp.values())
+        longest = max(countList)
+        count = countList.count(longest)
+        
+        return max(n * tmpMax + count, len(tasks))
