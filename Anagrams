@@ -1,5 +1,4 @@
 171. Anagrams
-中文English
 Given an array of strings, return all groups of strings that are anagrams.
 
 Example
@@ -32,7 +31,7 @@ class Solution:
         res = []
         for i in range(len(strs)):
         # sorted is used for list, so sotred("abc")  = ["a", "b", "c"]
-        # need to add str(sorted("abc)) and make it as string
+        # need to add str(sorted("abc")) and make it as string
             if str(sorted(strs[i])) not in hash:
                 hash[str(sorted(strs[i]))] = [strs[i]]
             else:
