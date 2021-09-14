@@ -152,19 +152,20 @@ class Solution:
         if not num:
             return []
         self.res = []
-        self.helper(sorted(num), target, 0, [])                         
+        self.DFS(sorted(num), target, 0, [])
         return self.res
-        
-    def helper(self, num, target, index, tmpList):
-        if not num:
+
+    
+    def DFS(self, num, target, index, tmp):
+        if target < 0:
             return
         if target == 0:
-            self.res.append(tmpList[:])
+            self.res.append(tmp[:])
         for i in range(index, len(num)):
             if num[i] > target:
                 break
-            if i != index and num[i] == num[i - 1]:
+            if index != i and num[i] == num[i - 1]:
                 continue
-            tmpList.append(num[i])
-            self.helper(num, target - num[i], i + 1, tmpList)
-            tmpList.pop()
+            tmp.append(num[i])
+            self.DFS(num, target - num[i], i + 1, tmp)
+            tmp.pop()
