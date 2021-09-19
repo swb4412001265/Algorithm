@@ -172,3 +172,25 @@ class Solution:
                 i += 1
             count += 1
         return nums
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param nums: an integer array
+    @return: nothing
+    """
+    def moveZeroes(self, nums):
+        # write your code here
+        if not nums:
+            return []
+        i = 0
+        j = 0
+        while j < len(nums):
+            if nums[j] != 0:
+                nums[i] = nums[j]
+                i += 1
+            j += 1
+
+        for x in range(i, len(nums)):
+            nums[x] = 0
