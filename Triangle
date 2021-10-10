@@ -1,0 +1,83 @@
+Triangle
+
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+
+Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
+
+
+
+Input:
+
+triangle = [
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+]
+Output:
+
+11
+Explanation:
+
+The minimum path sum from top to bottom is 11 (2 + 3 + 5 + 1 = 11).
+
+Example 2:
+
+Input:
+
+triangle = [
+     [2],
+    [3,2],
+   [6,5,7],
+  [4,4,8,1]
+]
+Output:
+
+12
+Explanation:
+
+The minimum path sum from top to bottom is 12 (2 + 2 + 7 + 1 = 12).
+
+/////////////////////////////////////////////////////////////////////////DFS//////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param triangle: a list of lists of integers
+    @return: An integer, minimum path sum
+    """
+    def minimumTotal(self, triangle):
+        # write your code here
+        self.m = len(triangle)
+        self.res = sys.maxsize
+        self.helper(triangle, 0, 0, 0)
+        return self.res
+    def helper(self, triangle, x, y, tmp):
+        if self.m == x:
+            self.res = min(self.res, tmp)
+            return
+        self.helper(triangle, x + 1, y + 1, tmp + triangle[x][y])
+        self.helper(triangle, x + 1, y, tmp + triangle[x][y])
+
+/////////////////////////////////////////////////////////////DP//////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param triangle: a list of lists of integers
+    @return: An integer, minimum path sum
+    """
+    def minimumTotal(self, triangle):
+        # write your code here
+        m = len(triangle)
+        res = sys.maxsize
+        f = [[sys.maxsize] * i for i in range(1, m + 1)] 
+        # print(f)
+        f[0][0] = triangle[0][0]
+        for i in range(1, m):
+            f[i][0] = triangle[i][0] + f[i - 1][0]
+            # print(f[0][i])
+            f[i][i] = triangle[i][i] + f[i - 1][i - 1]
+            # print(f[i][i])
+        for i in range(2, m):
+            for j in range(1, i):
+                f[i][j] = min(f[i - 1][j], f[i - 1][j - 1]) + triangle[i][j]
+        for i in range(m):
+            res = min(res, f[m - 1][i])
+        return res
