@@ -1,0 +1,65 @@
+77 · Longest Common Subsequence
+
+Description
+Given two strings, find the longest common subsequence (LCS).
+
+Your code should return the length of LCS.
+
+What's the definition of Longest Common Subsequence?
+
+The longest common subsequence problem is to find the longest common subsequence in a set of sequences (usually 2). This problem is a typical computer science problem, which is the basis of file difference comparison program, and also has applications in bioinformatics.
+http://baike.baidu.com/view/2020307.htm
+Example
+Example 1:
+
+Input:
+
+A = "ABCD"
+B = "EDCA"
+Output:
+
+1
+Explanation:
+
+LCS is 'A' or 'D' or 'C'
+Example 2:
+
+Input:
+
+A = "ABCD"
+B = "EACB"
+Output:
+
+2
+Explanation:
+
+LCS is "AC"
+
+////////////////////////////////////////////////////////////////////DP///////////////////////////////////////////////////////////////////////////////
+dp[i][j] 表示表示A序列前i个，与B序列的前j个的LCS长度
+dp[i][j] 
+= dp[i - 1][j - 1] + 1
+= max(dp[i - 1][j], dp[i][j - 1])
+
+class Solution:
+    """
+    @param A, B: Two strings.
+    @return: The length of longest common subsequence of A and B.
+    """
+    def longestCommonSubsequence(self, A, B):
+        if not A or not B:
+            return 0
+            
+        n, m = len(A), len(B)
+        # state & initialization
+        dp = [[0] * (m + 1) for i in range(n + 1)]
+        
+        # function
+        for i in range(1, n + 1):
+            for j in range(1, m +  1):
+                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j])
+                if A[i - 1] == B[j - 1]:
+                    dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1)
+
+        # answer
+        return dp[n][m]
