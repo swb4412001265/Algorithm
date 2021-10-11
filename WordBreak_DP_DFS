@@ -91,3 +91,28 @@ public:
         return f[m];
     }
 };
+
+//////////////////////////////////////////////////////////DFS/////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: A string
+    @param wordSet: A dictionary of words dict
+    @return: A boolean
+    """
+    def wordBreak(self, s, wordSet):
+        # write your code here
+        if not s:
+            return True
+        if not wordSet:
+            return False
+        self.res = False
+        self.helper(s, wordSet, "")
+        return self.res
+
+    def helper(self, s, wordSet, tmpString):
+        if not s and not tmpString:
+            self.res = True
+        for i in range(len(s)):
+            tmpString += s[i]
+            if tmpString in wordSet:
+                self.helper(s[i + 1:], wordSet, "")
