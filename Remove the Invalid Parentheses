@@ -1,0 +1,75 @@
+2506 · Remove the Invalid ParenthesesPRE
+
+https://www.lintcode.com/problem/2506/
+
+Description
+You will get a string s which consisting of lowercase letters a-z, left parentheses '(' and right parentheses ')'.
+
+Your task is to remove as few parentheses as you can so that the parentheses in s is valid.
+
+You need to return a valid string.
+
+Because of the answer may be more than one, so you can return any of them.
+
+"()", "(())", "()()", "(())()" are valid parentheses strings, and ")(", "(()", "()()(", "()())" are not valid parentheses strings.
+
+A string without parentheses(such as：abcd) or a empty string "" is also a valid string.
+
+0 \leq0≤ the length of s \leq 10^5≤10 
+5
+ 
+
+You can only remove parentheses, other operations will not be allowed.
+
+Example
+Example 1:
+
+Input:
+
+s = "a(b(c(de)fgh)"
+Output:
+
+"a(b(cde)fgh)"
+Explanation:
+
+There are 3 corrcect answers: "ab(c(de)fgh)"，"a(bc(de)fgh)"，"a(b(cde)fgh)"。
+You can return any of them.
+
+Example 2:
+
+Input:
+
+s = "((("
+Output:
+
+""
+Explanation:
+
+A empty string "" is also a valid string.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Solution:
+    """
+    @param s: A string with lowercase letters and parentheses
+    @return: A string which has been removed invalid parentheses
+    """
+    def removeParentheses(self, s: str) -> str:
+        # write your code here.
+        if not s:
+            return s
+        open_p = []
+        close_p = []
+        for i in range(len(s)):
+            if s[i] == ")":
+                if not open_p:
+                    close_p.append(i)
+                else:
+                    open_p.pop()
+            elif s[i] == "(":
+                open_p.append(i)
+        res = ""
+        for i in range(len(s)):
+            if i in open_p or i in close_p:
+                continue
+            res += s[i]
+        return res 
